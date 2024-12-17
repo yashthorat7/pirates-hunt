@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BROCODE</title>
+    <link rel="stylesheet" href="../intro/intro.css">
+    <script src="../intro/intro.js" defer></script>
+</head>
+
+<body>
+    <div class="ripple-container"></div>
+
+    <div class="title-part">
+        <div class="title-text">
+            <span>HOME</span>
+            <span>ISLAND</span>
+        </div>
+    </div>
+    
+    <div class="island-part">
+        <img src="../assets/images/island.png" alt="island" class="island-image">
+    </div>
+
+    <div class="first-screen">
+        <div class="register-box">
+            <img src="../assets/images/register.png" alt="register" class="register-image">
+            <div class="text-box">SHIP</div>
+            <input type="number" class="input-box" placeholder="" min="11" max="99">
+            <button class="enter-button" onclick="handleForwardClick()">
+                <img src="../assets/images/forward-arrow.png" alt="forward" class="forward-arrow-image">   
+            </button>
+        </div>
+        <div class="credits">
+            <div class="credits-text">
+                <span>PIRATES HUNT</span>
+                <span>BY</span>
+                <span>BROCODE</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="second-screen">
+        <div class="chatbox">
+            <div class="blur-background"></div>
+            <div class="message" id="animated-message">-</div>
+        </div>
+        <img src="../assets/images/character.png" alt="character" class="character-image">
+        <div class="navigator">
+            <button class="backward-button" onclick="handleBackwardClick()">
+                <img src="../assets/images/forward-arrow.png" alt="backward" class="backward-arrow-image">
+            </button>
+            <div class="ship-mark">#00</div>
+            <button class="forward-button" onclick="handleNextClick()">
+                <img src="../assets/images/forward-arrow.png" alt="forward" class="forward-arrow-image">
+            </button>
+        </div>
+    </div>
+</body>
+
+</html>
