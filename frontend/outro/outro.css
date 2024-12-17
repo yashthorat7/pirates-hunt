@@ -1,0 +1,286 @@
+@font-face {
+    font-family: 'Funky';
+    src: url('../assets/fonts/kids-magazine.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Ancient';
+    src: url('../assets/fonts/ancient.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Salsa';
+    src: url('../assets/fonts/salsa.ttf') format('truetype');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100svh;
+    font-family: 'Salsa', sans-serif;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(0deg, #0094FF 0%, #02FFE1 58%, #01BDF8 100%);
+    user-select: none;
+    touch-action: none;
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* ----------------------------------------------------------------------------------------- */
+
+
+.background-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100svh;
+    width: 100svw;
+    object-fit: cover;
+    opacity: 90%;
+    mix-blend-mode: overlay;
+    z-index: -100;
+}
+
+.glitter {
+    position: absolute;
+    background-color: #ffffff80;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: -5;
+    animation: float 6s linear infinite;
+}
+
+.background-layer1 {
+    position: absolute;
+    top: 30vh;
+    left: 21vw;
+    height: auto;
+    width: 60vw;
+}
+
+.background-layer2 {
+    position: absolute;
+    top: 10vh;
+    left: 0;
+    height: auto;
+    width: 17vw;
+}
+
+.background-layer3 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: auto;
+    width: 40vw;
+}
+
+.background-layer4 {
+    position: absolute;
+    top: 50vh;
+    right: 0;
+    height: auto;
+    width: 20vw;
+}
+
+.background-layer5 {
+    position: absolute;
+    top: 78vh;
+    right: 0;
+    height: auto;
+    width: 100vw;
+}
+
+.main-logo {
+    position: absolute;
+    top: -0.2vw;
+    width: 35vw;
+    height: auto;
+}
+
+.glitter-effect {
+    position: absolute;
+    width: 100svw;
+    height: 100svh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.glitter-image {
+    height: 95svh;
+    width: auto;
+    position: relative;
+    animation: spin 10s linear infinite;
+    mix-blend-mode: color-dodge;
+}
+
+.card-wrapper {
+    height: 100svh;
+    width: 100svw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 250svh;
+}
+
+.card {
+    width: 85vw;
+    height: 125vw;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+}
+
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-size: 4vw;
+    backface-visibility: hidden;
+    padding: 8vw 8vw;
+}
+
+.card-front {
+    transform: rotateY(0deg);
+    display: flex;
+    flex-direction: column;
+}
+
+.card-back {
+    transform: rotateY(180deg);
+    display: flex;
+    justify-content: center;
+}
+
+.card-image {
+    width: 85vw;
+    height: auto;
+    position: absolute;
+}
+
+.card-front, .card-back span {
+    font-size: 4vw;
+    color: #753a3a;
+}
+
+.notification {
+    width: 100%;
+}
+
+.ship-code {
+    position: relative;
+    margin-right: 45vw;
+}
+
+.camera-icon {
+    height: 7vw;
+    width: auto;
+    transform: translateY(1vw);
+    animation: shine 1s ease-in-out infinite;
+}
+
+.island-info {
+    margin-top: 12vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.island-name {
+    font-size: 4vw;
+    font-family: 'Funky';
+    color: #cc1111b9;
+}
+
+.clue-text {
+    font-size: 80vw;
+    font-family: 'Ancient';
+    color: #cc1111;
+    height: 70vw;
+}
+
+.character-image {
+    position: absolute;
+    width: 17vw;
+    height: auto;
+    bottom: 4vw;
+    left: 4vw;
+    z-index: 20;
+}
+
+.chat-box {
+    width: 100%;
+    padding-left: 15vw;
+}
+
+.chat-message {
+    font-size: 3.2vw;
+    line-height: 4vw;
+    color: #735656;
+}
+
+.base-mark {
+    position: absolute;
+    z-index: -4;
+}
+
+.checkpoint-image {
+    width: 75vw;
+    height: auto;
+}
+
+
+/* ----------------------------------------------------------------------------------------- */
+
+
+@keyframes float {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100svh) scale(0.8);
+        opacity: 0;
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotateZ(0deg);
+    } 
+    33% {
+        transform: rotateZ(120deg);
+    } 
+    66% {
+        transform: rotateZ(240deg);
+    } 
+    100% {
+        transform: rotateZ(360deg);
+    }
+}
+
+@keyframes shine {
+    0% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    50% {
+        transform: scale(1.05);
+        filter: brightness(1.5);
+    }
+    100% {
+        transform: scale(1);
+        filter: brightness(1);   
+    }
+}
