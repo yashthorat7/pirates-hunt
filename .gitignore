@@ -1,1 +1,8 @@
-docs/
+/docs/
+/backend/docs/
+
+*.log
+/backend/*.log
+
+/node_modules/
+/backend/node_modules/

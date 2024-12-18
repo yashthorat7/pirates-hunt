@@ -6,7 +6,7 @@ const gameNo = 1;
 
 async function fetchMessages(gameNo) {
     try {
-        const response = await fetch(`http://localhost:3000/getMessages?gameNo=${gameNo}`);
+        const response = await fetch(`http://localhost:3000/getIntroDialogues?gameNo=${gameNo}`);
         if (!response.ok) throw new Error();
         messages = await response.json();
         visitedMessages.length = messages.length;
