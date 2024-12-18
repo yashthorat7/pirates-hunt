@@ -1,15 +1,54 @@
-
-const messages = [
-    "Welcome to the itachi island..land of the greatest mathematician itachi",
-    "all we know is...when he died, he put the treasure piece in the unbreakable box",
-    "you can only open the box with a 4 digit secret code with non repeating digits",
-    "don't worry, you will get infinite guesses and hints with each guess",
-];
+let messages = [];
 let currentMessageIndex = 0;
 let typingTimeout;
-const visitedMessages = Array(messages.length).fill(false);
-const gameNo = 7;
-let isRegistered = false;
+const visitedMessages = [];
+const gameNo = 1;
+
+async function fetchMessages(gameNo) {
+    try {
+        const response = await fetch(`http://localhost:3000/getMessages?gameNo=${gameNo}`);
+        if (!response.ok) throw new Error();
+        messages = await response.json();
+        visitedMessages.length = messages.length;
+        visitedMessages.fill(false);
+        startTypingAnimation(currentMessageIndex);
+    } catch {
+        messages = ["Error loading messages. Please try again later."];
+        startTypingAnimation(currentMessageIndex);
+    }
+}
+
+function startTypingAnimation(index, typingDelay = 35) {
+    const messageElement = document.getElementById('animated-message');
+    const backwardButton = document.querySelector('.backward-button');
+    const fastTyping = visitedMessages[index];
+
+    visitedMessages[index] = true;
+    typeMessage(messages[index], messageElement, typingDelay, fastTyping);
+    backwardButton.style.display = currentMessageIndex === 0 ? 'none' : 'block';
+}
+
+function typeMessage(message, element, delay, fastTyping = false) {
+    clearTimeout(typingTimeout);
+    element.textContent = '';
+    let index = 0;
+
+    const forwardButton = document.querySelector('.forward-button');
+    forwardButton.disabled = true;
+
+    if (fastTyping) delay = 5;
+
+    function typing() {
+        if (index < message.length) {
+            element.textContent += message.charAt(index);
+            index++;
+            typingTimeout = setTimeout(typing, delay);
+        } else {
+            forwardButton.disabled = false;
+        }
+    }
+    typing();
+}
 
 function handleForwardClick() {
     setTimeout(() => {
@@ -36,46 +75,10 @@ function handleForwardClick() {
 
             isRegistered = true;
         } else {
-            if (navigator.vibrate) {
-                navigator.vibrate(100);
-            }
+            if (navigator.vibrate) navigator.vibrate(100);
             inputBox.value = '';
         }
     }, 100);
-}
-
-function typeMessage(message, element, delay, fastTyping = false) {
-    clearTimeout(typingTimeout);
-    element.textContent = '';
-    let index = 0;
-
-    const forwardButton = document.querySelector('.forward-button');  
-    forwardButton.disabled = true;
-
-    if (fastTyping) {
-        delay = 5;
-    }
-
-    function typing() {
-        if (index < message.length) {
-            element.textContent += message.charAt(index);
-            index++;
-            typingTimeout = setTimeout(typing, delay);
-        } else {
-            forwardButton.disabled = false;
-        }
-    }
-    typing();
-}
-
-function startTypingAnimation(index, typingDelay = 35) {
-    const messageElement = document.getElementById('animated-message');
-    const backwardButton = document.querySelector('.backward-button');
-
-    const fastTyping = visitedMessages[index];
-    visitedMessages[index] = true;
-    typeMessage(messages[index], messageElement, typingDelay, fastTyping);
-    backwardButton.style.display = currentMessageIndex === 0 ? 'none' : 'block';
 }
 
 function handleNextClick() {
@@ -126,10 +129,12 @@ function createRipple(container) {
     });
 }
 
-
 let rippleInProgress = false;
+let isRegistered = false;
 
 window.onload = function() {
+    fetchMessages(gameNo);
+
     const container = document.querySelector('.ripple-container');
     setInterval(() => {
         if (!rippleInProgress) {

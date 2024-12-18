@@ -1,34 +1,34 @@
-window.onload = () =>  {
-    const gameNo = 9;
+const gameNo = 1;
+
+window.onload = () => {
     const shipNo = new URLSearchParams(window.location.search).get('ship');
     if (shipNo) {
         const shipMark = document.querySelector('.ship-code');
         shipMark.textContent = `SHIP ${shipNo}`;
 
         fetch(`http://localhost:3000/getClueLetter?shipNo=${shipNo}&gameNo=${gameNo}`)
-        .then(response => response.json())
-        .then(data => {
-            const clueLetter = document.querySelector('.clue-text');
-            clueLetter.textContent = data.letter;
-        });
+            .then(response => response.json())
+            .then(data => document.querySelector('.clue-text').textContent = data.letter);
+
         fetch(`http://localhost:3000/setEndTime?shipNo=${shipNo}&gameNo=${gameNo}`, { 
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            headers: { 'Content-Type': 'application/json' }
         });
+
         fetch(`http://localhost:3000/getBaseMark?shipNo=${shipNo}&gameNo=${gameNo}`)
-        .then(response => response.json())
-        .then(data => {
-            const baseMark = document.querySelector('.base-mark');
-            baseMark.textContent =`Base ${data.letter}`;
-        });
+            .then(response => response.json())
+            .then(data => document.querySelector('.base-mark').textContent = `Base ${data.letter}`);
+
         fetch(`http://localhost:3000/getCheckpointImage?shipNo=${shipNo}&gameNo=${gameNo}`)
-        .then(response => response.json())
-        .then(data => {
-            const checkpointImage = document.querySelector('.checkpoint-image');
-            checkpointImage.src = data.imageUrl;
-        });
+            .then(response => response.json())
+            .then(data => document.querySelector('.checkpoint-image').src = data.imageUrl);
+
+        fetch(`http://localhost:3000/getOutroDialogues?gameNo=${gameNo}`)
+            .then(response => response.json())
+            .then(data => {
+                const chatMessage = document.querySelector('.chat-message');
+                chatMessage.textContent = data.dialogue;
+            });
     }
 }
 
@@ -42,9 +42,7 @@ let minVelocity = 0.3;
 function autoRotate() {
     if (!isDragging) {
         velocity *= friction;
-        if (Math.abs(velocity) < minVelocity) {
-            velocity = minVelocity * (velocity < 0 ? -1 : 1);
-        }
+        if (Math.abs(velocity) < minVelocity) velocity = minVelocity * (velocity < 0 ? -1 : 1);
         rotationY += velocity;
         card.style.transform = `rotateY(${rotationY}deg)`;
     }
@@ -84,16 +82,13 @@ function createGlitter() {
     const size = 5 + Math.random() * 15;
     glitter.style.width = `${size * 2}px`;
     glitter.style.height = `${size * 2}px`;
-    const leftPosition = Math.random() * window.innerWidth;
-    glitter.style.left = `${leftPosition}px`;
+    glitter.style.left = `${Math.random() * window.innerWidth}px`;
     glitter.style.top = `${window.innerHeight}px`;
-    const randomAnimationDuration = 4 + Math.random() * 6;
-    glitter.style.animationDuration = `${randomAnimationDuration}s`;
-    const horizontalMovement = (Math.random() * 100 - 50);
-    glitter.style.transform = `translateX(${horizontalMovement}px)`;
+    glitter.style.animationDuration = `${4 + Math.random() * 6}s`;
+    glitter.style.transform = `translateX(${Math.random() * 100 - 50}px)`;
     document.body.appendChild(glitter);
-    
-    setTimeout(() => glitter.remove(), randomAnimationDuration * 200);
+
+    setTimeout(() => glitter.remove(), 12000);
 }
 
 autoRotate();
@@ -102,13 +97,13 @@ setInterval(createGlitter, 300);
 document.querySelector('.camera-icon').addEventListener('click', function() {
     document.querySelector('.card-back').style.display = 'none';
     const cardFront = document.querySelector('.card-container');
-    
+
     html2canvas(cardFront).then(function(canvas) {
-        let link = document.createElement('a');
+        const link = document.createElement('a');
         link.href = canvas.toDataURL('image/png');
         link.download = 'itachi-island.png';
         link.click();
     });
-    
+
     document.querySelector('.card-back').style.display = 'flex';
 });
