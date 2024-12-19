@@ -5,7 +5,6 @@
     let presetMessages = [];
 
     if (shipMark && shipNo) {
-        console.log(shipNo);
         shipMark.textContent = `#${shipNo}`;
     }
 
@@ -31,7 +30,6 @@
             const index = Math.floor(Math.random() * presetMessages.length);
             const newMessage = presetMessages[index];
             messageElement.textContent = newMessage;
-            console.log(newMessage);
         }
     }
 
