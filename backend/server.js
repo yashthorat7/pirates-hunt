@@ -7,7 +7,6 @@ const dialogueRoutes = require('./routes/getDialogues');
 app.use(cors());
 app.use(express.json());
 
-
 app.use('/', dialogueRoutes);
 
 const PORT = 3000;
