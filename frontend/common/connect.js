@@ -1,24 +1,33 @@
 (() => {
     const messageElement = document.querySelector('.message');
-    const presetMessages = [
-        "patience is the key",
-        "try using your brains",
-        "snap those tiles in place!",
-        "try to place the tiles carefully.",
-        "you break a tile you will have to restart",
-        "if anything happens...just restart",
-        "match the tiles on the frames"
-    ];
-
     const shipNo = new URLSearchParams(window.location.search).get('ship');
     const shipMark = document.querySelector('.ship-mark');
+    let presetMessages = [];
 
     if (shipMark && shipNo) {
+        console.log(shipNo);
         shipMark.textContent = `#${shipNo}`;
-        
     }
+
+    (async () => {
+        try {
+            const response = await fetch(`http://localhost:3000/getConnectDialogues?gameNo=${gameNo}`);
+            if (response.ok) {
+                presetMessages = await response.json();
+                if (messageElement) {
+                    messageElement.textContent = presetMessages[0] || "Default message";
+                }
+                startMessageUpdates();
+            } else {
+                console.error("Failed to fetch dialogues");
+            }
+        } catch (error) {
+            console.error("Error fetching dialogues:", error);
+        }
+    })();
+
     function updateMessage() {
-        if (messageElement) {
+        if (messageElement && presetMessages.length > 0) {
             const index = Math.floor(Math.random() * presetMessages.length);
             const newMessage = presetMessages[index];
             messageElement.textContent = newMessage;
@@ -26,8 +35,9 @@
         }
     }
 
-    if (messageElement) {
-        messageElement.textContent = presetMessages[0];
-        setInterval(updateMessage, 12000);
+    function startMessageUpdates() {
+        if (messageElement && presetMessages.length > 0) {
+            setInterval(updateMessage, 6000);
+        }
     }
 })();
