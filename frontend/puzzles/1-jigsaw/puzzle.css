@@ -1,0 +1,104 @@
+@font-face {
+    font-family: 'Salsa';
+    src: url('../../assets/fonts/salsa.ttf') format('truetype');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+  
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100svh;
+    font-family: 'Salsa', sans-serif;
+    background-color: transparent;
+    overflow: hidden;
+    touch-action: none;
+    user-select: none;
+    position: fixed;
+}
+
+
+
+
+
+
+.wood-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 94vh;
+    width: 100vw;
+    object-fit: cover;
+    z-index: -100;
+    overflow: hidden;
+}
+
+.game-part {
+    height: 90svh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.grid-frame {
+    height: 118vw;
+    display: flex;
+    width: 80vw;
+    border-radius: 6vw;
+    background: linear-gradient(45deg, #DB8720, #D06A18, #F3C831,
+                    #D16F1A, #F3C831, #C1440F, #E8AA29);
+    justify-content: center;
+    align-items: center;
+    box-shadow: 
+        0 2.4vw 0 #C56301,
+        0 2.3vw 5vw #190a5a6b;
+}
+                
+.grid-box {
+    position: relative;
+    height: 114vw;
+    width: 76vw;
+    background-color: #8B3B30;
+    border-radius: 5vw;
+    box-shadow: inset 0 0 16vw #06031346;
+    overflow: hidden;
+}
+
+.grid {
+    position: absolute;
+    width: 19vw;
+    height: 19vw;
+    background-color: transparent;
+}
+
+.tile {
+    height: 19vw;
+    width: 19vw;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    display: flex;
+    overflow: hidden;
+}
+
+.tile img{
+    height: 27.4vw;
+    width: 27.4vw;
+}
+
+.row-1 { top: 0vw; }
+.row-2 { top: 19vw; }
+.row-3 { top: 38vw; }
+.row-4 { top: 57vw; }
+.row-5 { top: 76vw; }
+.row-6 { top: 95vw; }
+
+.column-1 { left: 0vw; }
+.column-2 { left: 19vw; }
+.column-3 { left: 37.9vw; }
+.column-4 { left: 56.8vw; }
