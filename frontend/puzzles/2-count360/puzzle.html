@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BROCODE</title>
+    <link rel="stylesheet" href="puzzle.css">
+    <link rel="stylesheet" href="../../common/connect.css">
+    <script src="puzzle.js" defer></script>
+    <script src="../../common/hint.js"defer></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+
+<body>
+    <div class="first-screen">
+        <div id="panorama"></div>
+        <button class="dive-button" onclick="handleDiveClick()">
+            <img src="../../assets/1-count360/dive-icon.png" alt="dive" class="dive-image">
+        </button>
+    </div>
+    
+    <div class="second-screen">
+        <div class="second-background">
+            <img src="../../assets/images/background2.png" class="bg1">
+            <img src="../../assets/images/background3.png" class="bg2">
+            <img src="../../assets/images/background4.png" class="bg3">
+            <img src="../../assets/images/background5.png" class="bg4">
+        </div>
+        <button class="counter-button" onclick="handleCounterClick()">
+            <img src="../../assets/1-count360/counter-icon.png" alt="counter" class="counter-button-image">
+        </button>
+        
+        <div class="counter-frame">
+            <div class="counter-box">
+                <img src="../../assets/1-count360/counter1.png" alt="counter1" class="counter-image">
+                
+                <button class="arrow-button backward" onclick="adjustCounter(1, -1)">
+                    <img src="../../assets/1-count360/right-arrow.png" alt="backward">
+                </button>
+                <div class="number-box" onclick="adjustCounter(1, 1)">
+                    <span>0</span>
+                </div>
+                <button class="arrow-button forward" onclick="adjustCounter(1, 1)">
+                    <img src="../../assets/1-count360/right-arrow.png" alt="forward">
+                </button>
+            </div>
+            
+            <div class="counter-box">
+                <img src="../../assets/1-count360/counter2.png" alt="counter2" class="counter-image">
+                
+                <button class="arrow-button backward" onclick="adjustCounter(2, -1)">
+                    <img src="../../assets/1-count360/right-arrow.png" alt="backward">
+                </button>
+                <div class="number-box" onclick="adjustCounter(2, 1)">
+                    <span>0</span>
+                </div>
+                <button class="arrow-button forward" onclick="adjustCounter(2, 1)">
+                    <img src="../../assets/1-count360/right-arrow.png" alt="forward">
+                </button>
+            </div>
+            
+            <div class="counter-box">
+                <img src="../../assets/1-count360/counter3.png" alt="counter3" class="counter-image">
+                
+                <button class="arrow-button backward" onclick="adjustCounter(3, -1)">
+                    <img src="../../assets/1-count360/right-arrow.png" alt="backward">
+                </button>
+                <div class="number-box" onclick="adjustCounter(3, 1)">
+                    <span>0</span>
+                </div>
+                <button class="arrow-button forward" onclick="adjustCounter(3, 1)">
+                    <img src="../../assets/1-count360/right-arrow.png" alt="forward">
+                </button>
+            </div>
+            
+            <div class="counter-box">
+                <img src="../../assets/1-count360/counter4.png" alt="counter4" class="counter-image">
+                
+                <button class="arrow-button backward" onclick="adjustCounter(4, -1)">
+                    <img src="../../assets/1-count360/right-arrow.png" alt="backward">
+                </button>
+                <div class="number-box" onclick="adjustCounter(4, 1)">
+                    <span>0</span>
+                </div>
+                <button class="arrow-button forward" onclick="adjustCounter(4, 1)">
+                    <img src="../../assets/1-count360/right-arrow.png" alt="forward">
+                </button>
+            </div>
+        </div>
+        <button class="verify-button" onclick="handleVerificationClick()">
+            <span>VERIFY</span>
+        </button>
+    </div>
+    
+    <div class="connect-container"></div>
+
+</body>
+
+</html>
