@@ -1,4 +1,6 @@
 const gameNo = 1;
+let shipNo = 0;
+
 
 window.onload = () => {
     const shipNo = new URLSearchParams(window.location.search).get('ship');

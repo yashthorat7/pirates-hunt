@@ -17,5 +17,5 @@
         })
     }
 
-    setInterval(checkForHint, 60000);
+    setInterval(checkForHint, 10000);
 })();
