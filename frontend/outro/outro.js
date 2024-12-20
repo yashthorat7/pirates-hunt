@@ -98,14 +98,14 @@ setInterval(createGlitter, 300);
 
 document.querySelector('.camera-icon').addEventListener('click', function() {
     document.querySelector('.card-back').style.display = 'none';
-    const cardFront = document.querySelector('.card-container');
-
+    const cardFront = document.querySelector('.card-wrapper');
+    
     html2canvas(cardFront).then(function(canvas) {
-        const link = document.createElement('a');
+        let link = document.createElement('a');
         link.href = canvas.toDataURL('image/png');
         link.download = 'itachi-island.png';
         link.click();
     });
-
+    
     document.querySelector('.card-back').style.display = 'flex';
 });

@@ -14,18 +14,15 @@ function getTime() {
 
 function updateShipLogs(shipNo, gameNo, field) {
     const shipId = `ship${shipNo}`;
-    try {
-        const fileData = fs.readFileSync(shipLogsPath, 'utf8');
-        const shipLogs = JSON.parse(fileData);
+    
+    const fileData = fs.readFileSync(shipLogsPath, 'utf8');
+    const shipLogs = JSON.parse(fileData);
 
-        if (shipLogs[shipId][field][gameNo] === 0) {
-            shipLogs[shipId][field][gameNo] = getTime();
-            fs.writeFileSync(shipLogsPath, JSON.stringify(shipLogs, null, 2), 'utf8');
-        }
-        console.log(shipLogs[shipId][field][gameNo]);
-    } catch (error) {
-        console.error('Error updating ship logs:', error);
+    if (shipLogs[shipId][field][gameNo] === 0) {
+        shipLogs[shipId][field][gameNo] = getTime();
+        fs.writeFileSync(shipLogsPath, JSON.stringify(shipLogs, null, 2), 'utf8');
     }
+    console.log(shipLogs[shipId][field][gameNo]);
 }
 
 router.post('/setBeginTime', (req, res) => {
