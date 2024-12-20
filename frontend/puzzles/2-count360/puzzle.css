@@ -10,7 +10,7 @@
 
 @font-face {
     font-family: 'Gotham';
-    src: url('../../assets/fonts/gotham.otf') format('Opentype');
+    src: url('../../assets/fonts/gotham.ttf') format('Opentype');
 }
 
 * {

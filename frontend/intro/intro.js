@@ -82,16 +82,21 @@ function handleForwardClick() {
 }
 
 function handleNextClick() {
-    setTimeout(() => {
-        if (currentMessageIndex < messages.length - 1) {
-            currentMessageIndex++;
-            startTypingAnimation(currentMessageIndex);
-        } else {
-            const inputBox = document.querySelector('.input-box');
-            const inputValue = Number(inputBox.value);
-            window.location.href = `puzzle.html?ship=${inputValue}`;
-        }
-    }, 100);
+    console.log('it works');
+    if (currentMessageIndex < messages.length - 1) {
+        currentMessageIndex++;
+        startTypingAnimation(currentMessageIndex);
+    } else {
+        console.log('how is it going?');
+        const inputBox = document.querySelector('.input-box');
+        const inputValue = Number(inputBox.value);
+        console.log(gameNo, inputValue);
+        fetch(`http://localhost:3000/getPuzzle?gameNo=${gameNo}&shipNo=${inputValue}`)
+        .then(response => response.json())
+        .then(data => {
+            window.location.href = data.link;
+        });
+    }
 }
 
 function handleBackwardClick() {
@@ -143,12 +148,3 @@ window.onload = function() {
         }
     }, 3000);
 };
-
-const titleText = document.querySelector('.title-text');
-titleText.addEventListener('click', () => {
-    if (isRegistered) {
-        const inputBox = document.querySelector('.input-box');
-        const inputValue = Number(inputBox.value);
-        window.location.href = `../puzzles/puzzle.html?ship=${inputValue}`;
-    }
-});

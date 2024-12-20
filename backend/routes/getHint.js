@@ -3,7 +3,7 @@ const router = express.Router();
 const fs = require('fs');
 const path = require('path');
 
-const HINTTIME = 1;
+const HINTTIME = 5;
 const shipLogsPath = path.resolve(__dirname, '../data/shipLogs.json');
 
 function getTime() {
