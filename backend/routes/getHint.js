@@ -10,7 +10,7 @@ router.get('/getHint', (req, res) => {
 
     // if (timeDiffMinutes >= 12) {
         res.json({ message: "Times Up! Here we have solved it for you",
-            link: `../../outro/outro.html?ship=${shipNo + 11}` });
+            link: `../../outro/outro.html?ship=${shipNo}` });
     // }
 });
 

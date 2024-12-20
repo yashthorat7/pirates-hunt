@@ -23,7 +23,6 @@ window.onload = () => {
             .then(response => response.json())
             .then(data => document.querySelector('.checkpoint-image').src = data.imageUrl);
 
-        alert("data");
         fetch(`http://localhost:3000/getOutroDialogues?gameNo=${gameNo}`)
             .then(response => response.json())
             .then(data => {
