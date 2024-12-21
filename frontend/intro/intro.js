@@ -80,7 +80,7 @@ function handleSkipClick() {
     if (isRegistered) {
         const inputBox = document.querySelector('.input-box');
         const inputValue = Number(inputBox.value);
-        fetch(`http://localhost:3000/getPuzzle?gameName=${gameName}&shipNo=${inputValue}`)
+        fetch(`http://localhost:3000/getPuzzle?gameNo=${gameNo}&gameName=${gameName}&shipNo=${inputValue}`)
                 .then(response => response.json())
                 .then(data => {
                     window.location.href = data.link;

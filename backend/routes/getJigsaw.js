@@ -3,6 +3,7 @@ const router = express.Router();
 const fs = require('fs');
 const path = require('path');
 const ImageKit = require('imagekit');
+const gameNo = 1;
 
 const imagekit = new ImageKit({
     publicKey: "public_KQUJu1OFWc7qLBzq9ERm9VEVf2I=",
@@ -17,6 +18,17 @@ router.get('/getTiles', (req, res) => {
         imagekit.url({ path: `/Tiles/set${setNumber}/tile (${i + 1}).png` })
     );
     res.json({ tiles: tileImages });
+});
+
+router.get('/getJigsawWin', (req, res) => {
+    const shipNo = parseInt(req.query.shipNo) - 11;
+
+    const shipFilePath = path.resolve(__dirname, '../data/shipLogs.json');
+    const shipLogs = JSON.parse(fs.readFileSync(shipFilePath, 'utf8'));
+    shipLogs[`ship${shipNo}`].Unlocked.split(', ').map(Number)[gameNo] = 1;
+    shipLogs[`ship${shipNo}`].Solved.split(', ').map(Number)[gameNo] = 1;
+
+    res.json({ hasWon });
 });
 
 module.exports = router;

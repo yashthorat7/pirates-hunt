@@ -18,9 +18,9 @@ router.get('/getHint', (req, res) => {
     const gameNo = parseInt(req.query.gameNo) - 1;
     const shipNo = parseInt(req.query.shipNo);
 
+    const gameData = fs.readFileSync(gameDataPath, 'utf8');
     const shipLogsData = fs.readFileSync(shipLogsPath, 'utf8');
     const shipLogs = JSON.parse(shipLogsData);
-    const gameData = fs.readFileSync(gameDataPath, 'utf8');
     const gameDataJson = JSON.parse(gameData);
 
     const gameId = gameDataJson.gameId[gameNo];
@@ -32,6 +32,7 @@ router.get('/getHint', (req, res) => {
     const timeDiffMinutes = (getTime() - startTime) / 60;
 
     if (timeDiffMinutes >= HINTTIME) {
+        shipLogs[`ship${shipNo}`].Unlocked.split(', ').map(Number)[gameNo] = 1;
         res.json({
             message: "Times Up! Here we have solved it for you",
             link: `../../outro/outro.html?ship=${shipNo}&id=${gameId}`

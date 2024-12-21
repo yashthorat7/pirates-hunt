@@ -47,8 +47,6 @@ function adjustCounter(counterId, adjustment) {
     counterValueElement.textContent = currentValue;
 }
 
-
-
 function handleVerificationClick() {
     const userInputs = [
         parseInt(document.querySelector('.counter-box:nth-child(1) .number-box span').textContent),
