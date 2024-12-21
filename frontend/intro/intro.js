@@ -8,7 +8,6 @@ let rippleInProgress = false;
 
 async function fetchMessages(gameNo) {
     try {
-        console.log(gameNo);
         const response = await fetch(`http://localhost:3000/getIntroDialogues?gameNo=${gameNo}`);
         if (!response.ok) throw new Error('Failed to fetch messages');
         messages = await response.json();
@@ -139,12 +138,13 @@ window.onload = function () {
                 titleElement.textContent = data.titleName;
             }
             gameNo = data.gameNo;
-            console.log(gameNo);
             gameName = data.gameName;
-            console.log(gameName);
             fetchMessages(gameNo);
+            const image = document.querySelector('.character-image');
+            image.src = `../assets/${gameName}/character.png`;
+            const islandImage = document.querySelector('.island-image');
+            islandImage.src = `../assets/${gameName}/island.png`;
         });
-
 
     const container = document.querySelector('.ripple-container');
     setInterval(() => {

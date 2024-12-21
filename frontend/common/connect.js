@@ -5,6 +5,8 @@
     let presetMessages = [];
 
     if (shipMark && shipNo) {
+        const image = document.querySelector('.character-image');
+        image.src = `../../assets/${gameName}/avatar.png`;
         shipMark.textContent = `#${shipNo}`;
     }
 

@@ -7,8 +7,8 @@ const hintRoutes = require('./routes/getHint');
 const timeRoutes = require('./routes/setTimes');
 const introRoutes = require('./routes/getIntro');
 const outroRoutes = require('./routes/getOutro');
-const jigsawRoutes = require('./routes/setJigsaw');
-const count360Routes = require('./routes/setCount360');
+const jigsawRoutes = require('./routes/getJigsaw');
+const count360Routes = require('./routes/getCount360');
 
 app.use(cors());
 app.use(express.json());

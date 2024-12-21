@@ -17,7 +17,6 @@ const count4 = [0, 1, 19, 6];
 
 function get360count(shipNo) {
     const setNumber = shipNo % 4;
-    console.log(setNumber);
     switch (setNumber) {
         case 0: return count1;
         case 1: return count2;

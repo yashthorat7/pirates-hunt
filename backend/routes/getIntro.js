@@ -20,7 +20,6 @@ router.get('/getGameData', (req, res) => {
 router.get('/getPuzzle', (req, res) => {
     const shipNo = parseInt(req.query.shipNo);
     const gameName = req.query.gameName;
-    console.log('working');
     res.json({
         link: `../puzzles/${gameName}/puzzle.html?ship=${shipNo}`
     });

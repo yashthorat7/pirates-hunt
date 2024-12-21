@@ -1,38 +1,43 @@
-const gameNo = 1;
-let shipNo = 0;
-
+let gameNo = 0;
+let gameName = '';
 
 window.onload = () => {
+    const gameId = new URLSearchParams(window.location.search).get('id');
     const shipNo = new URLSearchParams(window.location.search).get('ship');
-    if (shipNo) {
-        const shipMark = document.querySelector('.ship-code');
-        shipMark.textContent = `SHIP ${shipNo}`;
 
-        fetch(`http://localhost:3000/getClueLetter?shipNo=${shipNo}&gameNo=${gameNo}`)
-            .then(response => response.json())
-            .then(data => document.querySelector('.clue-text').textContent = data.letter);
+    fetch(`http://localhost:3000/getGameData?Id=${gameId}`)
+        .then((response) => response.json())
+        .then((data) => {
+            document.querySelector('.island-name').textContent = `${data.titleName} ISLAND`;
+            gameNo = data.gameNo;
+            gameName = data.gameName;
+            document.querySelector('.character-image').src = `../assets/${gameName}/character-face2.png`;
+            document.querySelector('.ship-code').textContent = `SHIP ${shipNo}`;
 
-        fetch(`http://localhost:3000/setEndTime?shipNo=${shipNo}&gameNo=${gameNo}`, { 
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' }
-        });
+            fetch(`http://localhost:3000/getClueLetter?shipNo=${shipNo}&gameNo=${gameNo}`)
+                .then(response => response.json())
+                .then(data => document.querySelector('.clue-text').textContent = data.letter);
 
-        fetch(`http://localhost:3000/getBaseMark?shipNo=${shipNo}&gameNo=${gameNo}`)
-            .then(response => response.json())
-            .then(data => document.querySelector('.base-mark').textContent = `Base ${data.letter}`);
-
-        fetch(`http://localhost:3000/getCheckpointImage?shipNo=${shipNo}&gameNo=${gameNo}`)
-            .then(response => response.json())
-            .then(data => document.querySelector('.checkpoint-image').src = data.imageUrl);
-
-        fetch(`http://localhost:3000/getOutroDialogues?gameNo=${gameNo}`)
-            .then(response => response.json())
-            .then(data => {
-                const chatMessage = document.querySelector('.chat-message');
-                chatMessage.textContent = data;
+            fetch(`http://localhost:3000/setEndTime?shipNo=${shipNo}&gameNo=${gameNo}`, { 
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
             });
-    }
+
+            fetch(`http://localhost:3000/getBaseMark?shipNo=${shipNo}&gameNo=${gameNo}`)
+                .then(response => response.json())
+                .then(data => document.querySelector('.base-mark').textContent = `Base ${data.letter}`);
+
+            fetch(`http://localhost:3000/getCheckpointImage?shipNo=${shipNo}&gameNo=${gameNo}`)
+                .then(response => response.json())
+                .then(data => document.querySelector('.checkpoint-image').src = data.imageUrl);
+
+            fetch(`http://localhost:3000/getOutroDialogues?gameNo=${gameNo}`)
+                .then(response => response.json())
+                .then(data => document.querySelector('.chat-message').textContent = data);
+        });
 }
+
+
 
 let card = document.getElementById("card");
 let startX, currentX, isDragging = false;
