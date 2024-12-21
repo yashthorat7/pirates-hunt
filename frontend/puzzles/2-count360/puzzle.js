@@ -1,5 +1,7 @@
-const gameNo = 2;
 const shipNo = new URLSearchParams(window.location.search).get('ship');
+const gameNo = 2;
+const gameName = '2-count360';
+const gameId = 'dysde';
 
 window.onload = function() {    
     if (shipNo) {
@@ -20,12 +22,7 @@ window.onload = function() {
                 });
             }
         });
-        fetch(`http://localhost:3000/setStartTime?shipNo=${shipNo}&gameNo=${gameNo}`, { 
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+        fetch(`http://localhost:3000/setStartTime?gameNo=${gameNo}&shipNo=${shipNo}`);
     }
 };
 

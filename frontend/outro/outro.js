@@ -18,10 +18,7 @@ window.onload = () => {
                 .then(response => response.json())
                 .then(data => document.querySelector('.clue-text').textContent = data.letter);
 
-            fetch(`http://localhost:3000/setEndTime?shipNo=${shipNo}&gameNo=${gameNo}`, { 
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' }
-            });
+            fetch(`http://localhost:3000/setEndTime?gameNo=${gameNo}&shipNo=${shipNo}`);
 
             fetch(`http://localhost:3000/getBaseMark?shipNo=${shipNo}&gameNo=${gameNo}`)
                 .then(response => response.json())

@@ -26,21 +26,21 @@ function updateShipLogs(shipNo, gameNo, field) {
     }
 }
 
-router.post('/setBeginTime', (req, res) => {
+router.get('/setBeginTime', (req, res) => {
     const gameNo = parseInt(req.query.gameNo) - 1;
     const shipNo = parseInt(req.query.shipNo);
     updateShipLogs(shipNo, gameNo, 'BeginTime');
     res.sendStatus(204);
 });
 
-router.post('/setStartTime', (req, res) => {
+router.get('/setStartTime', (req, res) => {
     const gameNo = parseInt(req.query.gameNo) - 1;
     const shipNo = parseInt(req.query.shipNo);
     updateShipLogs(shipNo, gameNo, 'StartTime');
     res.sendStatus(204);
 });
 
-router.post('/setEndTime', (req, res) => {
+router.get('/setEndTime', (req, res) => {
     const gameNo = parseInt(req.query.gameNo) - 1;
     const shipNo = parseInt(req.query.shipNo);
     updateShipLogs(shipNo, gameNo, 'EndTime');

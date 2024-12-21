@@ -5,6 +5,7 @@ const visitedMessages = [];
 let gameNo = 0;
 let gameName = '';
 let rippleInProgress = false;
+let isRegistered = false;
 
 async function fetchMessages(gameNo) {
     try {
@@ -57,12 +58,7 @@ function handleForwardClick(event) {
     const inputBox = document.querySelector('.input-box');
     const inputValue = Number(inputBox.value);
 
-    fetch(`http://localhost:3000/setBeginTime?gameNo=${gameNo}&shipNo=${inputValue}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
+    fetch(`http://localhost:3000/setBeginTime?gameNo=${gameNo}&shipNo=${inputValue}`);
 
     const firstScreen = document.querySelector('.first-screen');
     const secondScreen = document.querySelector('.second-screen');
@@ -72,7 +68,24 @@ function handleForwardClick(event) {
         shipMark.textContent = `#${inputValue}`;
         firstScreen.style.display = 'none';
         secondScreen.style.display = 'flex';
+        isRegistered = true;
         setTimeout(() => startTypingAnimation(currentMessageIndex), 10);
+    } else {
+        if (navigator.vibrate) navigator.vibrate(100);
+        inputBox.value = '';
+    }
+}
+
+function handleSkipClick() {
+    if (isRegistered) {
+        const inputBox = document.querySelector('.input-box');
+        const inputValue = Number(inputBox.value);
+        fetch(`http://localhost:3000/getPuzzle?gameName=${gameName}&shipNo=${inputValue}`)
+                .then(response => response.json())
+                .then(data => {
+                    window.location.href = data.link;
+                })
+                .catch(error => console.error('Error fetching puzzle:', error));
     } else {
         if (navigator.vibrate) navigator.vibrate(100);
         inputBox.value = '';
@@ -155,6 +168,6 @@ window.onload = function () {
     }, 3000);
 };
 
-
+document.querySelector('.title-text').addEventListener('click', handleSkipClick);
 document.querySelector('.forward-button').addEventListener('click', handleNextClick);
 document.querySelector('.backward-button').addEventListener('click', handleBackwardClick);
