@@ -3,7 +3,7 @@ const router = express.Router();
 const fs = require('fs');
 const path = require('path');
 
-const HINTTIME = 0.4;
+const HINTTIME = 10;
 const shipLogsPath = path.resolve(__dirname, '../data/shipLogs.json');
 const gameDataPath = path.resolve(__dirname, '../data/gameData.json');
 
