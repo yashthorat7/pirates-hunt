@@ -2,26 +2,28 @@ let messages = [];
 let currentMessageIndex = 0;
 let typingTimeout;
 const visitedMessages = [];
-const gameNo = 1;
+let gameNo = 0;
+let gameName = '';
+let rippleInProgress = false;
 
 async function fetchMessages(gameNo) {
     try {
+        console.log(gameNo);
         const response = await fetch(`http://localhost:3000/getIntroDialogues?gameNo=${gameNo}`);
-        if (!response.ok) throw new Error();
+        if (!response.ok) throw new Error('Failed to fetch messages');
         messages = await response.json();
         visitedMessages.length = messages.length;
         visitedMessages.fill(false);
         startTypingAnimation(currentMessageIndex);
-    } catch {
-        messages = ["Error loading messages. Please try again later."];
-        startTypingAnimation(currentMessageIndex);
+    } catch (error) {
+        console.error('Error fetching messages:', error);
     }
 }
 
 function startTypingAnimation(index, typingDelay = 35) {
     const messageElement = document.getElementById('animated-message');
     const backwardButton = document.querySelector('.backward-button');
-    const fastTyping = visitedMessages[index];
+    const fastTyping = visitedMessages[index] && index !== 0;
 
     visitedMessages[index] = true;
     typeMessage(messages[index], messageElement, typingDelay, fastTyping);
@@ -50,95 +52,99 @@ function typeMessage(message, element, delay, fastTyping = false) {
     typing();
 }
 
-function handleForwardClick() {
-    setTimeout(() => {
-        const firstScreen = document.querySelector('.first-screen');
-        const secondScreen = document.querySelector('.second-screen');
-        const titleText = document.querySelector('.title-text');
-        const inputBox = document.querySelector('.input-box');
-        const shipMark = document.querySelector('.ship-mark');
-        const inputValue = Number(inputBox.value);
+document.querySelector('.enter-button').addEventListener('click', handleForwardClick);
+function handleForwardClick(event) {
+    event.preventDefault();
+    const inputBox = document.querySelector('.input-box');
+    const inputValue = Number(inputBox.value);
 
-        if (!isNaN(inputValue) && inputValue > 10 && inputValue <= 50) {
-            shipMark.textContent = `#${inputValue}`;
-            firstScreen.style.display = 'none';
-            secondScreen.style.display = 'flex';
-            titleText.style.animation = 'none';
-            setTimeout(() => startTypingAnimation(currentMessageIndex), 0);
+    fetch(`http://localhost:3000/setBeginTime?gameNo=${gameNo}&shipNo=${inputValue}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
 
-            fetch(`http://localhost:3000/setBeginTime?gameNo=${gameNo}&shipNo=${inputValue}`, { 
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
+    const firstScreen = document.querySelector('.first-screen');
+    const secondScreen = document.querySelector('.second-screen');
+    const shipMark = document.querySelector('.ship-mark');
 
-            isRegistered = true;
-        } else {
-            if (navigator.vibrate) navigator.vibrate(100);
-            inputBox.value = '';
-        }
-    }, 100);
+    if (!isNaN(inputValue) && inputValue >= 11 && inputValue <= 50) {
+        shipMark.textContent = `#${inputValue}`;
+        firstScreen.style.display = 'none';
+        secondScreen.style.display = 'flex';
+        setTimeout(() => startTypingAnimation(currentMessageIndex), 10);
+    } else {
+        if (navigator.vibrate) navigator.vibrate(100);
+        inputBox.value = '';
+    }
 }
 
 function handleNextClick() {
-    console.log('it works');
     if (currentMessageIndex < messages.length - 1) {
         currentMessageIndex++;
         startTypingAnimation(currentMessageIndex);
     } else {
-        console.log('how is it going?');
         const inputBox = document.querySelector('.input-box');
         const inputValue = Number(inputBox.value);
-        console.log(gameNo, inputValue);
-        fetch(`http://localhost:3000/getPuzzle?gameNo=${gameNo}&shipNo=${inputValue}`)
-        .then(response => response.json())
-        .then(data => {
-            window.location.href = data.link;
-        });
+        fetch(`http://localhost:3000/getPuzzle?gameName=${gameName}&shipNo=${inputValue}`)
+            .then(response => response.json())
+            .then(data => {
+                window.location.href = data.link;
+            })
+            .catch(error => console.error('Error fetching puzzle:', error));
     }
 }
 
 function handleBackwardClick() {
-    setTimeout(() => {
-        if (currentMessageIndex > 0) {
-            currentMessageIndex--;
-            startTypingAnimation(currentMessageIndex, 10);
-        }
-    }, 100);
+    if (currentMessageIndex > 0) {
+        currentMessageIndex--;
+        startTypingAnimation(currentMessageIndex, 10);
+    }
 }
 
 function createRipple(container) {
-    const ripple = document.createElement("span");
-    ripple.classList.add("ripple");
-    
+    if (rippleInProgress) return;
+
+    const ripple = document.createElement('span');
+    ripple.classList.add('ripple');
+
     const islandImage = document.querySelector('.island-image');
     const islandRect = islandImage.getBoundingClientRect();
     const islandCenterX = islandRect.left + islandRect.width / 2;
     const islandCenterY = islandRect.top + islandRect.height / 2;
-    
+
     const size = Math.max(islandRect.width, islandRect.height) * 2.5;
     ripple.style.width = `${size}px`;
-    const heightRatio = 0.6;
-    ripple.style.height = `${size * heightRatio}px`;
-    
+    ripple.style.height = `${size * 0.6}px`;
     ripple.style.left = `${islandCenterX - size / 2}px`;
-    ripple.style.top = `${islandCenterY - (size * heightRatio) / 2}px`;
+    ripple.style.top = `${islandCenterY - size * 0.3}px`;
 
     container.appendChild(ripple);
     rippleInProgress = true;
-    
-    ripple.addEventListener("animationend", () => {
+
+    ripple.addEventListener('animationend', () => {
         ripple.remove();
         rippleInProgress = false;
     });
 }
 
-let rippleInProgress = false;
-let isRegistered = false;
+window.onload = function () {
+    const gameId = new URLSearchParams(window.location.search).get('id');
+    fetch(`http://localhost:3000/getGameData?Id=${gameId}`)
+        .then((response) => response.json())
+        .then((data) => {
+            const titleElement = document.querySelector('.title-name');
+            if (titleElement) {
+                titleElement.textContent = data.titleName;
+            }
+            gameNo = data.gameNo;
+            console.log(gameNo);
+            gameName = data.gameName;
+            console.log(gameName);
+            fetchMessages(gameNo);
+        });
 
-window.onload = function() {
-    fetchMessages(gameNo);
 
     const container = document.querySelector('.ripple-container');
     setInterval(() => {
@@ -148,3 +154,7 @@ window.onload = function() {
         }
     }, 3000);
 };
+
+
+document.querySelector('.forward-button').addEventListener('click', handleNextClick);
+document.querySelector('.backward-button').addEventListener('click', handleBackwardClick);

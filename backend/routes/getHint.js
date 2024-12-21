@@ -3,7 +3,7 @@ const router = express.Router();
 const fs = require('fs');
 const path = require('path');
 
-const HINTTIME = 5;
+const HINTTIME = 0.4;
 const shipLogsPath = path.resolve(__dirname, '../data/shipLogs.json');
 
 function getTime() {
@@ -20,11 +20,13 @@ router.get('/getHint', (req, res) => {
     const fileData = fs.readFileSync(shipLogsPath, 'utf8');
     const shipLogs = JSON.parse(fileData);
     const shipId = `ship${shipNo}`;
-    const startTime = shipLogs[shipId]?.StartTime?.[gameNo] || -1;
+    const startTimeString = shipLogs[shipId].StartTime || "0";
+    const startTimeArray = startTimeString.split(',').map(num => parseInt(num.trim(), 10));
+    const startTime = startTimeArray[gameNo];
 
     const timeDiffMinutes = (getTime() - startTime) / 60;
+    
     console.log(startTime, timeDiffMinutes);
-
     if (timeDiffMinutes >= HINTTIME) {
         res.json({
             message: "Times Up! Here we have solved it for you",

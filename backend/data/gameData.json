@@ -1,4 +1,40 @@
 {
+    "gameName": [
+      "1-jigsaw",
+      "2-count360",
+      "3-maze",
+      "4-stoneJump",
+      "5-riddle",
+      "6-wordGuess",
+      "7-slides",
+      "8-ghost",
+      "9-bullsncows",
+      "10-manuscripts"
+    ],
+    "gameId": [
+      "dsafe",
+      "dysde",
+      "sdeil",
+      "ncied",
+      "wnovs",
+      "riqjn",
+      "eiern",
+      "dalsj",
+      "weuir",
+      "gfhyd"
+    ],
+    "titleName": [
+      "HOME",
+      "HATTORI",
+      "PARADISE",
+      "GOKU",
+      "AYASE",
+      "SAITAMA",
+      "YAGAMI",
+      "HOLO",
+      "TANJIRO",
+      "UCHIHA"
+    ],
     "nextCheckPoint": [
       [5, 8, 3, 1, 12, 10, 15, 13, 18],
       [6, 4, 1, 7, 9, 15, 14, 12, 19],

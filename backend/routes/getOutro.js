@@ -10,29 +10,29 @@ const imagekit = new ImageKit({
     urlEndpoint: "https://ik.imagekit.io/kzx8uktwt"
     });
 
-const checkpointsFilePath = path.resolve(__dirname, '../data/checkpoints.json');
-let checkpointsData;
+const gameFilePath = path.resolve(__dirname, '../data/gameData.json');
+let gameData;
 
-const data = fs.readFileSync(checkpointsFilePath, 'utf8');
-checkpointsData = JSON.parse(data);
+const data = fs.readFileSync(gameFilePath, 'utf8');
+gameData = JSON.parse(data);
 
 router.get('/getClueLetter', (req, res) => {
     const gameNo = parseInt(req.query.gameNo) - 1;
     const shipNo = parseInt(req.query.shipNo) - 11;
-    res.json({ letter: checkpointsData.clueLetters[shipNo][gameNo] });
+    res.json({ letter: gameData.clueLetters[shipNo][gameNo] });
 });
 
 router.get('/getBaseMark', (req, res) => {
     const gameNo = parseInt(req.query.gameNo) - 1;
     const shipNo = parseInt(req.query.shipNo) - 11;
-    res.json({ letter: checkpointsData.nextCheckPoint[shipNo][gameNo] });
+    res.json({ letter: gameData.nextCheckPoint[shipNo][gameNo] });
 });
 
 router.get('/getCheckpointImage', (req, res) => {
     const gameNo = parseInt(req.query.gameNo) - 1;
     const shipNo = parseInt(req.query.shipNo) - 11;
 
-    const imageNo = checkpointsData.nextCheckPoint[shipNo][gameNo];
+    const imageNo = gameData.nextCheckPoint[shipNo][gameNo];
     const imageUrl = imagekit.url({ path: `/Checkpoint/checkpoint (${imageNo}).png` });
     res.json({ imageUrl });
 });
