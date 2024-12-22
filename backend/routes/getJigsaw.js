@@ -25,10 +25,30 @@ router.get('/getJigsawWin', (req, res) => {
 
     const shipFilePath = path.resolve(__dirname, '../data/shipLogs.json');
     const shipLogs = JSON.parse(fs.readFileSync(shipFilePath, 'utf8'));
-    shipLogs[`ship${shipNo}`].Unlocked.split(', ').map(Number)[gameNo] = 1;
-    shipLogs[`ship${shipNo}`].Solved.split(', ').map(Number)[gameNo] = 1;
 
-    res.json({ hasWon });
+    const shipId = `ship${shipNo}`;
+
+    if (!shipLogs[shipId]) {
+        return res.status(404).json({ error: `Ship ID ${shipId} not found.` });
+    }
+
+    const unlocked = shipLogs[shipId]["Unlocked"].split(', ').map(Number);
+    const solved = shipLogs[shipId]["Solved"].split(', ').map(Number);
+
+    if (unlocked[gameNo] === 0) {
+        unlocked[gameNo] = 1;
+        shipLogs[shipId]["Unlocked"] = unlocked.join(', ');
+    }
+
+    if (solved[gameNo] === 0) {
+        solved[gameNo] = 1;
+        shipLogs[shipId]["Solved"] = solved.join(', ');
+    }
+
+    fs.writeFileSync(shipFilePath, JSON.stringify(shipLogs, null, 2));
+
+    res.json({ hasWon: true });
 });
+
 
 module.exports = router;

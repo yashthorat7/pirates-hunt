@@ -21,8 +21,8 @@ window.onload = function() {
                     maxHfov: 60,
                 });
             }
+            fetch(`http://localhost:3000/setStartTime?gameNo=${gameNo}&shipNo=${shipNo}`);
         });
-        fetch(`http://localhost:3000/setStartTime?gameNo=${gameNo}&shipNo=${shipNo}`);
     }
 };
 

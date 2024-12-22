@@ -80,8 +80,8 @@ function checkCompletion() {
     });
 
     if (allOccupied && allCorrect) {
-        triggerUnlock();
         fetch(`http://localhost:3000/getJigsawWin?shipNo=${shipNo}`);
+        triggerUnlock();
     }
 }    
 

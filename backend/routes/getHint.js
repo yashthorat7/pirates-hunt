@@ -32,11 +32,12 @@ router.get('/getHint', (req, res) => {
     const timeDiffMinutes = (getTime() - startTime) / 60;
 
     if (timeDiffMinutes >= HINTTIME) {
-        shipLogs[`ship${shipNo}`].Unlocked.split(', ').map(Number)[gameNo] = 1;
         res.json({
             message: "Times Up! Here we have solved it for you",
             link: `../../outro/outro.html?ship=${shipNo}&id=${gameId}`
         });
+        shipLogs[`ship${shipNo}`].Unlocked.split(', ').map(Number)[gameNo] = 1;
+        fs.writeFileSync(shipLogsPath, JSON.stringify(shipLogs, null, 2));
     }
 });
 
