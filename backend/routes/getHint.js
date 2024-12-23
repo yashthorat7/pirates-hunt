@@ -1,11 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
-const path = require('path');
 
-const HINTTIME = 10;
-const shipLogsPath = path.resolve(__dirname, '../data/shipLogs.json');
-const gameDataPath = path.resolve(__dirname, '../data/gameData.json');
+const HINTTIME = 2;
+const { readShipData } = require('./db'); 
 
 function getTime() {
     const options = { timeZone: 'Asia/Kolkata', hour12: false };
@@ -15,20 +13,11 @@ function getTime() {
 }
 
 router.get('/getHint', (req, res) => {
-    const gameNo = parseInt(req.query.gameNo) - 1;
+    const gameNo = parseInt(req.query.gameNo);
     const shipNo = parseInt(req.query.shipNo);
 
-    const gameData = fs.readFileSync(gameDataPath, 'utf8');
-    const shipLogsData = fs.readFileSync(shipLogsPath, 'utf8');
-    const shipLogs = JSON.parse(shipLogsData);
-    const gameDataJson = JSON.parse(gameData);
-
-    const gameId = gameDataJson.gameId[gameNo];
-    const shipId = `ship${shipNo}`;
-    const startTimeString = shipLogs[shipId]?.StartTime;
-    const startTimeArray = startTimeString.split(',').map(num => parseInt(num.trim(), 10));
-    const startTime = startTimeArray[gameNo];
-
+    const startTime = readShipData(shipNo, gameNo, 'starttime');
+    console.log('startTime: ', startTime);
     const timeDiffMinutes = (getTime() - startTime) / 60;
 
     if (timeDiffMinutes >= HINTTIME) {
@@ -36,8 +25,7 @@ router.get('/getHint', (req, res) => {
             message: "Times Up! Here we have solved it for you",
             link: `../../outro/outro.html?ship=${shipNo}&id=${gameId}`
         });
-        shipLogs[`ship${shipNo}`].Unlocked.split(', ').map(Number)[gameNo] = 1;
-        fs.writeFileSync(shipLogsPath, JSON.stringify(shipLogs, null, 2));
+        readOrWriteShip(shipNo, gameNo, 'unlocked', 1);
     }
 });
 

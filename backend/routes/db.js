@@ -8,49 +8,44 @@ const arrtoString = (arr, gameNo, newValue) => {
     return result;
 };
 
-const readOrWriteShip = async (shipNo, gameNo, columnName, data) => {
-    try {
-        const query = `SELECT ${columnName} FROM shipTable WHERE shipNo = $1`;
-        const result = await sql(query, [shipNo]);
-        
-        const string = result[0][columnName];
+const readShipData = async (shipNo, columnName) => {
+    const query = `SELECT ${columnName} FROM shipTable WHERE shipNo = $1`;
+    const result = await sql(query, [shipNo]);
+    let string = '';
+    if (columnName === 'begintime') {
+        string = result[0].begintime;
+    } else if (columnName === 'starttime') {
+        string = result[0].starttime;
+    } else if (columnName === 'endtime') {
+        string = result[0].endtime;
+    } else if (columnName === 'unlocked') {
+        string = result[0].unlocked;
+    } else if (columnName === 'solved') {
+        string = result[0].solved;
+    }
+
+    if (string && string.length > 0) {
         const parsedArray = string.split(',').map(Number);
-        if (data === undefined || data === null) {
-            return parsedArray[gameNo];
-        } else {
-            const updatedString = arrtoString(parsedArray, gameNo, data);
-            const updateQuery = `UPDATE shipTable SET ${columnName} = $1 WHERE shipNo = $2`;
-            await sql(updateQuery, [updatedString, shipNo]);
-        }
-    } catch (error) {
-        console.error('Error:', error);
+        return parsedArray;
+    } else {
+        return Array(9).fill(0);
     }
 };
-    
+
+const writeShipData = async (shipNo, columnName, gameNo, data) => {
+    const parsedArray = await readShipData(shipNo, columnName);
+    const updatedString = arrtoString(parsedArray, gameNo, data);
+    const updateQuery = `UPDATE shipTable SET ${columnName} = $1 WHERE shipNo = $2`;
+    await sql(updateQuery, [updatedString, shipNo]);
+};
+
 const readClue = async (shipNo, gameNo) => { 
-    try {
-        const gameColumn = `game${gameNo + 1}`;
-        const clueColumn = `clue${gameNo}`;  
+    const gameColumn = `game${gameNo + 1}`;
+    const clueColumn = `clue${gameNo}`;  
 
-        const query = `
-            SELECT ${gameColumn}, ${clueColumn} FROM cluesTable WHERE shipNo = $1
-        `;
-        
-        const result = await sql(query, [shipNo]);
-
-        return Object.values(result[0]);
-    } catch (error) {
-        console.error('Error:', error);
-        return null;
-    }
+    const query = `SELECT ${gameColumn}, ${clueColumn} FROM clueTable WHERE shipNo = $1`;
+    const result = await sql(query, [shipNo]);
+    return Object.values(result[0]);
 };
 
-(async () => {
-    readStatus = await readClue(12, 4);
-    console.log('readStatus: ', readStatus);
-    // const unlockedStatus = await readOrWriteShip(11, 3, 'unlocked');
-    // console.log('unloked: ', unlockedStatus);
-    // await readOrWriteShip(11, 3, 'unlocked', '6');
-})();
-
-module.exports = sql;
+module.exports = {readShipData, writeShipData, readClue, sql};

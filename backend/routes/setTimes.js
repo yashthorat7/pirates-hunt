@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const fs = require('fs');
-const path = require('path');
-
-const shipLogsPath = path.resolve(__dirname, '../data/shipLogs.json');
+const { writeShipData, readShipData } = require('./db'); 
 
 function getTime() {
     const options = { timeZone: 'Asia/Kolkata', hour12: false };
@@ -12,38 +9,32 @@ function getTime() {
     return (hours * 3600) + (minutes * 60) + seconds;
 }
 
-function updateShipLogs(shipNo, gameNo, field) {
-    const shipId = `ship${shipNo}`;
-    const fileData = fs.readFileSync(shipLogsPath, 'utf8');
-    const shipLogs = JSON.parse(fileData);
-
-    let fieldValues = shipLogs[shipId][field].split(', ').map(Number);
-
-    if (fieldValues[gameNo] === 0) {
-        fieldValues[gameNo] = getTime();
-        shipLogs[shipId][field] = fieldValues.join(', ');
-        fs.writeFileSync(shipLogsPath, JSON.stringify(shipLogs, null, 2), 'utf8');
+async function updateShipLogs(shipNo, gameNo, field) {
+    const fieldValue = await readShipData(shipNo, gameNo, field);
+    if (fieldValue === 0 || field.toLowerCase() === 'starttime') {
+        await writeShipData(shipNo, gameNo, field, getTime());
     }
 }
 
-router.get('/setBeginTime', (req, res) => {
-    const gameNo = parseInt(req.query.gameNo) - 1;
+router.get('/setBeginTime', async (req, res) => {
+    const gameNo = parseInt(req.query.gameNo);
     const shipNo = parseInt(req.query.shipNo);
-    updateShipLogs(shipNo, gameNo, 'BeginTime');
+    await updateShipLogs(shipNo, gameNo, 'BeginTime');
+    console.log('begintimeSet');
     res.sendStatus(204);
 });
 
-router.get('/setStartTime', (req, res) => {
-    const gameNo = parseInt(req.query.gameNo) - 1;
+router.get('/setStartTime', async (req, res) => {
+    const gameNo = parseInt(req.query.gameNo);
     const shipNo = parseInt(req.query.shipNo);
-    updateShipLogs(shipNo, gameNo, 'StartTime');
+    await updateShipLogs(shipNo, gameNo, 'StartTime');
     res.sendStatus(204);
 });
 
-router.get('/setEndTime', (req, res) => {
-    const gameNo = parseInt(req.query.gameNo) - 1;
+router.get('/setEndTime', async (req, res) => {
+    const gameNo = parseInt(req.query.gameNo);
     const shipNo = parseInt(req.query.shipNo);
-    updateShipLogs(shipNo, gameNo, 'EndTime');
+    await updateShipLogs(shipNo, gameNo, 'EndTime');
     res.sendStatus(204);
 });
 

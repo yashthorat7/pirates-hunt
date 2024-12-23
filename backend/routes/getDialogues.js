@@ -33,6 +33,7 @@ router.get('/getOutroDialogues', (req, res) => {
     fs.readFile(filePath, 'utf8', (err, data) => {
         const messages = JSON.parse(data);
         const outroMessage = messages[gameNo];
+        
         res.json(outroMessage);
     });
 });

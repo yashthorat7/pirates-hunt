@@ -4,6 +4,8 @@ const fs = require('fs');
 const path = require('path');
 const ImageKit = require('imagekit');
 
+const { readClue } = require('./db');
+
 const imagekit = new ImageKit({
     publicKey: "public_KQUJu1OFWc7qLBzq9ERm9VEVf2I=",
     privateKey: "private_fK+TlWNa9iqf359UPIdY46aK7Zw=",
