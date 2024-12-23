@@ -8,7 +8,7 @@ const arrtoString = (arr, gameNo, newValue) => {
     return result;
 };
 
-const readOrWriteDB = async (shipNo, gameNo, columnName, data) => {
+const readOrWriteShip = async (shipNo, gameNo, columnName, data) => {
     try {
         const query = `SELECT ${columnName} FROM shipTable WHERE shipNo = $1`;
         const result = await sql(query, [shipNo]);
@@ -26,11 +26,31 @@ const readOrWriteDB = async (shipNo, gameNo, columnName, data) => {
         console.error('Error:', error);
     }
 };
+    
+const readClue = async (shipNo, gameNo) => { 
+    try {
+        const gameColumn = `game${gameNo + 1}`;
+        const clueColumn = `clue${gameNo}`;  
 
-// (async () => {
-//     const unlockedStatus = await readOrWriteDB(11, 3, 'unlocked');
-//     console.log('unloked: ', unlockedStatus);
-//     await readOrWriteDB(11, 3, 'unlocked', '6');
-// })();
+        const query = `
+            SELECT ${gameColumn}, ${clueColumn} FROM cluesTable WHERE shipNo = $1
+        `;
+        
+        const result = await sql(query, [shipNo]);
+
+        return Object.values(result[0]);
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+};
+
+(async () => {
+    readStatus = await readClue(12, 4);
+    console.log('readStatus: ', readStatus);
+    // const unlockedStatus = await readOrWriteShip(11, 3, 'unlocked');
+    // console.log('unloked: ', unlockedStatus);
+    // await readOrWriteShip(11, 3, 'unlocked', '6');
+})();
 
 module.exports = sql;
