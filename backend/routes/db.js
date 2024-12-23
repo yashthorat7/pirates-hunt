@@ -27,8 +27,6 @@ const readShipData = async (shipNo, columnName) => {
     if (string && string.length > 0) {
         const parsedArray = string.split(',').map(Number);
         return parsedArray;
-    } else {
-        return Array(9).fill(0);
     }
 };
 
