@@ -7,31 +7,10 @@ const readShipData = async (tableName, shipNo, gameNo) => {
         let columnName = `game${gameNo}`;
         const query = `SELECT ${columnName} FROM ${tableName} WHERE shipNo = $1;`;
         const result = await sql(query, [shipNo]);
-        let outputResult = null;
-
-        if (columnName === 'game1') {
-            outputResult = result[0].game1;
-        }else if (columnName === 'game2') {
-            outputResult = result[0].game2;
-        }else if (columnName === 'game3') {
-            outputResult = result[0].game3;
-        } else if (columnName === 'game4') {
-            outputResult = result[0].game4;
-        }else if (columnName === 'game5') {
-            outputResult = result[0].game5;
-        } else if (columnName === 'game6') {
-            outputResult = result[0].game6;
-        }else if (columnName === 'game7') {
-            outputResult = result[0].game7;
-        } else if (columnName === 'game8') {
-            outputResult = result[0].game8;
-        } else if (columnName === 'game9') {
-            outputResult = result[0].game9;
-        } else if (columnName === 'game10') {
-            outputResult = result[0].game10;
-        }
-        return outputResult;
+        console.log('result', result, 'resultcolumn', result[0][columnName]);
+        return result[0][columnName];
     } catch (error) {
+        console.error("Error reading ship data:", error);
         throw error;
     }
 };
