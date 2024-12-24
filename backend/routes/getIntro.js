@@ -9,7 +9,7 @@ const { readShipData } = require('./db');
 
 const getLink = async (gameNo, shipNo, gameName) => {
     const fieldValue = await readShipData('unlocked', shipNo, gameNo);
-    console.log('redirect', fieldValue);
+    console.log('redirect: ', fieldValue);
     return fieldValue > 0
         ? `../outro/outro.html?ship=${shipNo}&id=${gameData.gameId[gameNo]}`
         : `../puzzles/${gameName}/puzzle.html?ship=${shipNo}`;
