@@ -4,7 +4,7 @@ const fs = require('fs');
 const ImageKit = require('imagekit');
 const gameNo = 1;
 
-const { readOrWriteShip } = require('./db'); 
+const { writeShipData } = require('./db'); 
 
 const imagekit = new ImageKit({
     publicKey: "public_KQUJu1OFWc7qLBzq9ERm9VEVf2I=",
@@ -21,11 +21,11 @@ router.get('/getTiles', (req, res) => {
     res.json({ tiles: tileImages });
 });
 
-router.get('/getJigsawWin', (req, res) => {
+router.get('/getJigsawWin', async (req, res) => {
     const shipNo = parseInt(req.query.shipNo);
 
-    readOrWriteShip(shipNo, gameNo, 'unlocked', 1);
-    readOrWriteShip(shipNo, gameNo, 'solved', 1);
+    await writeShipData('unlocked', shipNo, gameNo, 1);
+    await writeShipData('solved', shipNo, gameNo, 1);
 
     res.json({ hasWon: true });
 });

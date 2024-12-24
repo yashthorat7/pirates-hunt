@@ -36,8 +36,8 @@ router.get('/get360Win', async (req, res) => {
     const hasWon = get360Win(shipNo, userInputs);
 
     if (hasWon) {
-        writeShipData(shipNo, gameNo, 'unlocked', 1);
-        writeShipData(shipNo, gameNo, 'solved', 1);
+        await writeShipData(shipNo, gameNo, 'unlocked', 1);
+        await writeShipData(shipNo, gameNo, 'solved', 1);
     }
     res.json({ hasWon });
 });

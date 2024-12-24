@@ -31,7 +31,7 @@ const readClue = async (shipNo, gameNo) => {
         const clueColumn = `clue${gameNo}`;
         const query = `SELECT ${gameColumn}, ${clueColumn} FROM clueTable WHERE shipNo = $1`;
         const result = await sql(query, [shipNo]);
-        return result.clue1;
+        return [result[0][gameColumn], result[0][clueColumn]];
     } catch (error) {
         throw error;
     }
