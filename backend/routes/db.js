@@ -23,4 +23,12 @@ const writeShipData = async (tableName, shipNo, gameNo, data) => {
     }
 };
 
-module.exports = { readShipData, writeShipData, sql };
+const readClue = async (shipNo, gameNo) => { 
+    const gameColumn = `game${gameNo + 1}`;
+    const clueColumn = `clue${gameNo}`;  
+    const query = `SELECT ${gameColumn}, ${clueColumn} FROM clueTable WHERE shipNo = $1`;
+    const result = await sql(query, [shipNo]);
+    return Object.values(result[0]);
+};
+
+module.exports = { readShipData, writeShipData, readClue, sql };

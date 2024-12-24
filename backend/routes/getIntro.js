@@ -8,7 +8,7 @@ const gameData = JSON.parse(fs.readFileSync(gameFilePath, 'utf8'));
 const { readShipData } = require('./db'); 
 
 const getLink = async (gameNo, shipNo, gameName) => {
-    const fieldValue = await readShipData(shipNo, gameNo, 'unlocked');
+    const fieldValue = await readShipData('unlocked', shipNo, gameNo);
     console.log('redirect', fieldValue);
     return fieldValue > 0
         ? `../outro/outro.html?ship=${shipNo}&id=${gameData.gameId[gameNo]}`
