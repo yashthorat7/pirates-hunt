@@ -1,0 +1,121 @@
+@font-face {
+    font-family: 'Salsa';
+    src: url('../../assets/fonts/salsa.ttf') format('truetype');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100svh;
+    font-family: 'Salsa', sans-serif;
+    overflow: hidden;
+    touch-action: none;
+    background: linear-gradient(180deg, #007246 0%, #0bc05c 5%, #0bc05c 90%, #006b42 100%); 
+    user-select: none;
+}
+
+
+
+
+
+
+.game-part {
+    display: flex;
+    overflow-x: auto;
+    width: 100svw;
+}
+
+.maze-container {
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    height: 94svh;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+
+.maze {
+    margin-left: 15vw;
+    background: #d0ffb1;
+    margin-right: 15vw;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.maze-row {
+    display: flex;
+}
+
+.maze-cell {
+    width: 2svh;
+    height: 2svh;
+}
+
+.wall {
+    background-color: #0bc05c;
+    z-index: 10;
+}
+
+.path {
+    justify-content: center;
+    align-items: center;
+}
+
+.path-block {
+    background-color: #f51f1f;
+    opacity: 0;
+    border-radius: 1vh;
+    border: 0.2vh solid #d0ffb1;
+    width: 100%;
+    height: 100%;
+}
+
+.start-cell img {
+    height: 9vh;
+    width: auto;
+    margin-left: -8vh;
+    margin-top: -4vh;
+    animation: float 1s ease-in-out infinite;
+}
+
+.end-cell img {
+    height: 8vh;
+    width: auto;
+    margin-top: -7vh;
+    margin-left: 2vh;
+    z-index: 30;
+    animation: float 1s ease-in-out infinite;
+}
+
+.touch-cell img {
+    position: absolute;
+    height: 50vh;
+    width: auto;
+    z-index: 20;
+    margin-top: -26vh;
+    margin-left: -24vh;
+    animation: bounce 2s ease-in-out infinite;
+}
+
+
+
+
+
+@keyframes bounce {
+    0% {
+        transform: scale(0.2);
+    }
+    50% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(0.2);
+    }
+}
