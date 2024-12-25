@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 
-const HINTTIME = 5;
+const HINTTIME = 6;
 const { readShipData, writeShipData } = require('./db'); 
 
 function getTime() {

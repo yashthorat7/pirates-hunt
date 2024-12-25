@@ -20,5 +20,5 @@ function triggerUnlock() {
         },
     });
     
-    setTimeout(() => window.location.href = `../../outro/outro.html?ship=${shipNo}&id=${gameId}`, 1500);
+    setTimeout(() => window.location.href = `../../outro/outro.html?ship=${shipNo}&id=${gameId}`, 1000);
 }
