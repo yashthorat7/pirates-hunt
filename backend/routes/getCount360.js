@@ -21,6 +21,7 @@ const get360count = (shipNo) => counts[shipNo % 4];
 
 const get360Win = (shipNo, userInputs) => {
     const correctCount = get360count(shipNo);
+    console.log(correctCount);
     return correctCount.every((value, index) => value === userInputs[index]);
 };
 
@@ -36,8 +37,8 @@ router.get('/get360Win', async (req, res) => {
     const hasWon = get360Win(shipNo, userInputs);
 
     if (hasWon) {
-        await writeShipData(shipNo, gameNo, 'unlocked', 1);
-        await writeShipData(shipNo, gameNo, 'solved', 1);
+        await writeShipData('unlocked', shipNo, gameNo, 1);
+        await writeShipData('solved', shipNo, gameNo, 1);
     }
     res.json({ hasWon });
 });

@@ -14,19 +14,15 @@ window.onload = () => {
             document.querySelector('.character-image').src = `../assets/${gameName}/character-face2.png`;
             document.querySelector('.ship-code').textContent = `SHIP ${shipNo}`;
 
-            fetch(`http://localhost:3000/getClueLetter?shipNo=${shipNo}&gameNo=${gameNo}`)
-                .then(response => response.json())
-                .then(data => document.querySelector('.clue-text').textContent = data.letter);
 
             fetch(`http://localhost:3000/setEndTime?gameNo=${gameNo}&shipNo=${shipNo}`);
-
-            fetch(`http://localhost:3000/getBaseMark?shipNo=${shipNo}&gameNo=${gameNo}`)
+            fetch(`http://localhost:3000/getOutro?shipNo=${shipNo}&gameNo=${gameNo}`)
                 .then(response => response.json())
-                .then(data => document.querySelector('.base-mark').textContent = `Base ${data.letter}`);
-
-            fetch(`http://localhost:3000/getCheckpointImage?shipNo=${shipNo}&gameNo=${gameNo}`)
-                .then(response => response.json())
-                .then(data => document.querySelector('.checkpoint-image').src = data.imageUrl);
+                .then(data => {
+                    document.querySelector('.clue-text').textContent = data.clueLetter;
+                    document.querySelector('.base-mark').textContent = `Base ${data.baseMark}`;
+                    document.querySelector('.checkpoint-image').src = data.imageUrl;
+                });
 
             fetch(`http://localhost:3000/getOutroDialogues?gameNo=${gameNo}`)
                 .then(response => response.json())

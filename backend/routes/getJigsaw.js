@@ -23,12 +23,9 @@ router.get('/getTiles', (req, res) => {
 
 router.get('/getJigsawWin', async (req, res) => {
     const shipNo = parseInt(req.query.shipNo);
-
     await writeShipData('unlocked', shipNo, gameNo, 1);
     await writeShipData('solved', shipNo, gameNo, 1);
-
     res.json({ hasWon: true });
 });
-
 
 module.exports = router;

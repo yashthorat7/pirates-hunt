@@ -20,7 +20,6 @@ router.get('/setBeginTime', async (req, res) => {
     const gameNo = parseInt(req.query.gameNo);
     const shipNo = parseInt(req.query.shipNo);
     await updateShipLogs('BeginTime', shipNo, gameNo);
-    console.log('begintimeSet');
     res.sendStatus(204);
 });
 
