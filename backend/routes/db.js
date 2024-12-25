@@ -7,10 +7,9 @@ const readShipData = async (tableName, shipNo, gameNo) => {
         let columnName = `game${gameNo}`;
         const query = `SELECT ${columnName} FROM ${tableName} WHERE shipNo = $1;`;
         const result = await sql(query, [shipNo]);
-        console.log('result', result, 'resultcolumn', result[0][columnName]);
+        console.log(tableName, ': result', result, 'resultcolumn', result[0][columnName]);
         return result[0][columnName];
     } catch (error) {
-        console.error("Error reading ship data:", error);
         throw error;
     }
 };

@@ -24,7 +24,7 @@ router.get('/getHint', async (req, res) => {
             message: "Times Up! Here we have solved it for you",
             link: `../../outro/outro.html?ship=${shipNo}&id=${gameId}`
         });
-        await writeShipData('unlocked', shipNo, gameNo, 1);
+        await writeShipData('Unlocked', shipNo, gameNo, 1);
     }
 });
 

@@ -13,12 +13,5 @@ function triggerUnlock() {
         tick: 1500,
     });
     
-    fetch(`http://localhost:3000/setSolved?gameNo=${gameNo}&shipNo=${shipNo}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-    
     setTimeout(() => window.location.href = `../../outro/outro.html?ship=${shipNo}&id=${gameId}`, 1000);
 }

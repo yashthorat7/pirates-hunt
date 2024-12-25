@@ -11,6 +11,7 @@ const introRoutes = require('./routes/getIntro');
 const outroRoutes = require('./routes/getOutro');
 const jigsawRoutes = require('./routes/getJigsaw');
 const count360Routes = require('./routes/getCount360');
+const mazeRoutes = require('./routes/getMaze');
 
 app.use(cors());
 app.use(express.json());
@@ -18,11 +19,11 @@ app.use(express.json());
 app.use('/', hintRoutes);
 app.use('/', dialogueRoutes);
 app.use('/', timeRoutes);
-app.use('/',introRoutes);
+app.use('/', introRoutes);
 app.use('/', outroRoutes);
-
 app.use('/', jigsawRoutes);
 app.use('/', count360Routes);
+app.use('/', mazeRoutes);
 
 
 const requestHandler = async (req, res) => {

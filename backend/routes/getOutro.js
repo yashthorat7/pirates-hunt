@@ -12,7 +12,7 @@ const imagekit = new ImageKit({
 router.get('/getOutro', async (req, res) => {
     const gameNo = parseInt(req.query.gameNo);
     const shipNo = parseInt(req.query.shipNo);
-    const hasUnlocked  = await readShipData('unlocked', shipNo, gameNo);
+    const hasUnlocked  = await readShipData('Unlocked', shipNo, gameNo);
     if (hasUnlocked) {
         const clue = await readClue(shipNo, gameNo);
         const baseMark = clue[0];

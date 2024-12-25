@@ -17,10 +17,8 @@ const counts = [
     [0, 1, 19, 6],
 ];
 
-const get360count = (shipNo) => counts[shipNo % 4];
-
 const get360Win = (shipNo, userInputs) => {
-    const correctCount = get360count(shipNo);
+    const correctCount = counts[shipNo % 4];
     console.log(correctCount);
     return correctCount.every((value, index) => value === userInputs[index]);
 };
@@ -34,11 +32,11 @@ router.get('/get360Image', (req, res) => {
 router.get('/get360Win', async (req, res) => {
     const shipNo = parseInt(req.query.shipNo);
     const userInputs = JSON.parse(req.query.userInputs);
-    const hasWon = get360Win(shipNo, userInputs);
+    const hasWon = get360Win(shipNo - 11, userInputs);
 
     if (hasWon) {
-        await writeShipData('unlocked', shipNo, gameNo, 1);
-        await writeShipData('solved', shipNo, gameNo, 1);
+        await writeShipData('Unlocked', shipNo, gameNo, 1);
+        await writeShipData('Solved', shipNo, gameNo, 1);
     }
     res.json({ hasWon });
 });

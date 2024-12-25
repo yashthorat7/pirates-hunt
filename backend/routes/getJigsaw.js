@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const fs = require('fs');
 const ImageKit = require('imagekit');
 const gameNo = 1;
 
@@ -23,8 +22,8 @@ router.get('/getTiles', (req, res) => {
 
 router.get('/getJigsawWin', async (req, res) => {
     const shipNo = parseInt(req.query.shipNo);
-    await writeShipData('unlocked', shipNo, gameNo, 1);
-    await writeShipData('solved', shipNo, gameNo, 1);
+    await writeShipData('Unlocked', shipNo, gameNo, 1);
+    await writeShipData('Solved', shipNo, gameNo, 1);
     res.json({ hasWon: true });
 });
 

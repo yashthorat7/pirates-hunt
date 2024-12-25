@@ -52,18 +52,18 @@ function createMaze(mazeData) {
                     const touchCell = document.createElement('div');
                     touchCell.classList.add('touch-cell');
                     const touchImage = document.createElement('img');
-                    touchImage.src = '../assets/3-maze/touch.png';
+                    touchImage.src = '../../assets/3-maze/touch.png';
                     touchCell.appendChild(touchImage);
                     cellElement.appendChild(touchCell);
 
                     const startCell = document.createElement('div');
                     startCell.classList.add('start-cell');
                     const startImage = document.createElement('img');
-                    startImage.src = '../assets/3-maze/stickman.png';
+                    startImage.src = '../../assets/3-maze/stickman.png';
                     startImage.alt = 'Start Stickman';
                     startCell.appendChild(startImage);
                     cellElement.appendChild(startCell);
-
+ 
                     const pathBlock = cellElement.querySelector('.path-block');
                     if (pathBlock) {
                         pathBlock.style.opacity = 1;
@@ -78,7 +78,7 @@ function createMaze(mazeData) {
                     const endCell = document.createElement('div');
                     endCell.classList.add('end-cell');
                     const endImage = document.createElement('img');
-                    endImage.src = '../assets/3-maze/card-icon.png';
+                    endImage.src = '../../assets/3-maze/card-icon.png';
                     endImage.alt = 'End Icon';
                     endCell.appendChild(endImage);
                     cellElement.appendChild(endCell);
@@ -136,11 +136,8 @@ function checkForWin() {
     const lastCol = mazeWidth - 1;
 
     if (playerRow === lastRow && playerCol === lastCol) {
+        fetch(`http://localhost:3000/getMazeWin?shipNo=${shipNo}&gameNo=${gameNo}`)
         triggerUnlock();
-        fetch(`http://localhost:3000/getMazeWin?shipNo=${shipNo}&gameNo=${gameNo}`, {
-        });
-        
-        setTimeout(() => { window.location.href = `outro.html?ship=${shipNo}`; }, 1500);
     }
 }
 
