@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const ImageKit = require('imagekit');
 const gameNo = 3;
 
 const { writeShipData } = require('./db'); 
