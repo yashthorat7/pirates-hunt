@@ -1,24 +1,24 @@
 const express = require('express');
-const fs = require('fs/promises');
+const fs = require('fs');
 const path = require('path');
 const router = express.Router();
 const { readShipData, writeShipData } = require('./db');
 
-const HINTTIME = 0.5;
+const HINTTIME = 10;
 
 function getTime() {
-    return Math.floor(new Date().getTime() / 1000);
+    const options = { timeZone: 'Asia/Kolkata', hour12: false };
+    const currentTime = new Date().toLocaleTimeString('en-US', options);
+    const [hours, minutes, seconds] = currentTime.split(':').map(Number);
+    return (hours * 3600) + (minutes * 60) + seconds;
 }
 
-async function getGameData() {
-    const data = await fs.readFile('../data/gameData.json', 'utf8');
-    return JSON.parse(data);
-}
+const gameFilePath = path.resolve(__dirname, '../data/gameData.json');
+const gameData = JSON.parse(fs.readFileSync(gameFilePath, 'utf8'));
 
 router.get('/getHint', async (req, res) => {
     const gameNo = parseInt(req.query.gameNo, 10);
     const shipNo = parseInt(req.query.shipNo, 10);
-    const gameData = await getGameData();
     const gameId = gameData.gameId[gameNo - 1];
     const startTime = await readShipData('starttime', shipNo, gameNo);
     const currentTime = getTime();
