@@ -19,6 +19,7 @@ const writeShipData = async (tableName, shipNo, gameNo, data) => {
         const columnName = `game${gameNo}`;
         const query = `UPDATE ${tableName} SET ${columnName} = $1 WHERE shipNo = $2;`;
         await sql(query, [data, shipNo]);
+        console.log(tableName, ', is updated with', data);
     } catch (error) {
         throw error;
     }

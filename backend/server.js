@@ -25,20 +25,5 @@ app.use('/', jigsawRoutes);
 app.use('/', count360Routes);
 app.use('/', mazeRoutes);
 
-
-const requestHandler = async (req, res) => {
-    try {
-      const result = await sql`SELECT version()`;
-      const { version } = result[0];
-      res.writeHead(200, { "Content-Type": "text/plain" });
-      res.end(`PostgreSQL Version: ${version}`);
-    } catch (error) {
-      console.error("Database error:", error);
-      res.writeHead(500, { "Content-Type": "text/plain" });
-      res.end("Error connecting to the database.");
-    }
-};
-
-
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

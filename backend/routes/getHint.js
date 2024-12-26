@@ -1,30 +1,37 @@
 const express = require('express');
+const fs = require('fs/promises');
+const path = require('path');
 const router = express.Router();
-const fs = require('fs');
+const { readShipData, writeShipData } = require('./db');
 
-const HINTTIME = 6;
-const { readShipData, writeShipData } = require('./db'); 
+const HINTTIME = 0.5;
 
 function getTime() {
-    const options = { timeZone: 'Asia/Kolkata', hour12: false };
-    const currentTime = new Date().toLocaleTimeString('en-US', options);
-    const [hours, minutes, seconds] = currentTime.split(':').map(Number);
-    return (hours * 3600) + (minutes * 60) + seconds;
+    return Math.floor(new Date().getTime() / 1000);
+}
+
+async function getGameData() {
+    const data = await fs.readFile('../data/gameData.json', 'utf8');
+    return JSON.parse(data);
 }
 
 router.get('/getHint', async (req, res) => {
-    const gameNo = parseInt(req.query.gameNo);
-    const shipNo = parseInt(req.query.shipNo);
-
+    const gameNo = parseInt(req.query.gameNo, 10);
+    const shipNo = parseInt(req.query.shipNo, 10);
+    const gameData = await getGameData();
+    const gameId = gameData.gameId[gameNo - 1];
     const startTime = await readShipData('starttime', shipNo, gameNo);
-    const timeDiffMinutes = (getTime() - startTime) / 60;
-    console.log(timeDiffMinutes);
+    const currentTime = getTime();
+    const timeDiffMinutes = (currentTime - startTime) / 60;
+
     if (timeDiffMinutes >= HINTTIME) {
+        await writeShipData('Unlocked', shipNo, gameNo, 1);
         res.json({
             message: "Times Up! Here we have solved it for you",
-            link: `../../outro/outro.html?ship=${shipNo}&id=${gameId}`
+            link: path.join(`../../outro/outro.html?ship=${shipNo}&id=${gameId}`)
         });
-        await writeShipData('Unlocked', shipNo, gameNo, 1);
+    } else {
+        res.json({ message: "Hint is not yet available." });
     }
 });
 
