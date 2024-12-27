@@ -8,12 +8,7 @@ let currentQuestionIndex = 0;
 window.onload = () => {
     const shipMark = document.querySelector('.ship-mark');
     shipMark.textContent = `#${shipNo}`;
-    fetch(`http://localhost:3000/setStartTime?gameNo=${gameNo}&shipNo=${shipNo}`, { 
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
+    fetch(`http://localhost:3000/setStartTime?gameNo=${gameNo}&shipNo=${shipNo}`)
     makeOptions();
 };
 

@@ -23,8 +23,9 @@ router.get('/getHint', async (req, res) => {
     const startTime = await readShipData('starttime', shipNo, gameNo);
     const currentTime = getTime();
     const timeDiffMinutes = (currentTime - startTime) / 60;
-
-    if (timeDiffMinutes >= HINTTIME) {
+    console.log(timeDiffMinutes);
+    
+    if (timeDiffMinutes >= HINTTIME && startTime !== 0) {
         await writeShipData('Unlocked', shipNo, gameNo, 1);
         res.json({
             message: "Times Up! Here we have solved it for you",
