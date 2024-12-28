@@ -12,16 +12,12 @@ const pirateWords = [
 
 const assignedWord = new Array(40).fill(null);
 
-function getWord(shipNo) {
+router.get('/getWord', async (req, res) => {
+    const shipNo = parseInt(req.query.shipNo) - 11;
     const randomIndex = Math.floor(Math.random() * pirateWords.length);
     const randomWord = pirateWords[randomIndex];
     assignedWord[shipNo] = randomWord;
-    return randomWord;
-}
-
-router.get('/getWord', (req, res) => {
-    const shipNo = parseInt(req.query.shipNo) - 11;
-    getWord(shipNo);
+    console.log('randomWord', randomWord);
     res.json("done");
 });
 
@@ -30,12 +26,16 @@ router.get('/getWordWin', async (req, res) => {
     const chosenAnswer = req.query.chosenAnswer;
 
     const word = assignedWord[shipNo];
+    if (!word) {
+        return res.json({ error: "No word assigned to this ship number" });
+    }
+
     const result = new Array(5).fill(0);
-    const cArr = chosenAnswer.split('');
-    const wArr = word.split('');
+    const cArr = chosenAnswer.toUpperCase().split('');
+    const wArr = word.toUpperCase().split('');
     const matchedIdx = new Set();
     const wCount = {};
-    const cCount = {}; 
+    const cCount = {};
 
     for (let i = 0; i < 5; i++) {
         wCount[wArr[i]] = (wCount[wArr[i]] || 0) + 1;

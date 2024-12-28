@@ -12,12 +12,15 @@ const imagekit = new ImageKit({
 router.get('/getOutro', async (req, res) => {
     const gameNo = parseInt(req.query.gameNo);
     const shipNo = parseInt(req.query.shipNo);
-    const hasUnlocked  = await readShipData('Unlocked', shipNo, gameNo);
+    console.log('getoutro');
+    const hasUnlocked = await readShipData('Unlocked', shipNo, gameNo);
+    console.log('hasUnlocked', hasUnlocked);
     if (hasUnlocked) {
         const clue = await readClue(shipNo, gameNo);
         const baseMark = clue[0];
         const clueLetter = clue[1];
         const imageUrl = imagekit.url({ path: `/Checkpoint/checkpoint (${baseMark}).png` });
+        console.log(imageUrl, baseMark, clueLetter);
         res.json({ imageUrl, baseMark, clueLetter });
     }
 });

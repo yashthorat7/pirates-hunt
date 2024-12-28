@@ -1,6 +1,6 @@
 (() => {
-    function checkForHint() {
-        fetch(`http://localhost:3000/getHint?gameNo=${gameNo}&shipNo=${shipNo}`)
+    async function checkForHint() {
+        await fetch(`http://localhost:3000/getHint?gameNo=${gameNo}&shipNo=${shipNo}`)
         .then(response => {
             if (response.status === 204) {
                 return null;

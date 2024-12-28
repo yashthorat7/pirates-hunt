@@ -10,13 +10,12 @@ const rows = 6;
 const columns = 5;
 
 window.onload = () => {
-    if (shipNo && gameNo) {
-        const shipMark = document.querySelector('.ship-mark');
-        shipMark.textContent = `#${shipNo}`;
-        fetch(`http://localhost:3000/setStartTime?gameNo=${gameNo}&shipNo=${shipNo}`);
-        fetch(`http://localhost:3000/getWord?shipNo=${shipNo}`);
-    }
+    const shipMark = document.querySelector('.ship-mark');
+    shipMark.textContent = `#${shipNo}`;
+    fetch(`http://localhost:3000/setStartTime?gameNo=${gameNo}&shipNo=${shipNo}`);
+    fetch(`http://localhost:3000/getWord?shipNo=${shipNo}`);
 };
+
 
 document.querySelectorAll('.key').forEach(key => {
     key.addEventListener('click', () => {
