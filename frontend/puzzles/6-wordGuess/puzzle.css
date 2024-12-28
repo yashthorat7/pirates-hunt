@@ -1,0 +1,247 @@
+@font-face {
+    font-family: 'Salsa';
+    src: url('../../assets/fonts/salsa.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Quicksand';
+    src: url('.././assets/fonts/quicksand.ttf') format('truetype');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+  
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100svh;
+    font-family: 'Salsa', sans-serif;
+    background-image: transparent;
+    overflow: hidden;
+    touch-action: none;
+    user-select: none;
+}
+
+
+
+
+
+
+
+
+#snow-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.snowflake {
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+    opacity: 0.8;
+}
+
+.texturebg {
+    width: 100vw;
+    height: 94svh;
+    position: absolute;
+    z-index: 0;
+    filter: saturate(120%);
+    object-fit: cover;
+}
+
+.game-part {
+    height: 85svh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.instruction {
+    height: 8vh;
+    width: 100%;
+    padding-left: 5%;
+    padding-right: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 3vh;
+    background-color: #0b92d17e;
+}
+
+.instruction-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 36vw;
+}
+
+.instructioin-box span {
+    text-shadow: 0 0vw 1.2vw #190a5a4d;;
+}
+
+.color {
+    width: 4vw;
+    height: 4vw;
+    margin-bottom: 0.2vh;
+    border-radius: 1vw;
+    border: 0.3vw solid #ffffff;
+}
+
+.color1 {   
+    background: #ff5269;
+}
+
+.color2 {
+    background: #ffed4d;
+}
+
+.color3 {
+    background: #24f847;
+}
+
+.instruction span {
+    font-size: 2.7vw;
+    font-family: 'Quicksand';
+    text-align: center;
+    color: #ffffff;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 1vw;
+    grid-row-gap: 2vw;
+    width: 64vw;
+    height: 80vw;
+    margin-bottom: 4vh;
+}
+
+.cell {
+    width: 12vw;
+    height: 12vw;
+    background-color: #f0f2f56c;
+    border-radius: 1vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 6vw;
+    font-weight: bold;
+    color: #1c2347;
+    border: 0.3vw solid #2fb3ff;
+    box-shadow: 0 0vw 1.2vw #190a5a15;
+    z-index: 10;
+    backdrop-filter: blur(0.8vw);
+    -webkit-backdrop-filter: blur(0.8vw);
+}
+
+.keyboard {
+    margin-top: 2vh;
+    width: 100vw; 
+    position: absolute;
+    bottom: 10vh;
+}
+
+.key-row {
+    display: flex;
+    justify-content: center;
+}
+
+.key {
+    width: 8.6vw;
+    height: 5.5vh;
+    margin: 0.5vw;
+    background-color: #f0f2f5;
+    border: none;
+    border-radius: 1vw;
+    font-family: 'Quicksand';
+    font-weight: bolder;
+    font-size: 4vw;
+    color: #003c64;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 0.4vw 1vw #040f474f;
+}
+
+.key:active {
+    transform: translateY(0.2vh);
+    transition: transform 0.1s ease-out;
+    filter: brightness(1.1);
+    outline: none;
+    box-shadow: none;
+}
+
+.key.large {
+    width: 14vw;
+    justify-content: center;
+    align-items: center;
+}
+
+.key.green {
+    background-color: #24f847;
+}
+
+.key.red {
+    background-color: #ff5269;
+}
+
+.key.green img {
+    width: 8vw;
+    margin-top: 0.3vh;
+}
+
+.key.red img {
+    width: 6vw;
+    margin-top: 0.6vw;
+}
+
+.cell.correct {
+    background-color: #24f847;
+    color: #1c2347;
+}
+
+.cell.present {
+    background-color: #ffed4d;
+    color: #1c2347;
+}
+
+.cell.absent {
+    background-color: #ff5269;
+    color: #1c2347;
+}
+
+
+
+
+
+
+
+
+
+
+
+@keyframes reveal {
+    0% {
+        transform: scaleY(1);
+    }
+    50% {
+        transform: scaleY(0);
+    }
+    90% {
+        transform: scaleY(1.05);
+    }
+    100% {
+        transform: scaleY(1);
+    }
+}
