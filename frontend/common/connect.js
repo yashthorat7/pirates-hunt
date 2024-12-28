@@ -32,6 +32,7 @@
             const index = Math.floor(Math.random() * presetMessages.length);
             const newMessage = presetMessages[index];
             messageElement.textContent = newMessage;
+            messageElement.style.color = "#735656";
         }
     }
 
