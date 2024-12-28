@@ -142,5 +142,14 @@ function createSnowflake() {
     }, fallDuration * 1000);
 }
 
-
 setInterval(createSnowflake, 200);
+
+fetch('../../common/connect.html')
+    .then(response => response.text())
+    .then(data => {
+        document.querySelector('.connect-container').innerHTML = data;
+
+        const script = document.createElement('script');
+        script.src = '../../common/connect.js';
+        document.body.appendChild(script);
+    });
