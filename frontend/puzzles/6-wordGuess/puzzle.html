@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BROCODE</title>
+    <link rel="stylesheet" href="puzzle.css">
+    <link rel="stylesheet" href="../../common/connect.css">
+    <script src="puzzle.js" defer></script>
+    <script src="../../common/hint.js"defer></script>
+    <script src="../../common/triggerUnlock.js"defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+
+<body>
+    <div id="snow-container"></div>
+    <div class="background">
+        <img src="../../assets/6-wordGuess/background.png" class="texturebg">
+    </div>
+    <div class="game-part">
+        <div class="instruction">
+            <div class="instruction-box">
+                <div class="color color1"></div>
+                <span>letter is not in the word</span>
+            </div>
+            <div class="instruction-box">
+                <div class="color color2"></div>
+                <span>correct letter but wrong place</span>
+            </div>
+            <div class="instruction-box">
+                <div class="color color3"></div>
+                <span>correct letter and correct place</span>
+            </div>
+        </div>
+        <div class="grid">
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+        </div>
+        <div class="keyboard">
+            <div class="key-row">
+                <button class="key">Q</button>
+                <button class="key">W</button>
+                <button class="key">E</button>
+                <button class="key">R</button>
+                <button class="key">T</button>
+                <button class="key">Y</button>
+                <button class="key">U</button>
+                <button class="key">I</button>
+                <button class="key">O</button>
+                <button class="key">P</button>
+            </div>
+            <div class="key-row">
+                <button class="key">A</button>
+                <button class="key">S</button>
+                <button class="key">D</button>
+                <button class="key">F</button>
+                <button class="key">G</button>
+                <button class="key">H</button>
+                <button class="key">J</button>
+                <button class="key">K</button>
+                <button class="key">L</button>
+            </div>
+            <div class="key-row">
+                <button class="key large red" id="delete-button">
+                    <img src="../../assets/6-wordGuess/erase-arrow.png" alt="Delete" class="forward-arrow">
+                </button>
+                <button class="key">Z</button>
+                <button class="key">X</button>
+                <button class="key">C</button>
+                <button class="key">V</button>
+                <button class="key">B</button>
+                <button class="key">N</button>
+                <button class="key">M</button>
+                <button class="key large green" id="enter-button">
+                    <img src="../../assets/images/forward-arrow.png" alt="Enter" class="forward-arrow">
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="connect-container"></div>
+</body>
+</html>
