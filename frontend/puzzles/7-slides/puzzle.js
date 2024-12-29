@@ -98,25 +98,12 @@ function canMoveBlock(block) {
 function onClickOnBlock(blockIdx) {
     if (moveBlock(blockIdx)) {
         if (checkPuzzleSolved()) {
-            document.querySelector('.game-part').style.pointerEvents = 'none';
-            if (navigator.vibrate) {
-                navigator.vibrate([100, 50, 400]);
-            }
-            confetti({
-                particleCount: 100,
-                spread: 30,
-                startVelocity: 90,
-                angle: 90,
-                scalar: 1,
-                gravity: 5,
-                origin: { y: 0.9 },
-                tick: 1500,
-            });
+            document.querySelector('.game-part').style.pointerEvents = 'none'; 
             fetch(`http://localhost:3000/getSlidesWin?gameNo=${gameNo}&shipNo=${shipNo}`)
             const emptyElement = document.querySelector('.empty');
             emptyElement.style.opacity = '1';
             emptyElement.style.animation = 'bounce-in 0.3s ease-in-out';
-            setTimeout(() => window.location.href = `outro.html?ship=${shipNo}`, 1500);
+            triggerUnlock();
         }
     }
 }
