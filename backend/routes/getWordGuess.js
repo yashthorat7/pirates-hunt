@@ -65,7 +65,7 @@ router.get('/getWordWin', async (req, res) => {
         await writeShipData('Unlocked', shipNo, gameNo, 1);
         await writeShipData('Solved', shipNo, gameNo, 1);
     }
-
+    console.log(result);
     res.json({ verdictArray: result });
 });
 
