@@ -12,7 +12,7 @@ const imagekit = new ImageKit({
     });
 
 router.get('/getTiles', (req, res) => {
-    const shipNo = parseInt(req.query.shipNo);
+    const shipNo = parseInt(req.query.shipNo) - 11;
     const setNumber = (shipNo % 4) + 1;
     const tileImages = Array.from({ length: 24 }, (_, i) =>
         imagekit.url({ path: `/Tiles/set${setNumber}/tile (${i + 1}).png` })
