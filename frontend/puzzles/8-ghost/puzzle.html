@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BROCODE</title>
+    <link rel="stylesheet" href="puzzle.css">
+    <link rel="stylesheet" href="../../common/connect.css">
+    <script src="puzzle.js" defer></script>
+    <script src="../../common/hint.js"defer></script>
+    <script src="../../common/triggerUnlock.js"defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+
+<body>
+    <div class="eye-container"></div>
+    <div class="game-part">
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+            <span class="progress-message"></span>
+        </div>
+        <div class="ghosts">
+            <img src="../../8-ghost/images/ghost-eye-open.png" alt="Ghost" class="ghost open">
+            <img src="../../8-ghost/images/ghost-eye-close.png" alt="Ghost" class="ghost close">
+            <img src="../../8-ghost/images/ghost-eye-eat.png" alt="Ghost" class="ghost eat">
+        </div>
+        <div class="buttons">
+            <button class="stop-button" onclick="handleStopping()">
+                <span>STOP</span>
+            </button>
+            <button class="move-button" onclick="handleMoving()">
+                <span>MOVE</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="connect-container"></div>
+</body>
+</html>
