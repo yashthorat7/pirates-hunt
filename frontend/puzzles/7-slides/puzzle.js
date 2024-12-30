@@ -111,3 +111,13 @@ function onClickOnBlock(blockIdx) {
 function checkPuzzleSolved() {
     return imageOrder.join() === '1,2,3,4,5,6,7,8,0';
 }
+
+fetch('../../common/connect.html')
+    .then(response => response.text())
+    .then(data => {
+        document.querySelector('.connect-container').innerHTML = data;
+
+        const script = document.createElement('script');
+        script.src = '../../common/connect.js';
+        document.body.appendChild(script);
+    });
