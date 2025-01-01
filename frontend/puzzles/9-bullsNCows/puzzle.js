@@ -93,23 +93,6 @@ function logResult(guessedNumber, bulls, cows) {
     logBox.scrollTop = logBox.scrollHeight;
 }
 
-function triggerUnlock() {
-    if (navigator.vibrate) {
-        navigator.vibrate([100, 50, 400]);
-    }
-    confetti({
-        particleCount: 100,
-        spread: 30,
-        startVelocity: 90,
-        angle: 90,
-        scalar: 1,
-        gravity: 5,
-        origin: { y: 0.9 },
-        tick: 1500
-    });
-    setTimeout(() => window.location.href = `outro.html?ship=${shipNo}`, 1500);
-}
-
 function checkForHint() {
     fetch(`http://localhost:3000/getHint?gameNo=${gameNo}&shipNo=${shipNo}`)
     .then(response => {
