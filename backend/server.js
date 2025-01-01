@@ -14,6 +14,7 @@ const stoneJumpRoutes = require('./routes/getStoneJump.js');
 const wordGuessRoutes = require('./routes/getWordGuess.js');
 const slidesRoutes = require('./routes/getSlides.js');
 const ghostRoutes = require('./routes/getGhost.js');
+const manuscriptsRoutes = require('./routes/getManuscripts.js');
 
 app.use(cors());
 app.use(express.json());
@@ -30,6 +31,7 @@ app.use('/', stoneJumpRoutes);
 app.use('/', wordGuessRoutes);
 app.use('/', slidesRoutes);
 app.use('/', ghostRoutes);
+app.use('/', manuscriptsRoutes);
 
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
