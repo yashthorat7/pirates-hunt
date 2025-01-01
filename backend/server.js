@@ -14,6 +14,7 @@ const stoneJumpRoutes = require('./routes/getStoneJump.js');
 const wordGuessRoutes = require('./routes/getWordGuess.js');
 const slidesRoutes = require('./routes/getSlides.js');
 const ghostRoutes = require('./routes/getGhost.js');
+const bullsNCowsRoutes = require('./routes/getBullsNCows.js');
 const manuscriptsRoutes = require('./routes/getManuscripts.js');
 
 app.use(cors());
@@ -31,6 +32,7 @@ app.use('/', stoneJumpRoutes);
 app.use('/', wordGuessRoutes);
 app.use('/', slidesRoutes);
 app.use('/', ghostRoutes);
+app.use('/', bullsNCowsRoutes);
 app.use('/', manuscriptsRoutes);
 
 const PORT = 3000;
