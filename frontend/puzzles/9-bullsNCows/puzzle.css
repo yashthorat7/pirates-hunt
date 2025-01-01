@@ -1,0 +1,177 @@
+@font-face {
+    font-family: 'Salsa';
+    src: url('../assets/fonts/salsa.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Gotham';
+    src: url('../assets/fonts/gotham.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Quicksand';
+    src: url('../assets/fonts/quicksand.ttf') format('truetype');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+  
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100svh;
+    font-family: 'Salsa', sans-serif;
+    background-image: transparent;
+    overflow: hidden;
+    touch-action: none;
+    user-select: none;
+}
+
+
+
+
+
+
+
+.log-part {
+    background: linear-gradient(0deg, #2F3344 0%,#414B75 100%);
+    height: 45vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    color: #d4d7e3;
+    padding: 2vh 8vw;
+    font-size: 4vw;
+}
+
+.log-entry {
+    font-family: 'Quicksand', 'Salsa';
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 74vw;
+    padding: 2vh 0;
+}
+
+.welcome-msg {
+    font-family: 'Quicksand', 'Salsa';
+    margin-top: 15vh;
+    font-size: 4vw;
+    padding: 0vh 6vw;
+    line-height: 4vh;
+    text-align: center;
+    color: #99a1c0;
+}
+
+.guessed-number {
+    font-size: 9vw;
+    color: #d4d7e3;
+    font-weight: bold;
+}
+
+.result-container {
+    font-family: 'Quicksand', 'Salsa';
+    font-size: 3.8vw;
+}
+
+.game-part {
+    height: 45svh;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2.5vw;   
+}
+
+.rect {
+    position: relative;
+    width: 18vw;
+    height: 25vw;
+    border: 0.4vw solid #cbcfdf;
+    border-radius: 3vw;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: #ffffff;
+    padding: 2vw 0;
+    font-size: 18vw;
+    color: #383d56;
+    font-weight: bold;
+    margin-bottom: 12vh;
+}
+
+.arrow {
+    position: absolute;
+    background-color: transparent;
+    border: none;
+    height: auto;
+}
+
+.arrow-image:active {
+    filter: brightness(1.1);
+}
+
+.top-arrow {
+    position: absolute;
+    top: -9.5vw;
+    padding: 2vw 5vw;
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.bottom-arrow {
+    position: absolute;
+    top: 25.7vw;
+    padding: 2vw 5vw;
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.top-arrow .arrow-image {
+    width: 6.5vw;
+    height: auto;
+}
+
+.bottom-arrow .arrow-image {
+    width: 6.5vw;
+    height: auto;
+    transform: ScaleY(-1);
+}
+
+.guess-button {
+    width: 26vw;
+    height: 9vw;
+    background-image: linear-gradient(180deg, #81ff62 0%, #0fd166 50%);
+    border-radius: 2.2vw;
+    border: transparent;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 
+        0px 1vw 0 #17a557,
+        0px 1vw 1.2vw #190a5a6b;
+    z-index: 10;
+    top: 80svh;
+}
+
+.guess-button:active {
+    transform: translateY(1vw);
+    box-shadow: 
+        0px 0vw 0 #17a557,
+        0px 0vw 0.2vw #190a5a6b;
+}
+
+.guess-button span {
+    font-family: 'Gotham';
+    font-weight: bolder;
+    font-size: 5vw;
+    color: #ffffff;
+    text-shadow: 0 0vw 0.6vw #12064780;
+}
