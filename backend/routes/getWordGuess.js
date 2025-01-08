@@ -1,23 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const gameNo = 6;
-const { writeShipData } = require('./db');
-
-const pirateWords = [
-    "SHARK", "SWORD", "STORY", "COUNT",
-    "CHEST", "SKULL", "BLACK", "WHITE",
-    "STORM", "CORAL", "MUSIC", "DANCE",
-    "SOUND", "RUMOR", "SLEEP", "SCORE"
-];
-
-const assignedWord = new Array(40).fill(null);
+const { gameData, runtimeData } = require('../data/gameDatabase');
 
 router.get('/getWord', async (req, res) => {
     const shipNo = parseInt(req.query.shipNo) - 11;
-    const randomIndex = Math.floor(Math.random() * pirateWords.length);
-    const randomWord = pirateWords[randomIndex];
-    assignedWord[shipNo] = randomWord;
-    console.log('randomWord', randomWord);
+    const randomIndex = Math.floor(Math.random() * gameData.wordGuess.pirateWords.length);
+    const randomWord = gameData.wordGuess.pirateWords[randomIndex];
+    runtimeData.assignedWords[shipNo] = randomWord;
     res.json("done");
 });
 
@@ -25,7 +14,7 @@ router.get('/getWordWin', async (req, res) => {
     const shipNo = parseInt(req.query.shipNo) - 11;
     const chosenAnswer = req.query.chosenAnswer;
 
-    const word = assignedWord[shipNo];
+    const word = runtimeData.assignedWords[shipNo];
     if (!word) {
         return res.json({ error: "No word assigned to this ship number" });
     }
