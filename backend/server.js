@@ -35,5 +35,17 @@ app.use('/', ghostRoutes);
 app.use('/', bullsNCowsRoutes);
 app.use('/', manuscriptsRoutes);
 
+const gameRoutes = {
+    puzzle: [jigsawRoutes, count360Routes, mazeRoutes, stoneJumpRoutes],
+    word: [wordGuessRoutes, manuscriptsRoutes],
+    misc: [ghostRoutes, bullsNCowsRoutes, slidesRoutes]
+};
+
+Object.entries(gameRoutes).forEach(([category, routes]) => {
+    routes.forEach(route => {
+        app.use(`/api/${category}`, route);
+    });
+});
+
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
