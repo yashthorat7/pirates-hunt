@@ -46,19 +46,8 @@
     right: 2vw;
 }
 
-
-
-
-
-
 @keyframes float {
-    0% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(0.6vh);
-    }
-    100% {
-        transform: translateY(0);
-    }
+    0% { transform: translateY(0); }
+    50% { transform: translateY(0.6vh); }
+    100% { transform: translateY(0); }
 }

@@ -1,12 +1,15 @@
 (() => {
     const messageElement = document.querySelector('.message');
-    const shipNo = new URLSearchParams(window.location.search).get('ship');
+    const urlParams = new URLSearchParams(window.location.search);
+    const shipNo = urlParams.get('ship');
+    const gameNo = urlParams.get('gameNo');
+    const gameName = urlParams.get('game');
     const shipMark = document.querySelector('.ship-mark');
     let presetMessages = [];
 
     if (shipMark && shipNo) {
         const image = document.querySelector('.character-image');
-        image.src = `../../assets/${gameName}/avatar.png`;
+        image.src = `../../assets/${gameName}/avatar.png` || '../../assets/default-avatar.png';
         shipMark.textContent = `#${shipNo}`;
     }
 

@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 
-// Import message data from JSON files
 const introMessages = require('./introMessages.json');
 const connectMessages = require('./connectMessages.json');
 const outroMessages = require('./outroMessages.json');
@@ -74,19 +73,17 @@ const gameData = {
     ghost: {
         maxLives: 100
     },
-    introMessages: {},  // To be populated from introMessages.json
-    connectMessages: {}, // To be populated from connectMessages.json
-    outroMessages: {},  // To be populated from outroMessages.json
+    introMessages: {},
+    connectMessages: {},
+    outroMessages: {}, 
 };
 
-// Runtime storage with initialization
 const runtimeData = {
     questionLog: new Array(40).fill().map(() => new Array(6).fill(0)),
     questionIndex: new Array(40).fill(0),
     assignedWords: new Array(40).fill(null)
 };
 
-// Load persisted runtime data if available
 const runtimeDataPath = path.join(__dirname, 'runtimeData.json');
 
 const persistRuntimeData = () => {
@@ -106,7 +103,6 @@ try {
     console.log('No persisted runtime data found or error loading:', error.message);
 }
 
-// Persist runtime data on process exit
 process.on('exit', persistRuntimeData);
 process.on('SIGINT', () => {
     persistRuntimeData();

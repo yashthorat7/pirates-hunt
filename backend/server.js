@@ -2,44 +2,32 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-const dialogueRoutes = require('./routes/getDialogues');
-const hintRoutes = require('./routes/getHint');
 const timeRoutes = require('./routes/setTimes');
-const introRoutes = require('./routes/getIntro');
-const outroRoutes = require('./routes/getOutro');
-const jigsawRoutes = require('./routes/getJigsaw');
-const count360Routes = require('./routes/getCount360');
-const mazeRoutes = require('./routes/getMaze');
-const stoneJumpRoutes = require('./routes/getStoneJump.js');
-const wordGuessRoutes = require('./routes/getWordGuess.js');
-const slidesRoutes = require('./routes/getSlides.js');
-const ghostRoutes = require('./routes/getGhost.js');
-const bullsNCowsRoutes = require('./routes/getBullsNCows.js');
-const manuscriptsRoutes = require('./routes/getManuscripts.js');
+const hintRoutes = require('./routes/getHint');
+
+const gameRoutes = {
+    puzzle: [
+        require('./routes/getJigsaw'),
+        require('./routes/getCount360'),
+        require('./routes/getMaze'),
+        require('./routes/getStoneJump')
+    ],
+    word: [
+        require('./routes/getWordGuess'),
+        require('./routes/getManuscripts')
+    ],
+    misc: [
+        require('./routes/getGhost'),
+        require('./routes/getBullsNCows'),
+        require('./routes/getSlides')
+    ]
+};
 
 app.use(cors());
 app.use(express.json());
 
-app.use('/', hintRoutes);
-app.use('/', dialogueRoutes);
 app.use('/', timeRoutes);
-app.use('/', introRoutes);
-app.use('/', outroRoutes);
-app.use('/', jigsawRoutes);
-app.use('/', count360Routes);
-app.use('/', mazeRoutes);
-app.use('/', stoneJumpRoutes);
-app.use('/', wordGuessRoutes);
-app.use('/', slidesRoutes);
-app.use('/', ghostRoutes);
-app.use('/', bullsNCowsRoutes);
-app.use('/', manuscriptsRoutes);
-
-const gameRoutes = {
-    puzzle: [jigsawRoutes, count360Routes, mazeRoutes, stoneJumpRoutes],
-    word: [wordGuessRoutes, manuscriptsRoutes],
-    misc: [ghostRoutes, bullsNCowsRoutes, slidesRoutes]
-};
+app.use('/', hintRoutes);
 
 Object.entries(gameRoutes).forEach(([category, routes]) => {
     routes.forEach(route => {
