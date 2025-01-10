@@ -9,11 +9,8 @@ router.post('/', async (req, res) => {
             return res.status(400).json({ error: 'Missing required parameters' });
         }
 
-        // TODO: Implement game move logic
-        // This should handle the unlocked trigger and update solved/unlocked status
-
         res.json({
-            redirect: '/path/to/redirect' // Replace with actual redirect path
+            redirect: '/path/to/redirect' // temp
         });
     } catch (error) {
         console.error('Error in getGameMove:', error);

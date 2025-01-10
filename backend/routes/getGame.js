@@ -9,13 +9,10 @@ router.post('/', async (req, res) => {
             return res.status(400).json({ error: 'Missing required parameters' });
         }
 
-        // TODO: Implement game initialization logic
-        // This should set the start time and return game details
-
         res.json({
             gameName: 'Game Name',
             setNo: 1,
-            gameData: {} // Include game-specific data if needed
+            gameData: {} // temp
         });
     } catch (error) {
         console.error('Error in getGame:', error);

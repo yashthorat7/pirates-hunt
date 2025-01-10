@@ -9,11 +9,8 @@ router.post('/', async (req, res) => {
             return res.status(400).json({ error: 'Missing required parameters' });
         }
 
-        // TODO: Implement the logic to handle the last arrow click
-        // This should return the redirect information
-
         res.json({
-            redirect: '/path/to/redirect' // Replace with actual redirect path
+            redirect: '/path/to/redirect' // temp
         });
     } catch (error) {
         console.error('Error in getIntroMove:', error);
