@@ -1,37 +1,35 @@
 const express = require('express');
 const router = express.Router();
-const fs = require('fs');
-const path = require('path');
+const { gameData } = require('../data/gameDatabase');
 
-const gameFilePath = path.resolve(__dirname, '../data/gameData.json');
-const gameData = JSON.parse(fs.readFileSync(gameFilePath, 'utf8'));
-const { readShipData } = require('./db'); 
+router.get('/', (req, res) => {
+    try {
+        const { gameId } = req.query;
+        
+        if (!gameId) {
+            return res.status(400).json({ error: 'Missing gameId parameter' });
+        }
 
-const getLink = async (gameNo, shipNo, gameName) => {
-    const fieldValue = await readShipData('Unlocked', shipNo, gameNo);
-    return fieldValue > 0
-        ? `../outro/outro.html?ship=${shipNo}&id=${gameData.gameId[gameNo]}`
-        : `../puzzles/${gameName}/puzzle.html?ship=${shipNo}`;
-};
+        const index = gameData.introId.indexOf(gameId);
+        
+        if (index === -1) {
+            return res.status(404).json({ error: 'Invalid gameId' });
+        }
 
-router.get('/getGameData', (req, res) => {
-    const Id = req.query.Id;
-    const index = gameData.gameId.indexOf(Id);
-    res.json({
-        gameNo: index + 1,
-        gameName: gameData.gameName[index],
-        titleName: gameData.titleName[index]
-    });
-});
+        const gameNo = index + 1;
+        const gameName = gameData.gameName[index];
+        const titleName = gameData.titleName[index];
+        const messages = gameData.introMessages[gameNo];
 
-router.get('/getPuzzle', async (req, res) => {
-    const gameNo = parseInt(req.query.gameNo);
-    const shipNo = parseInt(req.query.shipNo);
-    const gameName = req.query.gameName;
-    const redirectLink = await getLink(gameNo, shipNo, gameName);
-    res.json({
-        link: redirectLink
-    });
+        res.json({
+            titleName,
+            gameName,
+            messages
+        });
+    } catch (error) {
+        console.error('Error in getIntro:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 });
 
 module.exports = router;
