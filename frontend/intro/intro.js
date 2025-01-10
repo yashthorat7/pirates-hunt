@@ -48,6 +48,7 @@ async function handleForwardClick(event) {
             const secondScreen = document.querySelector('.second-screen');
             const shipMark = document.querySelector('.ship-mark');
             
+            gameData.shipNo = inputValue;
             shipMark.textContent = `#${inputValue}`;
             firstScreen.style.display = 'none';
             secondScreen.style.display = 'flex';
@@ -67,12 +68,29 @@ async function handleForwardClick(event) {
     }
 }
 
+async function getRedirectLink() {
+    try {
+        const response = await fetch(`http://localhost:3000/api/intro/move?gameId=${gameData.gameId}&shipNo=${gameData.shipNo}`);
+        if (!response.ok) throw new Error('Failed to fetch redirect link');
+        
+        const data = await response.json();
+        return data.redirect;
+    } catch (error) {
+        console.error('Error getting redirect link:', error);
+        return null;
+    }
+}
+
 function handleNextClick() {
     if (currentMessageIndex < messages.length - 1) {
         currentMessageIndex++;
         startTypingAnimation(currentMessageIndex);
     } else {
-        window.location.href = gameData.redirectLink;
+        getRedirectLink().then(redirectLink => {
+            if (redirectLink) {
+                window.location.href = redirectLink;
+            }
+        });
     }
 }
 
@@ -112,14 +130,14 @@ function createRipple(container) {
 async function initializeGame() {
     const gameId = new URLSearchParams(window.location.search).get('id');
     try {
-        const response = await fetch(`http://localhost:3000/getGameData?id=${gameId}`);
+        const response = await fetch(`http://localhost:3000/api/intro?gameId=${gameId}`);
         if (!response.ok) throw new Error('Failed to fetch game data');
         
         const data = await response.json();
         gameData = {
             gameName: data.gameName,
             titleName: data.titleName,
-            redirectLink: data.redirectLink
+            gameId: gameId
         };
         messages = data.messages;
 
