@@ -1,10 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 
-const introMessages = require('./introMessages.json');
-const connectMessages = require('./connectMessages.json');
-const outroMessages = require('./outroMessages.json');
-
 const gameData = {
     introId: ["vujkqpxyt", "zgwnlthdf", "odrbfajke", "xipmyelza", "twahqlkto",
         "ndojrmxyp", "kuzpfidhc", "ylxqtwoba", "cmhajrvnz", "veqlknstu"],
@@ -124,7 +120,6 @@ const gameData = {
         ]
     },
     connectMessages: {
-        
         "1": [
             "Ahoy! Ready for a pirate adventure? Sail the seas and hunt for treasure!",
             "Use your map to explore, solve puzzles, and watch out for danger!",
