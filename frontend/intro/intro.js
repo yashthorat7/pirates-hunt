@@ -2,23 +2,8 @@ let messages = [];
 let currentMessageIndex = 0;
 let typingTimeout;
 const visitedMessages = [];
-let gameNo = 0;
-let gameName = '';
+let gameData = null;
 let rippleInProgress = false;
-let isRegistered = false;
-
-async function fetchMessages(gameNo) {
-    try {
-        const response = await fetch(`http://localhost:3000/getIntroDialogues?gameNo=${gameNo}`);
-        if (!response.ok) throw new Error('Failed to fetch messages');
-        messages = await response.json();
-        visitedMessages.length = messages.length;
-        visitedMessages.fill(false);
-        startTypingAnimation(currentMessageIndex);
-    } catch (error) {
-        console.error('Error fetching messages:', error);
-    }
-}
 
 function startTypingAnimation(index, typingDelay = 35) {
     const messageElement = document.getElementById('animated-message');
@@ -52,40 +37,30 @@ function typeMessage(message, element, delay, fastTyping = false) {
     typing();
 }
 
-document.querySelector('.enter-button').addEventListener('click', handleForwardClick);
-function handleForwardClick(event) {
+async function handleForwardClick(event) {
     event.preventDefault();
     const inputBox = document.querySelector('.input-box');
     const inputValue = Number(inputBox.value);
 
-    fetch(`http://localhost:3000/setBeginTime?gameNo=${gameNo}&shipNo=${inputValue}`);
-
-    const firstScreen = document.querySelector('.first-screen');
-    const secondScreen = document.querySelector('.second-screen');
-    const shipMark = document.querySelector('.ship-mark');
-
     if (!isNaN(inputValue) && inputValue >= 11 && inputValue <= 50) {
-        shipMark.textContent = `#${inputValue}`;
-        firstScreen.style.display = 'none';
-        secondScreen.style.display = 'flex';
-        isRegistered = true;
-        setTimeout(() => startTypingAnimation(currentMessageIndex), 10);
-    } else {
-        if (navigator.vibrate) navigator.vibrate(100);
-        inputBox.value = '';
-    }
-}
+        try {
+            const firstScreen = document.querySelector('.first-screen');
+            const secondScreen = document.querySelector('.second-screen');
+            const shipMark = document.querySelector('.ship-mark');
+            
+            shipMark.textContent = `#${inputValue}`;
+            firstScreen.style.display = 'none';
+            secondScreen.style.display = 'flex';
 
-function handleSkipClick() {
-    if (isRegistered) {
-        const inputBox = document.querySelector('.input-box');
-        const inputValue = Number(inputBox.value);
-        fetch(`http://localhost:3000/getPuzzle?gameNo=${gameNo}&gameName=${gameName}&shipNo=${inputValue}`)
-                .then(response => response.json())
-                .then(data => {
-                    window.location.href = data.link;
-                })
-                .catch(error => console.error('Error fetching puzzle:', error));
+            visitedMessages.length = messages.length;
+            visitedMessages.fill(false);
+            currentMessageIndex = 0;
+            setTimeout(() => startTypingAnimation(currentMessageIndex), 10);
+
+        } catch (error) {
+            console.error('Error:', error);
+            if (navigator.vibrate) navigator.vibrate(100);
+        }
     } else {
         if (navigator.vibrate) navigator.vibrate(100);
         inputBox.value = '';
@@ -97,14 +72,7 @@ function handleNextClick() {
         currentMessageIndex++;
         startTypingAnimation(currentMessageIndex);
     } else {
-        const inputBox = document.querySelector('.input-box');
-        const inputValue = Number(inputBox.value);
-        fetch(`http://localhost:3000/getPuzzle?gameName=${gameName}&shipNo=${inputValue}`)
-            .then(response => response.json())
-            .then(data => {
-                window.location.href = data.link;
-            })
-            .catch(error => console.error('Error fetching puzzle:', error));
+        window.location.href = gameData.redirectLink;
     }
 }
 
@@ -141,24 +109,36 @@ function createRipple(container) {
     });
 }
 
-window.onload = function () {
+async function initializeGame() {
     const gameId = new URLSearchParams(window.location.search).get('id');
-    fetch(`http://localhost:3000/getGameData?Id=${gameId}`)
-        .then((response) => response.json())
-        .then((data) => {
-            const titleElement = document.querySelector('.title-name');
-            if (titleElement) {
-                titleElement.textContent = data.titleName;
-            }
-            gameNo = data.gameNo;
-            gameName = data.gameName;
-            fetchMessages(gameNo);
-            const image = document.querySelector('.character-image');
-            image.src = `../assets/${gameName}/character.png`;
-            const islandImage = document.querySelector('.island-image');
-            islandImage.src = `../assets/${gameName}/island.png`;
-        });
+    try {
+        const response = await fetch(`http://localhost:3000/getGameData?id=${gameId}`);
+        if (!response.ok) throw new Error('Failed to fetch game data');
+        
+        const data = await response.json();
+        gameData = {
+            gameName: data.gameName,
+            titleName: data.titleName,
+            redirectLink: data.redirectLink
+        };
+        messages = data.messages;
 
+        const titleElement = document.querySelector('.title-name');
+        titleElement.textContent = gameData.titleName;
+        
+        const characterImage = document.querySelector('.character-image');
+        characterImage.src = `../assets/${gameData.gameName}/character.png`;
+        
+        const islandImage = document.querySelector('.island-image');
+        islandImage.src = `../assets/${gameData.gameName}/island.png`;
+    } catch (error) {
+        console.error('Error initializing game:', error);
+    }
+}
+
+window.onload = function () {
+    initializeGame();
+    
     const container = document.querySelector('.ripple-container');
     setInterval(() => {
         if (!rippleInProgress) {
@@ -168,6 +148,6 @@ window.onload = function () {
     }, 3000);
 };
 
-document.querySelector('.title-text').addEventListener('click', handleSkipClick);
+document.querySelector('.enter-button').addEventListener('click', handleForwardClick);
 document.querySelector('.forward-button').addEventListener('click', handleNextClick);
 document.querySelector('.backward-button').addEventListener('click', handleBackwardClick);

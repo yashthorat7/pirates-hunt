@@ -8,11 +8,10 @@ router.post('/', async (req, res) => {
         if (!gameId || !shipNo) {
             return res.status(400).json({ error: 'Missing required parameters' });
         }
-
         res.json({
             gameName: 'Game Name',
             setNo: 1,
-            gameData: {} // temp
+            gameData: {}
         });
     } catch (error) {
         console.error('Error in getGame:', error);
@@ -20,4 +19,4 @@ router.post('/', async (req, res) => {
     }
 });
 
-module.exports = router; 
+module.exports = router;
