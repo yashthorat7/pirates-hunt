@@ -2,12 +2,22 @@ const fs = require('fs');
 const path = require('path');
 
 const gameData = {
-    introId: ["vujkqpxyt", "zgwnlthdf", "odrbfajke", "xipmyelza", "twahqlkto",
-        "ndojrmxyp", "kuzpfidhc", "ylxqtwoba", "cmhajrvnz", "veqlknstu"],
-    gameId: ["qkwzohpfa", "votrpjlek", "nxehdfzuy", "zyquablmn", "wdoktmprs",
-        "parvgsjwx", "xiehlcqby", "flzqtpmdn", "hcmujnves", "skidrpowa"],
-    outroId: ["bhxrmqjky", "kouvlnatz", "twyzfjepq", "lapgmrchs", "vzonkeubl",
-        "dithcqawy", "fmxpljokn", "qbrnkswxy", "jwlefoatz", "czkvutgrs"],
+    gameName : [
+        "1-jigsaw", "2-count360", "3-maze", "4-stoneJump", "5-riddle",
+        "6-wordGuess", "7-slides", "8-ghost", "9-bullsncows", "10-manuscripts"
+    ],
+    introId: [
+        "vujkqpxyt", "zgwnlthdf", "odrbfajke", "xipmyelza", "twahqlkto",
+        "ndojrmxyp", "kuzpfidhc", "ylxqtwoba", "cmhajrvnz", "veqlknstu"
+    ],
+    gameId: [
+        "qkwzohpfa", "votrpjlek", "nxehdfzuy", "zyquablmn", "wdoktmprs",
+        "parvgsjwx", "xiehlcqby", "flzqtpmdn", "hcmujnves", "skidrpowa"
+    ],
+    outroId: [
+        "bhxrmqjky", "kouvlnatz", "twyzfjepq", "lapgmrchs", "vzonkeubl",
+        "dithcqawy", "fmxpljokn", "qbrnkswxy", "jwlefoatz", "czkvutgrs"
+    ],
     titleName: [
         "HOME", "HATTORI", "PARADISE", "GOKU", "AYASE",
         "SAITAMA", "YAGAMI", "HOLO", "TANJIRO", "UCHIHA"
