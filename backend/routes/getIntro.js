@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { gameData } = require('../data/gameData');
+const gameData = require('../data/gameData');
 
 router.get('/', (req, res) => {
     try {

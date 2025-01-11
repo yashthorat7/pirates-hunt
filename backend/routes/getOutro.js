@@ -1,27 +1,40 @@
 const express = require('express');
 const router = express.Router();
-const ImageKit = require('imagekit');
-const { readClue, readShipData } = require('./db');
+const gameData = require('../data/gameData');
 
-const imagekit = new ImageKit({
-    publicKey: "public_KQUJu1OFWc7qLBzq9ERm9VEVf2I=",
-    privateKey: "private_fK+TlWNa9iqf359UPIdY46aK7Zw=",
-    urlEndpoint: "https://ik.imagekit.io/kzx8uktwt"
-});
+router.get('/', (req, res) => {
+    try {
+        const { gameId, shipNo } = req.query;
+        
+        if (!gameId || !shipNo) {
+            return res.status(400).json({ error: 'Missing gameId or shipNo parameter' });
+        }
 
-router.get('/getOutro', async (req, res) => {
-    const gameNo = parseInt(req.query.gameNo);
-    const shipNo = parseInt(req.query.shipNo);
-    console.log('getoutro');
-    const hasUnlocked = await readShipData('Unlocked', shipNo, gameNo);
-    console.log('hasUnlocked', hasUnlocked);
-    if (hasUnlocked) {
-        const clue = await readClue(shipNo, gameNo);
-        const baseMark = clue[0];
-        const clueLetter = clue[1];
-        const imageUrl = imagekit.url({ path: `/Checkpoint/checkpoint (${baseMark}).png` });
-        console.log(imageUrl, baseMark, clueLetter);
-        res.json({ imageUrl, baseMark, clueLetter });
+        const index = gameData.outroId.indexOf(gameId);
+        
+        if (index === -1) {
+            return res.status(404).json({ error: 'Invalid gameId' });
+        }
+
+        const gameNo = index + 1;
+        const gameName = gameData.gameName[index];
+        const titleName = gameData.titleName[index];
+        const message = gameData.outroMessages[gameNo];
+        
+        const shipIndex = parseInt(shipNo) - 1;
+        const baseMark = gameData.baseMarks[shipIndex][gameNo - 1];
+        const clueLetter = gameData.clueLetters[shipIndex][gameNo - 1];
+
+        res.json({
+            titleName,
+            gameName,
+            baseMark,
+            clueLetter,
+            message
+        });
+    } catch (error) {
+        console.error('Error in getOutro:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 

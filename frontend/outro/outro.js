@@ -1,35 +1,26 @@
-let gameNo = 0;
-let gameName = '';
-
 window.onload = () => {
     const gameId = new URLSearchParams(window.location.search).get('id');
     const shipNo = new URLSearchParams(window.location.search).get('ship');
 
-    fetch(`http://localhost:3000/getGameData?Id=${gameId}`)
+    if (!gameId || !shipNo) {
+        console.error('Missing gameId or shipNo parameters');
+        return;
+    }
+
+    fetch(`http://localhost:3000/api/outro?gameId=${gameId}&shipNo=${shipNo}`)
         .then((response) => response.json())
         .then((data) => {
             document.querySelector('.island-name').textContent = `${data.titleName} ISLAND`;
-            gameNo = data.gameNo;
-            gameName = data.gameName;
-            document.querySelector('.character-image').src = `../assets/${gameName}/character-face2.png`;
+            document.querySelector('.character-image').src = `../assets/${data.gameName}/character-face2.png`;
             document.querySelector('.ship-code').textContent = `SHIP ${shipNo}`;
-
-            fetch(`http://localhost:3000/setEndTime?gameNo=${gameNo}&shipNo=${shipNo}`);
-            fetch(`http://localhost:3000/getOutro?shipNo=${shipNo}&gameNo=${gameNo}`)
-            .then(response => response.json())
-            .then(data => {
-                document.querySelector('.clue-text').textContent = data.clueLetter;
-                document.querySelector('.base-mark').textContent = `Base ${data.baseMark}`;
-                document.querySelector('.checkpoint-image').src = data.imageUrl;
-            });
-
-            fetch(`http://localhost:3000/getOutroDialogues?gameNo=${gameNo}`)
-                .then(response => response.json())
-                .then(data => document.querySelector('.chat-message').textContent = data);
+            document.querySelector('.clue-text').textContent = data.clueLetter;
+            document.querySelector('.base-mark').textContent = `Base ${data.baseMark}`;
+            document.querySelector('.chat-message').textContent = data.message;
+        })
+        .catch(error => {
+            console.error('Error fetching outro data:', error);
         });
 }
-
-
 
 let card = document.getElementById("card");
 let startX, currentX, isDragging = false;
