@@ -24,13 +24,15 @@ router.get('/', (req, res) => {
         const shipIndex = parseInt(shipNo) - 1;
         const baseMark = gameData.baseMarks[shipIndex][gameNo - 1];
         const clueLetter = gameData.clueLetters[shipIndex][gameNo - 1];
+        const clueImageName = gameData.clueImageName[baseMark - 1];
 
         res.json({
             titleName,
             gameName,
             baseMark,
             clueLetter,
-            message
+            message,
+            clueImageName
         });
     } catch (error) {
         console.error('Error in getOutro:', error);
