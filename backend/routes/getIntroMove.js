@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { gameData } = require('../data/gameDatabase');
+const { gameData } = require('../data/gameData');
 const { getGameProgress } = require('./db');
 
 router.get('/', async (req, res) => {
@@ -15,10 +15,8 @@ router.get('/', async (req, res) => {
         if (index === -1) {
             return res.status(404).json({ error: 'Invalid gameId' });
         }
-        const gameNo = index + 1;
 
         const puzzleGameId = gameData.gameId[index];
-
         const progress = await getGameProgress(gameId, parseInt(shipNo));
         const isUnlocked = progress?.unlocked || 0;
 

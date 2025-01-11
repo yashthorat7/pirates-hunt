@@ -47,7 +47,7 @@ body {
     border-radius: 50%;
     border: 4vw solid #ffffffcc;
     background: transparent;
-    animation: ripple 6s ease-out;
+    animation: ripple 4s ease-out;
     pointer-events: none;
     opacity: 1;
 }

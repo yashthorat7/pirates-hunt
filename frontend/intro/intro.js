@@ -37,6 +37,12 @@ function typeMessage(message, element, delay, fastTyping = false) {
     typing();
 }
 
+function handleError(error, inputBox = null) {
+    console.error('Error:', error);
+    if (navigator.vibrate) navigator.vibrate(100);
+    if (inputBox) inputBox.value = '';
+}
+
 async function handleForwardClick(event) {
     event.preventDefault();
     const inputBox = document.querySelector('.input-box');
@@ -57,27 +63,25 @@ async function handleForwardClick(event) {
             visitedMessages.fill(false);
             currentMessageIndex = 0;
             setTimeout(() => startTypingAnimation(currentMessageIndex), 10);
-
         } catch (error) {
-            console.error('Error:', error);
-            if (navigator.vibrate) navigator.vibrate(100);
+            handleError(error, inputBox);
         }
     } else {
-        if (navigator.vibrate) navigator.vibrate(100);
-        inputBox.value = '';
+        handleError('Invalid input', inputBox);
     }
 }
 
-async function getRedirectLink() {
+async function redirectToNextPage() {
+    if (!gameData?.shipNo) return;
+    
     try {
         const response = await fetch(`http://localhost:3000/api/intro/move?gameId=${gameData.gameId}&shipNo=${gameData.shipNo}`);
         if (!response.ok) throw new Error('Failed to fetch redirect link');
         
         const data = await response.json();
-        return data.redirect;
+        window.location.href = data.redirect;
     } catch (error) {
-        console.error('Error getting redirect link:', error);
-        return null;
+        handleError(error);
     }
 }
 
@@ -86,11 +90,7 @@ function handleNextClick() {
         currentMessageIndex++;
         startTypingAnimation(currentMessageIndex);
     } else {
-        getRedirectLink().then(redirectLink => {
-            if (redirectLink) {
-                window.location.href = redirectLink;
-            }
-        });
+        redirectToNextPage();
     }
 }
 
@@ -150,7 +150,7 @@ async function initializeGame() {
         const islandImage = document.querySelector('.island-image');
         islandImage.src = `../assets/${gameData.gameName}/island.png`;
     } catch (error) {
-        console.error('Error initializing game:', error);
+        handleError(error);
     }
 }
 
@@ -169,3 +169,4 @@ window.onload = function () {
 document.querySelector('.enter-button').addEventListener('click', handleForwardClick);
 document.querySelector('.forward-button').addEventListener('click', handleNextClick);
 document.querySelector('.backward-button').addEventListener('click', handleBackwardClick);
+document.querySelector('.title-part').addEventListener('click', redirectToNextPage);

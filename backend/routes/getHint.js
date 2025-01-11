@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const router = express.Router();
 const { readShipData, writeShipData } = require('./db');
-const { gameData } = require('../data/gameDatabase');
+const { gameData } = require('../data/gameData');
 
 const HINTTIME = 10;
 
