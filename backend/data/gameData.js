@@ -3,8 +3,8 @@ const path = require('path');
 
 const gameData = {
     gameName : [
-        "1-jigsaw", "2-count360", "3-maze", "4-stoneJump", "5-riddle",
-        "6-wordGuess", "7-slides", "8-ghost", "9-bullsncows", "10-manuscripts"
+        "abcd", "bfgh", "cjkl", "dmnp", "eqrs",
+        "ftuv", "gwxy", "hklm", "inop", "jqrs"
     ],
     introId: [
         "vujkqpxyt", "zgwnlthdf", "odrbfajke", "xipmyelza", "twahqlkto",
@@ -278,26 +278,10 @@ const gameData = {
         ["H", "C", "F", "E", "A", "I", "G", "D", "B"]
     ],
     clueImageName: [
-        "(1)lpaey",
-        "(2)ontih",
-        "(3)aelrt",
-        "(4)uoynr",
-        "(5)ewrto",
-        "(6)amnoh",
-        "(7)sihte",
-        "(8)btair",
-        "(9)lpoea",
-        "(10)ouldn",
-        "(11)acrto",
-        "(12)egnli",
-        "(13)swloe",
-        "(14)uoylk",
-        "(15)apels",
-        "(16)irtbe",
-        "(17)aelpt",
-        "(18)uoyrn",
-        "(19)aemrt",
-        "(20)ihlst"
+        "(1)lpaey", "(2)ontih", "(3)aelrt", "(4)uoynr", "(5)ewrto",
+        "(6)amnoh", "(7)sihte", "(8)btair", "(9)lpoea", "(10)ouldn",
+        "(11)acrto", "(12)egnli", "(13)swloe", "(14)uoylk", "(15)apels",
+        "(16)irtbe", "(17)aelpt", "(18)uoyrn", "(19)aemrt", "(20)ihlst"
       ],
 };
 
