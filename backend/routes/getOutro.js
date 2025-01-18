@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
         }
 
         const gameNo = index + 1;
-        const gameName = gameData.gameName[index];
+        const titleName = gameData.titleName[index];
         const titleName = gameData.titleName[index];
         const message = gameData.outroMessages[gameNo];
         
@@ -28,7 +28,7 @@ router.get('/', (req, res) => {
 
         res.json({
             titleName,
-            gameName,
+            titleName,
             baseMark,
             clueLetter,
             message,

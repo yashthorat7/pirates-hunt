@@ -2,10 +2,6 @@ const fs = require('fs');
 const path = require('path');
 
 const gameData = {
-    gameName : [
-        "abcd", "bfgh", "cjkl", "dmnp", "eqrs",
-        "ftuv", "gwxy", "hklm", "inop", "jqrs"
-    ],
     introId: [
         "vujkqpxyt", "zgwnlthdf", "odrbfajke", "xipmyelza", "twahqlkto",
         "ndojrmxyp", "kuzpfidhc", "ylxqtwoba", "cmhajrvnz", "veqlknstu"

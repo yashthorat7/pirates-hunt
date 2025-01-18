@@ -17,13 +17,13 @@ router.get('/', (req, res) => {
         }
 
         const gameNo = index + 1;
-        const gameName = gameData.gameName[index];
+        const titleName = gameData.titleName[index];
         const titleName = gameData.titleName[index];
         const messages = gameData.introMessages[gameNo];
 
         res.json({
             titleName,
-            gameName,
+            titleName,
             messages
         });
     } catch (error) {

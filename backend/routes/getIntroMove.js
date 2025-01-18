@@ -20,10 +20,10 @@ router.get('/', async (req, res) => {
         const progress = await getGameProgress(gameId, parseInt(shipNo));
         const isUnlocked = progress?.unlocked || 0;
 
-        const gameName = gameData.gameName[index];
+        const titleName = gameData.titleName[index];
         const redirectLink = isUnlocked 
             ? `../outro/outro.html?ship=${shipNo}&id=${puzzleGameId}`
-            : `../puzzles/${gameName}/puzzle.html?ship=${shipNo}&id=${puzzleGameId}`;
+            : `../puzzles/${titleName}/puzzle.html?ship=${shipNo}&id=${puzzleGameId}`;
 
         res.json({
             redirect: redirectLink

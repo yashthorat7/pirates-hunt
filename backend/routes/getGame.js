@@ -9,7 +9,7 @@ router.post('/', async (req, res) => {
             return res.status(400).json({ error: 'Missing required parameters' });
         }
         res.json({
-            gameName: 'Game Name',
+            titleName: 'Game Name',
             setNo: 1,
             gameData: {}
         });
