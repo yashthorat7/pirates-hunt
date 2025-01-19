@@ -3,7 +3,7 @@ const grids = document.querySelectorAll('.grid');
 const SNAP_THRESHOLD = 80;
 const shipNo = new URLSearchParams(window.location.search).get('ship');
 const gameNo = 1;
-const gameName = '1-jigsaw';
+const gameName = 'home';
 const gameId = 'dsafe';
 
 window.onload = function() {

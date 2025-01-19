@@ -135,20 +135,20 @@ async function initializeGame() {
         
         const data = await response.json();
         gameData = {
-            gameName: data.gameName,
             titleName: data.titleName,
             gameId: gameId
         };
+        console.log(gameData.titleName, gameData.gameId);
         messages = data.messages;
 
         const titleElement = document.querySelector('.title-name');
         titleElement.textContent = gameData.titleName;
         
         const characterImage = document.querySelector('.character-image');
-        characterImage.src = `../assets/${gameData.gameName}/character.png`;
+        characterImage.src = `../assets/${gameData.titleName}/character.png`;
         
         const islandImage = document.querySelector('.island-image');
-        islandImage.src = `../assets/${gameData.gameName}/island.png`;
+        islandImage.src = `../assets/${gameData.titleName}/island.png`;
     } catch (error) {
         handleError(error);
     }

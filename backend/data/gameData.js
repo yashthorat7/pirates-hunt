@@ -75,9 +75,9 @@ const gameData = {
     },
     introMessages: {
         "1": [
-        "Ahoy! Ready for a pirate adventure? Sail the seas and hunt for treasure!",
-        "Use your map to explore, solve puzzles, and watch out for danger!",
-        "Your choices will lead to treasure... or trouble. Good luck, matey!"
+            "Ahoy! Ready for a pirate adventure? Sail the seas and hunt for treasure!",
+            "Use your map to explore, solve puzzles, and watch out for danger!",
+            "Your choices will lead to treasure... or trouble. Good luck, matey!"
         ],
         "2": [
             "Welcome back, pirate! Your ship’s ready to sail.",

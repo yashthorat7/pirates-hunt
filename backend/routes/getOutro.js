@@ -18,7 +18,6 @@ router.get('/', (req, res) => {
 
         const gameNo = index + 1;
         const titleName = gameData.titleName[index];
-        const titleName = gameData.titleName[index];
         const message = gameData.outroMessages[gameNo];
         
         const shipIndex = parseInt(shipNo) - 1;
@@ -27,7 +26,6 @@ router.get('/', (req, res) => {
         const clueImageName = gameData.clueImageName[baseMark - 1];
 
         res.json({
-            titleName,
             titleName,
             baseMark,
             clueLetter,
