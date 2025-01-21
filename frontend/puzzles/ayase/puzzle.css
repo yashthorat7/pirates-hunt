@@ -14,20 +14,10 @@ body, html {
     padding: 0;
     height: 100svh;
     font-family: 'Salsa', sans-serif;
-    background-color: #1a0f0f;
+    background: linear-gradient(180deg, #87CEEB 0%, #5F9EA0 100%);
     overflow: hidden;
     touch-action: none;
     user-select: none;
-}
-
-.rusty-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 94vh;
-    width: 100vw;
-    object-fit: cover;
-    z-index: -1;
 }
 
 .game-part {
@@ -36,6 +26,22 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#gameCanvas {
+    width: 85vw;
+    height: 85vw;
+    background: linear-gradient(45deg, #f4d4aa, #e4c399);
+    border-radius: 50%;
+    box-shadow: 
+        inset 0 0 4vw rgba(0,0,0,0.2),
+        0 1vw 3vw rgba(0,0,0,0.3);
+    touch-action: none;
+}
+
+.broken {
+    background: #ff4444 !important;
+    transition: background 0.3s ease;
 }
 
 .locks-container {
