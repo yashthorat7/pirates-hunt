@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BROCODE</title>
+    <link rel="stylesheet" href="puzzle.css">
+    <link rel="stylesheet" href="../../common/connect.css">
+    <script src="puzzle.js" defer></script>
+    <script src="../../common/hint.js" defer></script>
+    <script src="../../common/triggerUnlock.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <img src="../../assets/5-locks/rusty-background.png" alt="rusty-bg" class="rusty-bg">
+    
+    <div class="game-part">
+        <div class="locks-container">
+            <div class="lock-mechanism" id="lock1">
+                <img src="../../assets/5-locks/lock1.png" class="lock-piece">
+                <div class="lock-dial"></div>
+            </div>
+            <div class="lock-mechanism" id="lock2">
+                <img src="../../assets/5-locks/lock2.png" class="lock-piece">
+                <div class="lock-dial"></div>
+            </div>
+            <div class="lock-mechanism" id="lock3">
+                <img src="../../assets/5-locks/lock3.png" class="lock-piece">
+                <div class="lock-dial"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="connect-container"></div>
+</body>
+</html> 
