@@ -2,46 +2,33 @@
     const messageElement = document.querySelector('.message');
     const urlParams = new URLSearchParams(window.location.search);
     const shipNo = urlParams.get('ship');
-    const gameNo = urlParams.get('gameNo');
-    const gameName = urlParams.get('game');
+    const gameId = urlParams.get('id');
     const shipMark = document.querySelector('.ship-mark');
-    let presetMessages = [];
 
     if (shipMark && shipNo) {
-        const image = document.querySelector('.character-image');
-        image.src = `../../assets/${gameName}/avatar.png` || '../../assets/default-avatar.png';
         shipMark.textContent = `#${shipNo}`;
     }
 
-    (async () => {
-        try {
-            const response = await fetch(`http://localhost:3000/getConnectDialogues?gameNo=${gameNo}`);
-            if (response.ok) {
-                presetMessages = await response.json();
-                if (messageElement) {
-                    messageElement.textContent = presetMessages[0] || "Default message";
-                }
-                startMessageUpdates();
-            } else {
-                console.error("Failed to fetch dialogues");
+    const checkGameData = setInterval(() => {
+        if (window.gameData) {
+            const image = document.querySelector('.character-image');
+            image.src = `../../assets/${window.gameData.titleName}/avatar.png`;
+            
+            if (messageElement && window.gameData.messages) {
+                messageElement.textContent = window.gameData.messages[0];
+                startMessageUpdates(window.gameData.messages);
             }
-        } catch (error) {
-            console.error("Error fetching dialogues:", error);
+            clearInterval(checkGameData);
         }
-    })();
+    }, 100);
 
-    function updateMessage() {
-        if (messageElement && presetMessages.length > 0) {
-            const index = Math.floor(Math.random() * presetMessages.length);
-            const newMessage = presetMessages[index];
-            messageElement.textContent = newMessage;
-            messageElement.style.color = "#735656";
-        }
-    }
-
-    function startMessageUpdates() {
-        if (messageElement && presetMessages.length > 0) {
-            setInterval(updateMessage, 6000);
-        }
+    function startMessageUpdates(messages) {
+        setInterval(() => {
+            if (messageElement && messages.length > 0) {
+                const index = Math.floor(Math.random() * messages.length);
+                messageElement.textContent = messages[index];
+                messageElement.style.color = "#735656";
+            }
+        }, 6000);
     }
 })();

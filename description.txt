@@ -1,0 +1,150 @@
+BROCODE Game Flow
+
+1. Entry Point (Intro)
+- Users start at intro.html
+- Enter their ship number (11-50)
+- See animated island and title
+- Receive introductory messages
+- Each game has unique IDs (introId, gameId, outroId)
+
+2. Game Structure
+Each game consists of 3 parts:
+a) Intro
+- Shows game title and story
+- Displays character avatar
+- Shows messages from gameData.introMessages
+- Leads to puzzle when ready
+
+b) Puzzle
+- Different types of puzzles (home, hatto, paradise, etc.)
+- Each puzzle has unique mechanics
+- Example: Home puzzle is a jigsaw/tile game
+- Puzzles can be unlocked by:
+  * Solving the puzzle
+  * Time-based hints (after 10 minutes)
+
+c) Outro
+- Shows completion message
+- Reveals clue letter and base mark
+- Provides transition to next game
+
+3. Data Management
+- Game progress stored in SQLite database
+- Tables:
+  * game_progress: Tracks completion status
+  * runtime_data: Stores game state
+
+4. Game IDs System
+- Each game has 3 unique IDs:
+  * introId: For intro section
+  * gameId: For puzzle section
+  * outroId: For outro section
+- IDs are used for routing and progress tracking
+
+5. Ship System
+- Ships numbered from 11 to 50
+- Each ship gets different:
+  * Base marks
+  * Clue letters
+  * Puzzle variations (4 sets)
+
+6. Technical Implementation
+Frontend:
+- HTML/CSS/JavaScript
+- No frameworks, pure vanilla implementation
+- Mobile-first design with touch controls
+- Common components (connect.js, hint.js)
+
+Backend:
+- Node.js/Express server
+- RESTful API endpoints
+- SQLite database
+- ImageKit for image assets
+
+7. Asset Management
+- Images served through ImageKit CDN
+- Custom fonts (Funky, Salsa, Gotham)
+- Responsive design for mobile devices
+
+8. Progress System
+- Tracks completion status
+- Handles unlocking mechanisms
+- Stores start times for hint system
+- Manages game state persistence
+
+This is a mobile-focused puzzle game with multiple stages, persistent progress, and a unique ship-based identification system. The game combines various puzzle types with a story-driven narrative, using a three-part structure (intro-puzzle-outro) for each game segment.
+BROCODE Game Flow
+
+1. Entry Point (Intro)
+- Users start at intro.html
+- Enter their ship number (11-50)
+- See animated island and title
+- Receive introductory messages
+- Each game has unique IDs (introId, gameId, outroId)
+
+2. Game Structure
+Each game consists of 3 parts:
+a) Intro
+- Shows game title and story
+- Displays character avatar
+- Shows messages from gameData.introMessages
+- Leads to puzzle when ready
+
+b) Puzzle
+- Different types of puzzles (home, hatto, paradise, etc.)
+- Each puzzle has unique mechanics
+- Example: Home puzzle is a jigsaw/tile game
+- Puzzles can be unlocked by:
+  * Solving the puzzle
+  * Time-based hints (after 10 minutes)
+
+c) Outro
+- Shows completion message
+- Reveals clue letter and base mark
+- Provides transition to next game
+
+3. Data Management
+- Game progress stored in SQLite database
+- Tables:
+  * game_progress: Tracks completion status
+  * runtime_data: Stores game state
+
+4. Game IDs System
+- Each game has 3 unique IDs:
+  * introId: For intro section
+  * gameId: For puzzle section
+  * outroId: For outro section
+- IDs are used for routing and progress tracking
+
+5. Ship System
+- Ships numbered from 11 to 50
+- Each ship gets different:
+  * Base marks
+  * Clue letters
+  * Puzzle variations (4 sets)
+
+6. Technical Implementation
+Frontend:
+- HTML/CSS/JavaScript
+- No frameworks, pure vanilla implementation
+- Mobile-first design with touch controls
+- Common components (connect.js, hint.js)
+
+Backend:
+- Node.js/Express server
+- RESTful API endpoints
+- SQLite database
+- ImageKit for image assets
+
+7. Asset Management
+- Images served through ImageKit CDN
+- Custom fonts (Funky, Salsa, Gotham)
+- Responsive design for mobile devices
+
+8. Progress System
+- Tracks completion status
+- Handles unlocking mechanisms
+- Stores start times for hint system
+- Manages game state persistence
+
+This is a mobile-focused puzzle game with multiple stages, persistent progress, and a unique ship-based identification system. The game combines various puzzle types with a story-driven narrative, using a three-part structure (intro-puzzle-outro) for each game segment.

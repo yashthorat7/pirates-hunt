@@ -1,16 +1,11 @@
 window.onload = () => {
-    const gameId = new URLSearchParams(window.location.search).get('id');
+    const outroId = new URLSearchParams(window.location.search).get('id');
     const shipNo = new URLSearchParams(window.location.search).get('ship');
 
-    if (!gameId || !shipNo) {
-        console.error('Missing gameId or shipNo parameters');
-        return;
-    }
-
-    fetch(`http://localhost:3000/api/outro?gameId=${gameId}&shipNo=${shipNo}`)
+    fetch(`http://localhost:3000/api/outro?outroId=${outroId}&shipNo=${shipNo}`)
         .then((response) => response.json())
         .then((data) => {
-            document.querySelector('.island-name').textContent = `${data.titleName} ISLAND`;
+            document.querySelector('.island-name').textContent = `${data.titleName.toUpperCase()} ISLAND`;
             document.querySelector('.character-image').src = `../assets/${data.titleName}/character-face2.png`;
             document.querySelector('.ship-code').textContent = `SHIP ${shipNo}`;
             document.querySelector('.clue-text').textContent = data.clueLetter;
@@ -18,9 +13,6 @@ window.onload = () => {
             document.querySelector('.chat-message').textContent = data.message;
             document.querySelector('.checkpoint-image').src = `../assets/checkpoints/${data.clueImageName}.png`;
         })
-        .catch(error => {
-            console.error('Error fetching outro data:', error);
-        });
 }
 
 let card = document.getElementById("card");

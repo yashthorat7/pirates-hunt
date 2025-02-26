@@ -2,23 +2,28 @@ const tiles = document.querySelectorAll('.tile');
 const grids = document.querySelectorAll('.grid');
 const SNAP_THRESHOLD = 80;
 const shipNo = new URLSearchParams(window.location.search).get('ship');
-const gameNo = 1;
-const gameName = 'home';
-const gameId = 'dsafe';
+const gameId = new URLSearchParams(window.location.search).get('id');
+let titleName;
 
 window.onload = function() {
     if (shipNo) {
-        fetch(`http://localhost:3000/getTiles?gameNo=${gameNo}&shipNo=${shipNo}`)
+        fetch(`http://localhost:3000/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`)
         .then(response => response.json())
         .then(data => {
             const tileImages = document.querySelectorAll('.tile img');
-            data.tiles.forEach((tileSrc, index) => {
-                if (tileImages[index]) {
-                    tileImages[index].src = tileSrc;
-                }
+            titleName = data.titleName;
+            const { fileName } = data;
+            
+            tileImages.forEach((img, index) => {
+                const tileNumber = index + 1;
+                img.src = `../../assets/home/${fileName}/tile (${tileNumber}).png`;
             });
+
+            window.gameData = {
+                titleName: data.titleName,
+                messages: data.messages
+            };
         });
-        fetch(`http://localhost:3000/setStartTime?gameNo=${gameNo}&shipNo=${shipNo}`);
     }
 };
 
@@ -80,7 +85,6 @@ function checkCompletion() {
     });
 
     if (allOccupied && allCorrect) {
-        fetch(`http://localhost:3000/getJigsawWin?shipNo=${shipNo}`);
         triggerUnlock();
     }
 }    

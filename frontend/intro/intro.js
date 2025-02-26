@@ -75,9 +75,7 @@ async function redirectToNextPage() {
     if (!gameData?.shipNo) return;
     
     try {
-        const response = await fetch(`http://localhost:3000/api/intro/move?gameId=${gameData.gameId}&shipNo=${gameData.shipNo}`);
-        if (!response.ok) throw new Error('Failed to fetch redirect link');
-        
+        const response = await fetch(`http://localhost:3000/api/intro/move?introId=${gameData.introId}&shipNo=${gameData.shipNo}`);
         const data = await response.json();
         window.location.href = data.redirect;
     } catch (error) {
@@ -128,21 +126,21 @@ function createRipple(container) {
 }
 
 async function initializeGame() {
-    const gameId = new URLSearchParams(window.location.search).get('id');
+    const introId = new URLSearchParams(window.location.search).get('id');
     try {
-        const response = await fetch(`http://localhost:3000/api/intro?gameId=${gameId}`);
+        const response = await fetch(`http://localhost:3000/api/intro?introId=${introId}`);
         if (!response.ok) throw new Error('Failed to fetch game data');
         
         const data = await response.json();
         gameData = {
             titleName: data.titleName,
-            gameId: gameId
+            introId: introId
         };
-        console.log(gameData.titleName, gameData.gameId);
+        console.log(gameData.titleName, gameData.introId);
         messages = data.messages;
 
         const titleElement = document.querySelector('.title-name');
-        titleElement.textContent = gameData.titleName;
+        titleElement.textContent = gameData.titleName.toUpperCase();
         
         const characterImage = document.querySelector('.character-image');
         characterImage.src = `../assets/${gameData.titleName}/character.png`;
