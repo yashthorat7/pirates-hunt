@@ -1,37 +1,25 @@
 const express = require('express');
 const router = express.Router();
 const gameData = require('../data/gameData');
-const { getGameProgress } = require('./db');
+// const { getGameProgress } = require('./db');
 
 router.get('/', async (req, res) => {
-    try {
-        const { gameId, shipNo } = req.query;
-        
-        if (!gameId || !shipNo) {
-            return res.status(400).json({ error: 'Missing required parameters' });
-        }
+    const { introId, shipNo } = req.query;
+    const index = gameData.introId.indexOf(introId);
+    const gameId = gameData.gameId[index];
+    const outroId = gameData.outroId[index];
+    // const progress = await getGameProgress(gameId, parseInt(shipNo));
+    // const isUnlocked = progress?.unlocked || 0;
+    const isUnlocked = 0;
 
-        const index = gameData.introId.indexOf(gameId);
-        if (index === -1) {
-            return res.status(404).json({ error: 'Invalid gameId' });
-        }
+    const titleName = gameData.titleName[index];
+    const redirectLink = isUnlocked 
+        ? `../outro/outro.html?ship=${shipNo}&id=${outroId}`
+        : `../puzzles/${titleName}/puzzle.html?ship=${shipNo}&id=${gameId}`;
 
-        const puzzleGameId = gameData.gameId[index];
-        const progress = await getGameProgress(gameId, parseInt(shipNo));
-        const isUnlocked = progress?.unlocked || 0;
-
-        const titleName = gameData.titleName[index];
-        const redirectLink = isUnlocked 
-            ? `../outro/outro.html?ship=${shipNo}&id=${puzzleGameId}`
-            : `../puzzles/${titleName}/puzzle.html?ship=${shipNo}&id=${puzzleGameId}`;
-
-        res.json({
-            redirect: redirectLink
-        });
-    } catch (error) {
-        console.error('Error in getIntroMove:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
+    res.json({
+        redirect: redirectLink
+    });
 });
 
 module.exports = router; 

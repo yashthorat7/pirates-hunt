@@ -1,22 +1,32 @@
 const express = require('express');
 const router = express.Router();
+const gameData = require('../data/gameData');
+const getHomeRouter = require('./puzzles/getHome');
 
-router.post('/', async (req, res) => {
-    try {
-        const { gameId, shipNo } = req.body;
+router.get('/', async (req, res) => {
+    const { gameId, shipNo } = req.query;
+    const index = gameData.gameId.findIndex(id => id === gameId);
+    const titleName = gameData.titleName[index];
+    const gameNo = index + 1;
+    const messages = gameData.connectMessages[gameNo];
+
+    // Call getHome route handler properly
+    const homeResponse = await new Promise((resolve) => {
+        const mockReq = { query: { shipNo } };
+        const mockRes = {
+            json: (data) => resolve(data)
+        };
         
-        if (!gameId || !shipNo) {
-            return res.status(400).json({ error: 'Missing required parameters' });
-        }
-        res.json({
-            titleName: 'Game Name',
-            setNo: 1,
-            gameData: {}
-        });
-    } catch (error) {
-        console.error('Error in getGame:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
+        getHomeRouter.stack
+            .find(layer => layer.route?.path === '/getHome')
+            .route.stack[0].handle(mockReq, mockRes);
+    });
+
+    res.json({
+        titleName,
+        messages,
+        ...homeResponse.puzzleData
+    });
 });
 
 module.exports = router;

@@ -2,40 +2,27 @@ const express = require('express');
 const router = express.Router();
 const gameData = require('../data/gameData');
 
-router.get('/', (req, res) => {
-    try {
-        const { gameId, shipNo } = req.query;
-        
-        if (!gameId || !shipNo) {
-            return res.status(400).json({ error: 'Missing gameId or shipNo parameter' });
-        }
+router.get('/', async (req, res) => {
+    const { outroId, shipNo } = req.query;
+    const index = gameData.outroId.findIndex(id => id === outroId);
+    const gameNo = index + 1;
+    const titleName = gameData.titleName[index];
+    const message = gameData.outroMessages[gameNo];
+    
+    const shipIndex = parseInt(shipNo) - 11;
+    const baseMark = gameData.baseMarks[shipIndex][index];
+    const clueLetter = gameData.clueLetters[shipIndex][index];
+    const clueImageName = gameData.clueImageName[baseMark - 1];
 
-        const index = gameData.outroId.indexOf(gameId);
-        
-        if (index === -1) {
-            return res.status(404).json({ error: 'Invalid gameId' });
-        }
+    console.log(titleName, baseMark, clueLetter, message, clueImageName);
 
-        const gameNo = index + 1;
-        const titleName = gameData.titleName[index];
-        const message = gameData.outroMessages[gameNo];
-        
-        const shipIndex = parseInt(shipNo) - 1;
-        const baseMark = gameData.baseMarks[shipIndex][gameNo - 1];
-        const clueLetter = gameData.clueLetters[shipIndex][gameNo - 1];
-        const clueImageName = gameData.clueImageName[baseMark - 1];
-
-        res.json({
-            titleName,
-            baseMark,
-            clueLetter,
-            message,
-            clueImageName
-        });
-    } catch (error) {
-        console.error('Error in getOutro:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
+    res.json({
+        titleName,
+        baseMark,
+        clueLetter,
+        message,
+        clueImageName
+    });
 });
 
 module.exports = router; 
