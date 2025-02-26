@@ -3,20 +3,20 @@ const path = require('path');
 
 const gameData = {
     introId: [
-        "vujkqpxyt", "zgwnlthdf", "odrbfajke", "xipmyelza", "twahqlkto",
-        "ndojrmxyp", "kuzpfidhc", "ylxqtwoba", "cmhajrvnz", "veqlknstu"
+        "vujkqpxyt", "zgwnlthdf", "odrbfajke", "xipmyelza", "ndojrmxyp",
+        "kuzpfidhc", "ylxqtwoba", "cmhajrvnz", "veqlknstu"
     ],
     gameId: [
-        "qkwzohpfa", "votrpjlek", "nxehdfzuy", "zyquablmn", "wdoktmprs",
-        "parvgsjwx", "xiehlcqby", "flzqtpmdn", "hcmujnves", "skidrpowa"
+        "qkwzohpfa", "votrpjlek", "nxehdfzuy", "zyquablmn", "parvgsjwx",
+        "xiehlcqby", "flzqtpmdn", "hcmujnves", "skidrpowa"
     ],
     outroId: [
-        "bhxrmqjky", "kouvlnatz", "twyzfjepq", "lapgmrchs", "vzonkeubl",
-        "dithcqawy", "fmxpljokn", "qbrnkswxy", "jwlefoatz", "czkvutgrs"
+        "bhxrmqjky", "kouvlnatz", "twyzfjepq", "lapgmrchs", "dithcqawy", 
+        "fmxpljokn", "qbrnkswxy", "jwlefoatz", "czkvutgrs"
     ],
     titleName: [
-        "HOME", "HATTORI", "PARADISE", "GOKU", "AYASE",
-        "SAITAMA", "YAGAMI", "HOLO", "TANJIRO", "UCHIHA"
+        "HOME", "HATTORI", "PARADISE", "GOKU", "SAITAMA",
+        "YAGAMI", "HOLO", "TANJIRO", "UCHIHA"
     ],
     count360: {
         counts: [
@@ -118,11 +118,6 @@ const gameData = {
             "The Pirate’s Revenge is on! Sail through storms and dangerous waters.",
             "Upgrade your ship, gather supplies, and fight to be the Pirate King!",
             "Survive, find allies, and claim your loot!"
-        ],
-        "10": [
-            "Ahoy, mate! Your journey starts on a mysterious island.",
-            "Explore the jungle, solve puzzles, and find hidden pirate treasure.",
-            "Danger’s around every corner, so stay sharp and trust your gut!"
         ]
     },
     connectMessages: {
@@ -170,11 +165,6 @@ const gameData = {
             "The Pirate’s Revenge is on! Sail through storms and dangerous waters.",
             "Upgrade your ship, gather supplies, and fight to be the Pirate King!",
             "Survive, find allies, and claim your loot!"
-        ],
-        "10": [
-            "Ahoy, mate! Your journey starts on a mysterious island.",
-            "Explore the jungle, solve puzzles, and find hidden pirate treasure.",
-            "Danger’s around every corner, so stay sharp and trust your gut!"
         ]
     },
     outroMessages: {
@@ -186,8 +176,7 @@ const gameData = {
         "6": "This is the sixth game",
         "7": "This is the seventh game",
         "8": "This is the eighth game",
-        "9": "This is the ninth game",
-        "10": "This is the tenth game"
+        "9": "This is the ninth game"
     },
     baseMarks: [
         [5, 8, 3, 1, 12, 10, 15, 13, 18],
