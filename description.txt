@@ -91,7 +91,7 @@ a) Intro
 - Leads to puzzle when ready
 
 b) Puzzle
-- Different types of puzzles (home, hatto, paradise, etc.)
+- Different types of puzzles (home, hattori, paradise, etc.)
 - Each puzzle has unique mechanics
 - Example: Home puzzle is a jigsaw/tile game
 - Puzzles can be unlocked by:
