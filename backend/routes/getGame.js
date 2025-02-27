@@ -3,6 +3,7 @@ const router = express.Router();
 const gameData = require('../data/gameData');
 const getHomeRouter = require('./puzzles/getHome');
 const getHattoriRouter = require('./puzzles/getHattori');
+const getParadiseRouter = require('./puzzles/getParadise');
 
 router.get('/', async (req, res) => {
     const { gameId, shipNo } = req.query;
@@ -26,6 +27,13 @@ router.get('/', async (req, res) => {
             puzzleData = await new Promise(resolve => {
                 getHattoriRouter.stack
                     .find(layer => layer.route?.path === '/getHattori')
+                    .route.stack[0].handle(mockReq, { json: resolve });
+            });
+            break;
+        case 3:
+            puzzleData = await new Promise(resolve => {
+                getParadiseRouter.stack
+                    .find(layer => layer.route?.path === '/getParadise')
                     .route.stack[0].handle(mockReq, { json: resolve });
             });
             break;

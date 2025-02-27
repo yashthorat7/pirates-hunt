@@ -1,7 +1,5 @@
 const shipNo = new URLSearchParams(window.location.search).get('ship');
-const gameNo = 3;
-const gameName = '3-maze';
-const gameId = 'sdeil';
+const gameId = new URLSearchParams(window.location.search).get('id');
 
 window.onload = async function() {
     if (shipNo) {
@@ -10,12 +8,21 @@ window.onload = async function() {
             shipMarkElement.textContent = `#${shipNo}`;
         }
 
-        fetch(`http://localhost:3000/getMaze?shipNo=${shipNo}&gameNo=${gameNo}`)
+        fetch(`http://localhost:3000/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`)
         .then(response => response.json())
         .then(data => {
-            createMaze(data.mazeData);
+            titleName = data.titleName;
+            fetch(`../../assets/paradise/${data.fileName}.json`)
+            .then(response => response.json())
+            .then(mazeData => {
+                createMaze(mazeData.maze);
+            });
+
+            window.gameData = {
+                titleName: data.titleName,
+                messages: data.messages
+            };
         });
-        fetch(`http://localhost:3000/setStartTime?shipNo=${shipNo}&gameNo=${gameNo}`)
     }
 };
 
@@ -52,14 +59,14 @@ function createMaze(mazeData) {
                     const touchCell = document.createElement('div');
                     touchCell.classList.add('touch-cell');
                     const touchImage = document.createElement('img');
-                    touchImage.src = '../../assets/3-maze/touch.png';
+                    touchImage.src = '../../assets/paradise/touch.png';
                     touchCell.appendChild(touchImage);
                     cellElement.appendChild(touchCell);
 
                     const startCell = document.createElement('div');
                     startCell.classList.add('start-cell');
                     const startImage = document.createElement('img');
-                    startImage.src = '../../assets/3-maze/stickman.png';
+                    startImage.src = '../../assets/paradise/stickman.png';
                     startImage.alt = 'Start Stickman';
                     startCell.appendChild(startImage);
                     cellElement.appendChild(startCell);
@@ -78,7 +85,7 @@ function createMaze(mazeData) {
                     const endCell = document.createElement('div');
                     endCell.classList.add('end-cell');
                     const endImage = document.createElement('img');
-                    endImage.src = '../../assets/3-maze/card-icon.png';
+                    endImage.src = '../../assets/paradise/card-icon.png';
                     endImage.alt = 'End Icon';
                     endCell.appendChild(endImage);
                     cellElement.appendChild(endCell);
@@ -136,8 +143,13 @@ function checkForWin() {
     const lastCol = mazeWidth - 1;
 
     if (playerRow === lastRow && playerCol === lastCol) {
-        fetch(`http://localhost:3000/getMazeWin?shipNo=${shipNo}&gameNo=${gameNo}`)
-        triggerUnlock();
+        fetch(`http://localhost:3000/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.hasWon) {
+                triggerUnlock(data.redirect);
+            }
+        });
     }
 }
 
