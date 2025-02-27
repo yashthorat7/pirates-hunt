@@ -58,11 +58,11 @@ function handleVerificationClick() {
         parseInt(document.querySelector('.counter-box:nth-child(4) .number-box span').textContent)
     ];
 
-    fetch(`http://localhost:3000/api/puzzle/hattori/win?shipNo=${shipNo}&userInputs=${JSON.stringify(userInputs)}`)
+    fetch(`http://localhost:3000/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${JSON.stringify(userInputs)}`)
     .then(response => response.json())
     .then(data => {
         if (data.hasWon) {
-            triggerUnlock();
+            triggerUnlock(data.redirect);
         } else {
             const messageElement = document.querySelector('.message');
             messageElement.textContent = "Something's incorrect.";

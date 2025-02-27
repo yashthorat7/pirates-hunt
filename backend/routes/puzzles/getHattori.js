@@ -22,14 +22,19 @@ router.get('/getHattori', async (req, res) => {
 });
 
 router.get('/getHattoriWin', async (req, res) => {
-    const { shipNo } = req.query;
-    const userInputs = JSON.parse(req.query.userInputs);
-    const setNo = ((parseInt(shipNo) - 11) % 4);
+    const { shipNo, userInputs } = req.query;
+    const setNo = (parseInt(shipNo, 10) - 11) % 4;
     const correctCount = counts[setNo];
     
-    const hasWon = correctCount.every((value, index) => value === userInputs[index]);
-    
-    res.json({ hasWon });
+    try {
+        const parsedInputs = JSON.parse(userInputs);
+        const inputs = Array.isArray(parsedInputs) ? parsedInputs.map(Number) : [];
+        const hasWon = correctCount.every((v, i) => v === inputs[i]);
+        console.log(correctCount,inputs,hasWon);
+        res.json({ hasWon });
+    } catch {
+        res.json({ hasWon: false });
+    }
 });
 
 module.exports = router;

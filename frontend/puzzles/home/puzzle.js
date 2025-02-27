@@ -85,7 +85,13 @@ function checkCompletion() {
     });
 
     if (allOccupied && allCorrect) {
-        triggerUnlock();
+        fetch(`http://localhost:3000/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.hasWon) {
+                triggerUnlock(data.redirect);
+            }
+        });
     }
 }    
 

@@ -1,4 +1,4 @@
-function triggerUnlock() {
+function triggerUnlock(redirectLink) {
     if (navigator.vibrate) {
         navigator.vibrate([100, 50, 400]);
     }
@@ -12,19 +12,5 @@ function triggerUnlock() {
         origin: { y: 0.9 },
         tick: 1500,
     });
-
-    fetch(`http://localhost:3000/api/puzzle/move`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            gameId,
-            shipNo
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        setTimeout(() => window.location.href = data.redirect, 2000);
-    });
+    setTimeout(() => window.location.href = redirectLink, 2000);
 }
