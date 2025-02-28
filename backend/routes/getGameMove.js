@@ -7,7 +7,7 @@ const getParadiseRouter = require('./puzzles/getParadise');
 const getGokuRouter = require('./puzzles/getGoku');
 const getSaitamaRouter = require('./puzzles/getSaitama');
 const getYagamiRouter = require('./puzzles/getYagami');
-
+const getHoloRouter = require('./puzzles/getHolo');
 router.get('/', async (req, res) => {
     const { gameId, shipNo, userInputs } = req.query;
     const index = gameData.gameId.findIndex(id => id === gameId);
@@ -57,6 +57,13 @@ router.get('/', async (req, res) => {
             result = await new Promise(resolve => {
                 getYagamiRouter.stack
                     .find(layer => layer.route?.path === '/getYagamiWin')
+                    .route.stack[0].handle(mockReq, { json: resolve });
+            });
+            break;
+        case 7:
+            result = await new Promise(resolve => {
+                getHoloRouter.stack
+                    .find(layer => layer.route?.path === '/getHoloWin')
                     .route.stack[0].handle(mockReq, { json: resolve });
             });
             break;

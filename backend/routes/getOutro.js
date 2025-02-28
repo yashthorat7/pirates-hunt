@@ -17,11 +17,7 @@ router.get('/', async (req, res) => {
     console.log(titleName, baseMark, clueLetter, message, clueImageName);
 
     res.json({
-        titleName,
-        baseMark,
-        clueLetter,
-        message,
-        clueImageName
+        titleName,  baseMark, clueLetter, message, clueImageName
     });
 });
 

@@ -1,21 +1,43 @@
+let remainingCount;
 let clickCounter = 0;
 let randomNum;
 let isLost = false;
-gameNo = 8;
+let maxLives;
+const gameId = new URLSearchParams(window.location.search).get('id');
 const shipNo = new URLSearchParams(window.location.search).get('ship');
 
-window.onload = function() {
-    fetch(`http://localhost:3000/setStartTime?gameNo=${gameNo}&shipNo=${shipNo}`)
+window.onload = async function() {
+    const response = await fetch(`http://localhost:3000/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`);
+    const data = await response.json();
+    maxLives = data.lives;
+    remainingCount = maxLives;
+
+    window.gameData = {
+        titleName: data.titleName,
+        messages: data.messages
+    };
+
+    updateProgressBar();
 };
 
 async function updateProgressBar() {
     const progressFill = document.querySelector('.progress-fill');
     const progressMessage = document.querySelector('.progress-message');
 
-    const response = await fetch(`http://localhost:3000/getGhostWin?shipNo=${shipNo}&clickCounter=${clickCounter}`);
-    const progressPercentage = await response.json();
-    progressFill.style.width = `${progressPercentage}%`;
-    progressMessage.textContent = `${Math.round(progressPercentage)}%`;
+    const percentage = (clickCounter / maxLives) * 100;
+    progressFill.style.width = `${percentage}%`;
+    progressMessage.textContent = `${Math.round(percentage)}%`;
+
+    if (clickCounter >= maxLives) {
+        const response = await fetch(`http://localhost:3000/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${remainingCount}`);
+        const data = await response.json();
+        if (data.hasWon) {
+            document.querySelector('.game-part').style.pointerEvents = 'none';
+            if (data.redirect) {
+                triggerUnlock(data.redirect);
+            }
+        }
+    }
 }
 
 function updateGhostDisplay(randomNum) {
@@ -51,6 +73,8 @@ function handleMoving() {
     
     if (!isLost) {
         clickCounter++;
+        remainingCount--;
+        console.log(clickCounter, "  ", remainingCount);
         updateProgressBar();
         const progressFill = document.querySelector('.progress-fill');
         if (progressFill >= 100) {

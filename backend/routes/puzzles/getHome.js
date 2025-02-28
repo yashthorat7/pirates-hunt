@@ -17,7 +17,6 @@ router.get('/getHome', async (req, res) => {
 
 router.get('/getHomeWin', async (req, res) => {
     const { shipNo } = req.query;
-    // TODO: will as time thing
     res.json( {
         hasWon: true
     });

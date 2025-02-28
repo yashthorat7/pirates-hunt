@@ -16,7 +16,6 @@ router.get('/getSaitama', async (req, res) => {
     const word = pirateWords[randomIndex];
     assignedWord[shipNo] = word;
 
-    console.log(word);
     res.json({
         puzzleData: {
             word
