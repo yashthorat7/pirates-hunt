@@ -1,7 +1,6 @@
 const shipNo = new URLSearchParams(window.location.search).get('ship');
-const gameNo = 6;
-const gameName = '6-wordGuess';
-const gameId = 'riqjn';
+const gameId = new URLSearchParams(window.location.search).get('id');
+let titleName;
 
 let currentGuess = '';
 let currentRow = 0;
@@ -10,12 +9,18 @@ const rows = 6;
 const columns = 5;
 
 window.onload = () => {
-    const shipMark = document.querySelector('.ship-mark');
-    shipMark.textContent = `#${shipNo}`;
-    fetch(`http://localhost:3000/setStartTime?gameNo=${gameNo}&shipNo=${shipNo}`);
-    fetch(`http://localhost:3000/getWord?shipNo=${shipNo}`);
+    if (shipNo) {
+        fetch(`http://localhost:3000/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`)
+        .then(response => response.json())
+        .then(data => {
+            titleName = data.titleName;
+            window.gameData = {
+                titleName: data.titleName,
+                messages: data.messages
+            };
+        });
+    }
 };
-
 
 document.querySelectorAll('.key').forEach(key => {
     key.addEventListener('click', () => {
@@ -67,7 +72,7 @@ function submitGuess() {
 }
 
 function checkWordWin(chosenAnswer) {
-    fetch(`http://localhost:3000/getWordWin?shipNo=${shipNo}&chosenAnswer=${chosenAnswer}`)
+    fetch(`http://localhost:3000/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${JSON.stringify(chosenAnswer)}`)
     .then(response => response.json())
     .then(data => {
         const { verdictArray } = data;
@@ -86,9 +91,9 @@ function checkWordWin(chosenAnswer) {
                 }
             }, 300);
         });
-        const isAllCorrect = verdictArray.every(val => val === 2);
-        if (isAllCorrect) {
-            triggerUnlock();
+
+        if (data.hasWon) {
+            triggerUnlock(data.redirect);
         } else {
             handleIncorrectGuess();
         }
@@ -147,7 +152,6 @@ fetch('../../common/connect.html')
     .then(response => response.text())
     .then(data => {
         document.querySelector('.connect-container').innerHTML = data;
-
         const script = document.createElement('script');
         script.src = '../../common/connect.js';
         document.body.appendChild(script);
