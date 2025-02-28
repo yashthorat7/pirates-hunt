@@ -9,7 +9,7 @@ const getSaitamaRouter = require('./puzzles/getSaitama');
 const getYagamiRouter = require('./puzzles/getYagami');
 const getHoloRouter = require('./puzzles/getHolo');
 const getTanjiroRouter = require('./puzzles/getTanjiro');
-
+const getUchihaRouter = require('./puzzles/getUchiha');
 router.get('/', async (req, res) => {
     const { gameId, shipNo, userInputs } = req.query;
     const index = gameData.gameId.findIndex(id => id === gameId);
@@ -73,6 +73,13 @@ router.get('/', async (req, res) => {
             result = await new Promise(resolve => {
                 getTanjiroRouter.stack
                     .find(layer => layer.route?.path === '/getTanjiroWin')
+                    .route.stack[0].handle(mockReq, { json: resolve });
+            });
+            break;
+        case 9:
+            result = await new Promise(resolve => {
+                getUchihaRouter.stack
+                    .find(layer => layer.route?.path === '/getUchihaWin')
                     .route.stack[0].handle(mockReq, { json: resolve });
             });
             break;

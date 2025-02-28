@@ -1,17 +1,26 @@
+const gameId = new URLSearchParams(window.location.search).get('id');
 const shipNo = new URLSearchParams(window.location.search).get('ship');
-const gameNo = 10;
-const buttons = document.querySelectorAll('.dial-button');
+const numberButtons = document.querySelectorAll('.dial-button:not(:nth-child(9))');
+const submitButton = document.querySelector('.dial-button:nth-child(9)');
 let maplink = '';
 
-window.onload = () => {
-    if (shipNo && gameNo) {
+window.onload = async () => {
+    if (shipNo) {
+        const response = await fetch(`http://localhost:3000/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`);
+        const data = await response.json();
+        
+        window.gameData = {
+            titleName: data.titleName
+        };
+
         const shipMark = document.querySelector('.ship-mark');
-        shipMark.textContent = `#${shipNo}`;
-        fetch(`http://localhost:3000/setStartTime?gameNo=${gameNo}&shipNo=${shipNo}`);
+        if (shipMark) {
+            shipMark.textContent = `#${shipNo}`;
+        }
     }
 };
 
-buttons.forEach(button => {
+numberButtons.forEach(button => {
     button.addEventListener('click', () => {
         const currentLetter = button.textContent;
         const nextLetter = getNextLetter(currentLetter);
@@ -19,44 +28,58 @@ buttons.forEach(button => {
         button.style.fontSize = '18vw';
         button.style.fontFamily = 'Ancient';
         button.style.color = '#ff0000b4';
-        checkWin();
     });
+});
+
+submitButton.addEventListener('click', () => {
+    checkWin();
 });
 
 function getNextLetter(current) {
     const letters = 'ABCDEFGHI';
     const currentIndex = letters.indexOf(current);
-    return currentIndex === -1 || currentIndex === 8 ? 'A' : letters[currentIndex + 1];
+    return currentIndex === -1 ? 'A' : letters[(currentIndex + 1) % letters.length];
 }
 
 function checkWin() {
-    const buttons = Array.from(document.querySelectorAll('.dial-button'))
+    const buttons = Array.from(document.querySelectorAll('.dial-button:not(:nth-child(9))'))
         .sort((a, b) => a.className.match(/\d+/) - b.className.match(/\d+/));
-    const guessedArray = buttons.map(button => button.textContent.trim()).join('');   
-    if (!/^[A-Z]+$/.test(guessedArray)) {
+    const guessedArray = buttons.map(button => button.textContent.trim());
+    
+    if (!/^[A-I]+$/.test(guessedArray.join(''))) {
         return false;
     }
-    if (new Set(guessedArray).size !== guessedArray.length) {
+
+    const uniqueElements = new Set(guessedArray);
+    if (uniqueElements.size !== guessedArray.length) {
+        if (navigator.vibrate) {
+            navigator.vibrate(400);
+        }
         return false;
     }
-    fetch(`http://localhost:3000/getManuscriptWin?shipNo=${shipNo}&guessedArray=${guessedArray}`)
-    .then(response => response.json())
-    .then(data => {
-        maplink = data.maplink;
-        if (data.hasWon) UnlockTrigger();
-    })
+    
+    fetch(`http://localhost:3000/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${JSON.stringify(guessedArray)}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.hasWon) {
+                UnlockTrigger();
+                if (data.fileName) {
+                    setTimeout(() => {
+                        const image = document.createElement('img');
+                        image.classList.add('map-image');
+                        image.src = data.fileName;
+                        document.querySelector('.game-part').appendChild(image);
+                    }, 500);
+                }
+            }
+        });
 }
 
 function UnlockTrigger() {
     if (navigator.vibrate) {
         navigator.vibrate([100, 50, 400]);
     }
-    fetch(`http://localhost:3000/setEndTime?gameNo=${gameNo}&shipNo=${shipNo}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
+    
     confetti({
         particleCount: 100,
         spread: 30,
@@ -67,6 +90,7 @@ function UnlockTrigger() {
         origin: { y: 0.9 },
         tick: 1500,
     });
+    
     document.querySelectorAll('.dial-button').forEach(button => {
         button.style.animation = 'zoom-out 1s ease-in-out';
         button.style.pointerEvents = 'none';
@@ -74,11 +98,4 @@ function UnlockTrigger() {
             button.remove();
         }, 960);
     });
-
-    setTimeout(() => {
-        const image = document.createElement('img');
-        image.classList.add('map-image');
-        image.src = maplink;
-        document.querySelector('.game-part').appendChild(image);
-    }, 500);
 }

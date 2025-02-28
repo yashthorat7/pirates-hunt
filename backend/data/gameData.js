@@ -133,11 +133,6 @@ const gameData = {
             "Yo ho ho! Prepare for a wild ride on the Pirate King’s ship.",
             "Battle rival pirates, solve riddles, and unlock new treasures.",
             "Trust your compass and watch out for treacherous waters!"
-        ],
-        "9": [
-            "The Pirate’s Revenge is on! Sail through storms and dangerous waters.",
-            "Upgrade your ship, gather supplies, and fight to be the Pirate King!",
-            "Survive, find allies, and claim your loot!"
         ]
     },
     outroMessages: {
@@ -148,8 +143,7 @@ const gameData = {
         "5": "This is the fifth game",
         "6": "This is the sixth game",
         "7": "This is the seventh game",
-        "8": "This is the eighth game",
-        "9": "This is the ninth game"
+        "8": "This is the eighth game"
     },
     baseMarks: [
         [5, 8, 3, 1, 12, 10, 15, 13, 18],
