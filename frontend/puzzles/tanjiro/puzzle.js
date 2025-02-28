@@ -1,13 +1,17 @@
 let guessedNumbers = new Set();
 let isFirstGuess = true;
-const gameNo = 9;
+const gameId = new URLSearchParams(window.location.search).get('id');
 const shipNo = new URLSearchParams(window.location.search).get('ship');
 
-window.onload = () => {
+window.onload = async () => {
     if (shipNo) {
-        const shipMark = document.querySelector('.ship-mark');
-        shipMark.textContent = `#${shipNo}`;
-        fetch(`http://localhost:3000/setStartTime?gameNo=${gameNo}&shipNo=${shipNo}`);
+        const response = await fetch(`http://localhost:3000/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`);
+        const data = await response.json();
+        
+        window.gameData = {
+            titleName: data.titleName,
+            messages: data.messages
+        };
     }
 };
 
@@ -42,20 +46,21 @@ function handleGuessClick() {
     }, 100);
 }
 
-function compareNumbers(guessedNumber) {
-    fetch(`http://localhost:3000/getBullsNCows?shipNo=${shipNo}&guessedNo=${guessedNumber}`)
-        .then(response => response.json())
-        .then(data => {
-            const [guessedNo, bulls, cows] = data.verdictArray;
+async function compareNumbers(guessedNumber) {
+    const response = await fetch(`http://localhost:3000/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${guessedNumber}`);
+    const data = await response.json();
+    
+    const [guessedNo, bulls, cows] = data.verdictArray;
 
-            if (bulls + cows === 4 && bulls !== 4) {
-                showErrorMessage("You found the right numbers... now just rearrange them");
-            } else if (bulls === 4) {
-                document.querySelector('.game-part').style.userSelect = 'none';
-                triggerUnlock();
-            }
-            logResult(guessedNo, bulls, cows);
-        });
+    if (bulls + cows === 4 && bulls !== 4) {
+        showErrorMessage("You found the right numbers... now just rearrange them");
+    } else if (data.hasWon) {
+        document.querySelector('.game-part').style.userSelect = 'none';
+        if (data.redirect) {
+            triggerUnlock(data.redirect);
+        }
+    }
+    logResult(guessedNo, bulls, cows);
 }
 
 function logResult(guessedNumber, bulls, cows) {
@@ -91,24 +96,6 @@ function logResult(guessedNumber, bulls, cows) {
     logEntry.appendChild(resultContainer);
     logBox.appendChild(logEntry);
     logBox.scrollTop = logBox.scrollHeight;
-}
-
-function checkForHint() {
-    fetch(`http://localhost:3000/getHint?gameNo=${gameNo}&shipNo=${shipNo}`)
-    .then(response => {
-        if (response.status === 204) {
-            return null;
-        } else if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data && data.message && data.link) {
-            alert(data.message);
-            window.location.href = data.link;
-        }
-    })
 }
 
 function showErrorMessage(message) {

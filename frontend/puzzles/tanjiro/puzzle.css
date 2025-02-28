@@ -1,16 +1,16 @@
 @font-face {
     font-family: 'Salsa';
-    src: url('../assets/fonts/salsa.ttf') format('truetype');
+    src: url('../../assets/fonts/salsa.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'Gotham';
-    src: url('../assets/fonts/gotham.ttf') format('truetype');
+    src: url('../../assets/fonts/gotham.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'Quicksand';
-    src: url('../assets/fonts/quicksand.ttf') format('truetype');
+    src: url('../../assets/fonts/quicksand.ttf') format('truetype');
 }
 
 * {

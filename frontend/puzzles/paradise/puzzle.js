@@ -3,11 +3,6 @@ const gameId = new URLSearchParams(window.location.search).get('id');
 
 window.onload = async function() {
     if (shipNo) {
-        const shipMarkElement = document.querySelector('.ship-mark');
-        if (shipMarkElement) {
-            shipMarkElement.textContent = `#${shipNo}`;
-        }
-
         fetch(`http://localhost:3000/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`)
         .then(response => response.json())
         .then(data => {

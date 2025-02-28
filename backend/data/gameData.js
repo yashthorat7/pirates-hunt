@@ -18,25 +18,17 @@ const gameData = {
         "home", "hattori", "paradise", "goku", "saitama",
         "yagami", "holo", "tanjiro", "uchiha"
     ],
-    bullsNCows: {
-        secretCodes: [
-            "6209", "8137", "8402", "9634", "7019", "2834", "9061", "3876", "5709", "9501",
-            "1269", "7930", "7069", "8125", "5293", "3196", "1795", "8635", "7930", "7481",
-            "4238", "8710", "9732", "8650", "9502", "8135", "3945", "9734", "4529", "2584",
-            "8637", "4823", "6781", "2953", "0695", "8076", "3518", "9573", "7148", "6582"
-        ]
-    },
     stoneJump: {
         questionSet: [
-            { riddleNo: 1, options: ['10', '20', '30'], correctAns: '10' },
-            { riddleNo: 2, options: ['11', '21', '31'], correctAns: '21' },
-            { riddleNo: 3, options: ['12', '22', '32'], correctAns: '32' },
-            { riddleNo: 4, options: ['13', '23', '33'], correctAns: '13' },
-            { riddleNo: 5, options: ['14', '24', '34'], correctAns: '14' },
-            { riddleNo: 6, options: ['15', '25', '35'], correctAns: '25' },
-            { riddleNo: 7, options: ['16', '26', '36'], correctAns: '16' },
-            { riddleNo: 8, options: ['17', '27', '37'], correctAns: '17' },
-            { riddleNo: 9, options: ['18', '28', '38'], correctAns: '28' },
+            { riddleNo:  1, options: ['10', '20', '30'], correctAns: '10' },
+            { riddleNo:  2, options: ['11', '21', '31'], correctAns: '21' },
+            { riddleNo:  3, options: ['12', '22', '32'], correctAns: '32' },
+            { riddleNo:  4, options: ['13', '23', '33'], correctAns: '13' },
+            { riddleNo:  5, options: ['14', '24', '34'], correctAns: '14' },
+            { riddleNo:  6, options: ['15', '25', '35'], correctAns: '25' },
+            { riddleNo:  7, options: ['16', '26', '36'], correctAns: '16' },
+            { riddleNo:  8, options: ['17', '27', '37'], correctAns: '17' },
+            { riddleNo:  9, options: ['18', '28', '38'], correctAns: '28' },
             { riddleNo: 10, options: ['19', '29', '39'], correctAns: '29' },
             { riddleNo: 11, options: ['20', '30', '40'], correctAns: '30' },
             { riddleNo: 12, options: ['21', '31', '41'], correctAns: '31' },
@@ -53,17 +45,6 @@ const gameData = {
             { riddleNo: 23, options: ['32', '42', '52'], correctAns: '32' },
             { riddleNo: 24, options: ['33', '43', '53'], correctAns: '43' }
         ]
-    },
-    wordGuess: {
-        pirateWords: [
-            "SHARK", "SWORD", "STORY", "COUNT",
-            "CHEST", "SKULL", "BLACK", "WHITE",
-            "STORM", "CORAL", "MUSIC", "DANCE",
-            "SOUND", "RUMOR", "SLEEP", "SCORE"
-        ]
-    },
-    ghost: {
-        maxLives: 150
     },
     introMessages: {
         "1": [
