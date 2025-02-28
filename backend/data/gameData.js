@@ -18,14 +18,6 @@ const gameData = {
         "home", "hattori", "paradise", "goku", "saitama",
         "yagami", "holo", "tanjiro", "uchiha"
     ],
-    count360: {
-        counts: [
-            [2, 1, 11, 4],
-            [3, 1, 16, 7],
-            [1, 1, 12, 2],
-            [0, 1, 19, 6]
-        ]
-    },
     bullsNCows: {
         secretCodes: [
             "6209", "8137", "8402", "9634", "7019", "2834", "9061", "3876", "5709", "9501",
@@ -71,7 +63,7 @@ const gameData = {
         ]
     },
     ghost: {
-        maxLives: 100
+        maxLives: 150
     },
     introMessages: {
         "1": [

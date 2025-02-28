@@ -4,6 +4,9 @@ const gameData = require('../data/gameData');
 const getHomeRouter = require('./puzzles/getHome');
 const getHattoriRouter = require('./puzzles/getHattori');
 const getParadiseRouter = require('./puzzles/getParadise');
+const getGokuRouter = require('./puzzles/getGoku');
+const getSaitamaRouter = require('./puzzles/getSaitama');
+const getYagamiRouter = require('./puzzles/getYagami');
 
 router.get('/', async (req, res) => {
     const { gameId, shipNo } = req.query;
@@ -34,6 +37,27 @@ router.get('/', async (req, res) => {
             puzzleData = await new Promise(resolve => {
                 getParadiseRouter.stack
                     .find(layer => layer.route?.path === '/getParadise')
+                    .route.stack[0].handle(mockReq, { json: resolve });
+            });
+            break;
+        case 4:
+            puzzleData = await new Promise(resolve => {
+                getGokuRouter.stack
+                    .find(layer => layer.route?.path === '/getGoku')
+                    .route.stack[0].handle(mockReq, { json: resolve });
+            });
+            break;
+        case 5:
+            puzzleData = await new Promise(resolve => {
+                getSaitamaRouter.stack
+                    .find(layer => layer.route?.path === '/getSaitama')
+                    .route.stack[0].handle(mockReq, { json: resolve });
+            });
+            break;
+        case 6:
+            puzzleData = await new Promise(resolve => {
+                getYagamiRouter.stack
+                    .find(layer => layer.route?.path === '/getYagami')
                     .route.stack[0].handle(mockReq, { json: resolve });
             });
             break;

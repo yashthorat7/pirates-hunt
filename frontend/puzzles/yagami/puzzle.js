@@ -1,7 +1,5 @@
 const shipNo = new URLSearchParams(window.location.search).get('ship');
-const gameNo = 7;
-const gameName = '7-slides';
-const gameId = 'eiern';
+const gameId = new URLSearchParams(window.location.search).get('id');
 
 const cols = 3;
 const rows = 3;
@@ -12,23 +10,23 @@ let blocks = document.getElementsByClassName("puzzle-block");
 
 initGame(1);
 window.onload = function() {
-    const shipMarkElement = document.querySelector('.ship-mark');
-    if (shipMarkElement) {
-        shipMarkElement.textContent = `#${shipNo}`;
-    }
-
     if (shipNo) {
-        fetch(`http://localhost:3000/getSlides?gameNo=${gameNo}&shipNo=${shipNo}`)
+        fetch(`http://localhost:3000/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`)
         .then(response => response.json())
         .then(data => {
             const slideImages = document.querySelectorAll('.puzzle-block img');
-            data.slides.forEach((slideSrc, index) => {
-                if (slideImages[index]) {
-                    slideImages[index].src = slideSrc;
-                }
+            const { fileName } = data;
+            
+            slideImages.forEach((img, index) => {
+                const slideNumber = index + 1;
+                img.src = `../../assets/yagami/${fileName}/slide (${slideNumber}).png`;
             });
+
+            window.gameData = {
+                titleName: data.titleName,
+                messages: data.messages
+            };
         });
-        fetch(`http://localhost:3000/setStartTime?gameNo=${gameNo}&shipNo=${shipNo}`);
     }
 };
 
@@ -98,12 +96,17 @@ function canMoveBlock(block) {
 function onClickOnBlock(blockIdx) {
     if (moveBlock(blockIdx)) {
         if (checkPuzzleSolved()) {
-            document.querySelector('.game-part').style.pointerEvents = 'none'; 
-            fetch(`http://localhost:3000/getSlidesWin?gameNo=${gameNo}&shipNo=${shipNo}`)
+            document.querySelector('.game-part').style.pointerEvents = 'none';
             const emptyElement = document.querySelector('.empty');
             emptyElement.style.opacity = '1';
             emptyElement.style.animation = 'bounce-in 0.3s ease-in-out';
-            triggerUnlock();
+            fetch(`http://localhost:3000/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.hasWon) {
+                    triggerUnlock(data.redirect);
+                }
+            });
         }
     }
 }
