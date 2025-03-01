@@ -78,6 +78,9 @@ body, html {
     z-index: 10;
     border-radius: 4vw;
     background-color: transparent;
+    pointer-events: none;
+    user-select: none;
+    cursor: none;
     box-shadow: 0 0 2.6vw #ff6600a1;
 }
 
