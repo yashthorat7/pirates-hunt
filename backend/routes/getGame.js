@@ -10,6 +10,7 @@ const getYagamiRouter = require('./puzzles/getYagami');
 const getHoloRouter = require('./puzzles/getHolo');
 const getTanjiroRouter = require('./puzzles/getTanjiro');
 const getUchihaRouter = require('./puzzles/getUchiha');
+const db = require('./db');
 
 router.get('/', async (req, res) => {
     const { gameId, shipNo } = req.query;
@@ -18,6 +19,8 @@ router.get('/', async (req, res) => {
     const gameNo = index + 1;
     const messages = gameData.connectMessages[gameNo];
 
+    await db.setStartTime(gameNo, shipNo);
+    
     const mockReq = { query: { shipNo } };
     let puzzleData;
 

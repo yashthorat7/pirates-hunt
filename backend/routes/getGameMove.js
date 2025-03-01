@@ -10,11 +10,15 @@ const getYagamiRouter = require('./puzzles/getYagami');
 const getHoloRouter = require('./puzzles/getHolo');
 const getTanjiroRouter = require('./puzzles/getTanjiro');
 const getUchihaRouter = require('./puzzles/getUchiha');
+
+
 router.get('/', async (req, res) => {
     const { gameId, shipNo, userInputs } = req.query;
     const index = gameData.gameId.findIndex(id => id === gameId);
     const gameNo = index + 1;
     const outroId = gameData.outroId[index];
+
+    await db.setEndTime(gameNo, shipNo);
 
     const mockReq = { query: { shipNo, userInputs: userInputs || '[]' } };
     let result;
@@ -83,6 +87,10 @@ router.get('/', async (req, res) => {
                     .route.stack[0].handle(mockReq, { json: resolve });
             });
             break;
+    }
+
+    if (result.hasWon) {
+        await db.setUnlocked(gameNo, shipNo, 1);
     }
 
     res.json(result.hasWon ? {
