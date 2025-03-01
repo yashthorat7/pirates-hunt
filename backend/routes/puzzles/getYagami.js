@@ -17,7 +17,6 @@ router.get('/getYagami', async (req, res) => {
 
 router.get('/getYagamiWin', async (req, res) => {
     const { shipNo } = req.query;
-    // TODO: will as time thing
     res.json( {
         hasWon: true
     });
