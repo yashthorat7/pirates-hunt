@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const gameData = require('../data/gameData');
+const db = require('./db');
 
 router.get('/', async (req, res) => {
     const { outroId, shipNo } = req.query;
@@ -8,7 +9,9 @@ router.get('/', async (req, res) => {
     const gameNo = index + 1;
     const titleName = gameData.titleName[index];
     const message = gameData.outroMessages[gameNo];
-    
+
+    await db.setEndTime(gameNo, shipNo);
+
     const shipIndex = parseInt(shipNo) - 11;
     const baseMark = gameData.baseMarks[shipIndex][index];
     const clueLetter = gameData.clueLetters[shipIndex][index];
