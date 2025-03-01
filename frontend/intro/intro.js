@@ -2,6 +2,7 @@ let messages = [];
 let currentMessageIndex = 0;
 let typingTimeout;
 const visitedMessages = [];
+let redirect = null;
 let gameData = null;
 let rippleInProgress = false;
 
@@ -50,6 +51,10 @@ async function handleForwardClick(event) {
 
     if (!isNaN(inputValue) && inputValue >= 11 && inputValue <= 50) {
         try {
+            const response = await fetch(`http://localhost:3000/api/intro/move?introId=${gameData.introId}&shipNo=${inputValue}`);
+            const data = await response.json();
+            redirect = data.redirect;
+            
             const firstScreen = document.querySelector('.first-screen');
             const secondScreen = document.querySelector('.second-screen');
             const shipMark = document.querySelector('.ship-mark');
@@ -73,14 +78,7 @@ async function handleForwardClick(event) {
 
 async function redirectToNextPage() {
     if (!gameData?.shipNo) return;
-    
-    try {
-        const response = await fetch(`http://localhost:3000/api/intro/move?introId=${gameData.introId}&shipNo=${gameData.shipNo}`);
-        const data = await response.json();
-        window.location.href = data.redirect;
-    } catch (error) {
-        handleError(error);
-    }
+    window.location.href = redirect;
 }
 
 function handleNextClick() {

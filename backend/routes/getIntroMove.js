@@ -15,10 +15,12 @@ router.get('/', async (req, res) => {
     } catch (error) {
         isUnlocked = 0;
     }
-    await db.setBeginTime(gameNo, shipNo);
+    console.log(gameNo, shipNo, isUnlocked);
+    await db.writeShipData('begintime', gameNo, shipNo);
     const titleName = gameData.titleName[index];
-    console.log(isUnlocked);
-    const redirectLink = isUnlocked 
+
+    const canOpen = isUnlocked > 0;
+    const redirectLink = canOpen 
         ? `../outro/outro.html?ship=${shipNo}&id=${outroId}`
         : `../puzzles/${titleName}/puzzle.html?ship=${shipNo}&id=${gameId}`;
 

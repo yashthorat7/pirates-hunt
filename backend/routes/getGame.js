@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
     const gameNo = index + 1;
     const messages = gameData.connectMessages[gameNo];
 
-    await db.setStartTime(gameNo, shipNo);
+    await db.writeShipData('starttime', gameNo, shipNo);
     
     const mockReq = { query: { shipNo } };
     let puzzleData;

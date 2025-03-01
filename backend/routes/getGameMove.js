@@ -90,7 +90,7 @@ router.get('/', async (req, res) => {
     }
 
     if (result.hasWon) {
-        await db.setUnlocked(gameNo, shipNo, 1);
+        await db.writeShipData('unlocked', gameNo, shipNo, 1);
     }
 
     res.json(result.hasWon ? {

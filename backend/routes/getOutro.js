@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
     const titleName = gameData.titleName[index];
     const message = gameData.outroMessages[gameNo];
 
-    await db.setEndTime(gameNo, shipNo);
+    await db.writeShipData('endtime', gameNo, shipNo);
 
     const shipIndex = parseInt(shipNo) - 11;
     const baseMark = gameData.baseMarks[shipIndex][index];
