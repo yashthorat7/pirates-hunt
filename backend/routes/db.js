@@ -27,7 +27,9 @@ async function readShipData(table, gameNo, shipNo) {
     const col = `game${gameNo}`;
     const query = `SELECT ${col} FROM ${table} WHERE shipNo = $1`;
     const result = await pool.query(query, [shipNo]);
-    return result.rows[0];
+
+    const value = Object.values(result.rows[0])[0];
+    return value;
 }
 
 async function writeShipData(table, gameNo, shipNo, value) {

@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
     const outroId = gameData.outroId[index];
     let isUnlocked = 0;
     try {
-        isUnlocked = await db.getUnlocked(gameNo, shipNo);
+        isUnlocked = await db.readShipData("unlocked", gameNo, shipNo);
     } catch (error) {
         isUnlocked = 0;
     }

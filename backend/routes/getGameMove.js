@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const gameData = require('../data/gameData');
+const db = require('./db');
 const getHomeRouter = require('./puzzles/getHome');
 const getHattoriRouter = require('./puzzles/getHattori');
 const getParadiseRouter = require('./puzzles/getParadise');
@@ -18,7 +19,7 @@ router.get('/', async (req, res) => {
     const gameNo = index + 1;
     const outroId = gameData.outroId[index];
 
-    await db.setEndTime(gameNo, shipNo);
+    await db.writeShipData('endtime', gameNo, shipNo);
 
     const mockReq = { query: { shipNo, userInputs: userInputs || '[]' } };
     let result;
