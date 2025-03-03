@@ -1,0 +1,271 @@
+@font-face {
+    font-family: 'Funky';
+    src: url('../assets/fonts/kids-magazine.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Salsa';
+    src: url('../assets/fonts/salsa.ttf') format('truetype');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100svh;
+    font-family: "Salsa", sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(0deg, #0094FF 0%, #02FFE1 58%, #01BDF8 100%);
+    user-select: none;
+    overflow: hidden;
+    touch-action: none;
+}
+
+.main-logo {
+    position: absolute;
+    top: -0.2vw;
+    width: 35vw;
+    height: auto;
+}
+
+.first-screen, .second-screen, .third-screen {
+    width: 100%;
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: all 0.3s ease;
+}
+
+.second-screen, .third-screen {
+    display: none;
+}
+
+.main.box {
+    width: 100%;
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10vh;
+}
+
+.title-image {
+    width: 60vw;
+    height: auto;
+    margin-bottom: 8vh;
+    animation: bounce 3s ease-in-out infinite;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 3vh;
+    justify-content: center;
+    align-items: center;
+    margin-top: 4vh;
+}
+
+.lobby-button, .whatsapp-button {
+    width: 45vw;
+    height: 12vw;
+    background-image: linear-gradient(180deg, #2df15e 20%, #02E26B 40%);
+    border-radius: 2.2vw;
+    border: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1vw 0 #00BB78,
+                0 1vw 1.2vw rgba(25, 10, 90, 0.42);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    font-family: 'Salsa', sans-serif;
+    font-size: 4.2vw;
+    color: white;
+    text-shadow: 0 0.2vw 0.2vw rgba(0, 0, 0, 0.2);
+}
+
+.lobby-button:active, .whatsapp-button:active {
+    transform: translateY(1vw);
+    box-shadow: 0 0 0 #00BB78,
+                0 0 0.2vw rgba(25, 10, 90, 0.42);
+}
+
+.chatbox {
+    width: 90vw;
+    height: calc(100svh - 40vw);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 4vw;
+    padding: 4vw;
+    border: 0.4vw solid rgba(255, 255, 255, 0.2);
+    margin-top: -15vw;
+}
+
+.instruction-image {
+    width: 100%;
+    height: 45vh;
+    margin-bottom: 4vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.instruction-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.instruction-emoji {
+    font-size: 50vw;
+}
+
+.message {
+    color: #006C84;
+    font-size: 4.8vw;
+    text-align: center;
+    line-height: 6vw;
+    padding: 4vw;
+    margin-top: 2vh;
+}
+
+.navigator {
+    position: fixed;
+    bottom: 4vh;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5vw;
+    height: 15vw;
+    z-index: 10;
+}
+
+.dots-container {
+    display: flex;
+    gap: 2vw;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    margin: 0 4vw;
+}
+
+.dot {
+    width: 2.5vw;
+    height: 2.5vw;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    border: 0.3vw solid rgba(255, 255, 255, 0.2);
+}
+
+.dot.active {
+    background: white;
+    transform: scale(1.2);
+}
+
+.dot.before, .dot.after {
+    opacity: 0.6;
+    transform: scale(0.8);
+}
+
+.forward-button, .backward-button, .backward2-button {
+    width: 18.5vw;
+    height: 10vw;
+    background-image: linear-gradient(180deg, #2df15e 20%, #02E26B 40%);
+    border-radius: 2.2vw;
+    border: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1vw 0 #00BB78,
+                0 1vw 1.2vw rgba(25, 10, 90, 0.42);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    flex-shrink: 0;
+}
+
+.forward-arrow-image, .backward-arrow-image {
+    height: 8vw;
+    width: auto;
+    filter: brightness(0) invert(1);
+}
+
+.backward-arrow-image {
+    transform: scaleX(-1);
+}
+
+.forward-button:active, .backward-button:active, .backward2-button:active {
+    transform: translateY(1vw);
+    box-shadow: 0 0 0 #00BB78,
+                0 0 0.2vw rgba(25, 10, 90, 0.42);
+}
+
+.backward2-button {
+    position: absolute;
+    left: 5vw;
+    bottom: 8vw;
+}
+
+.ship-mark {
+    color: #b4b4b4;
+    font-size: 8vw;
+    font-weight: bold;
+    mix-blend-mode: overlay;
+}
+
+.start-button {
+    width: 45vw;
+    height: 45vw;
+    background: linear-gradient(180deg, #FFD700 20%, #FFA500 40%);
+    border: none;
+    border-radius: 4vw;
+    font-family: 'Salsa', sans-serif;
+    font-size: 5vw;
+    color: white;
+    box-shadow: 0 1vw 0 #B27300,
+                0 1vw 1.2vw rgba(25, 10, 90, 0.42);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4vw;
+    line-height: 6vw;
+    text-shadow: 0 0.2vw 0.2vw rgba(0, 0, 0, 0.2);
+}
+
+.start-button:active {
+    transform: translateY(1vw);
+    box-shadow: 0 0 0 #B27300,
+                0 0 0.2vw rgba(25, 10, 90, 0.42);
+}
+
+@keyframes bounce {
+    0% {
+        transform: Scale(1);
+    }
+    50% {
+        transform: Scale(0.95);
+    }
+    100% {
+        transform: Scale(1);
+    }
+}
