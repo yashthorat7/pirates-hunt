@@ -16,15 +16,81 @@
 
 body {
     height: 100svh;
-    font-family: "Salsa", sans-serif;
+    font-family: 'Salsa', sans-serif;
     display: flex;
     flex-direction: column;
+    background: linear-gradient(0deg, #ff90da 0%, #ff8396 100%);
+    user-select: none;
+    touch-action: none;
+    overflow: hidden;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(0deg, #0094FF 0%, #02FFE1 58%, #01BDF8 100%);
-    user-select: none;
-    overflow: hidden;
-    touch-action: none;
+}
+
+
+
+
+
+
+.background-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100svh;
+    width: 100svw;
+    object-fit: cover;
+    opacity: 90%;
+    mix-blend-mode: overlay;
+    z-index: -100;
+}
+
+.glitter {
+    position: absolute;
+    background-color: #ffffff80;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: -5;
+    animation: float 6s linear infinite;
+}
+
+.background-layer1 {
+    position: absolute;
+    top: 30vh;
+    left: 21vw;
+    height: auto;
+    width: 60vw;
+}
+
+.background-layer2 {
+    position: absolute;
+    top: 10vh;
+    left: 0;
+    height: auto;
+    width: 17vw;
+}
+
+.background-layer3 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: auto;
+    width: 40vw;
+}
+
+.background-layer4 {
+    position: absolute;
+    top: 50vh;
+    right: 0;
+    height: auto;
+    width: 20vw;
+}
+
+.background-layer5 {
+    position: absolute;
+    top: 78vh;
+    right: 0;
+    height: auto;
+    width: 100vw;
 }
 
 .main-logo {
@@ -32,6 +98,24 @@ body {
     top: -0.2vw;
     width: 35vw;
     height: auto;
+}
+
+.glitter-effect {
+    position: absolute;
+    width: 100svw;
+    height: 100svh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.glitter-image {
+    height: 95svh;
+    width: auto;
+    position: relative;
+    animation: spin 10s linear infinite;
+    mix-blend-mode: color-dodge;
 }
 
 .first-screen, .second-screen, .third-screen {
@@ -80,18 +164,18 @@ body {
 .lobby-button, .whatsapp-button {
     width: 45vw;
     height: 12vw;
-    background-image: linear-gradient(180deg, #2df15e 20%, #02E26B 40%);
+    background-image: linear-gradient(180deg, #ffffff 20%, #c6edff 40%);
     border-radius: 2.2vw;
     border: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 1vw 0 #00BB78,
+    box-shadow: 0 1vw 0 #cbd1dd,
                 0 1vw 1.2vw rgba(25, 10, 90, 0.42);
     transition: transform 0.1s ease, box-shadow 0.1s ease;
     font-family: 'Salsa', sans-serif;
     font-size: 4.2vw;
-    color: white;
+    color: black;
     text-shadow: 0 0.2vw 0.2vw rgba(0, 0, 0, 0.2);
 }
 
@@ -236,9 +320,9 @@ body {
     height: 45vw;
     background: linear-gradient(180deg, #FFD700 20%, #FFA500 40%);
     border: none;
-    border-radius: 4vw;
+    border-radius: 50%;
     font-family: 'Salsa', sans-serif;
-    font-size: 5vw;
+    font-size: 8vw;
     color: white;
     box-shadow: 0 1vw 0 #B27300,
                 0 1vw 1.2vw rgba(25, 10, 90, 0.42);
@@ -248,7 +332,6 @@ body {
     justify-content: center;
     text-align: center;
     padding: 4vw;
-    line-height: 6vw;
     text-shadow: 0 0.2vw 0.2vw rgba(0, 0, 0, 0.2);
 }
 

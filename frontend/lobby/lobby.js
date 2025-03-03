@@ -88,7 +88,6 @@ function updateInstruction() {
         const emoji = document.createElement('div');
         emoji.className = 'instruction-emoji';
         emoji.textContent = instruction.content;
-        imageContainer.style.background = 'rgba(255, 255, 255, 0.1)';
         imageContainer.appendChild(emoji);
     }
     
@@ -115,18 +114,33 @@ function showScreen(screen) {
 document.querySelector('.lobby-button').addEventListener('click', () => {
     showScreen(secondScreen);
     updateInstruction();
+    changeBackground();
 });
 
 document.querySelector('.whatsapp-button').addEventListener('click', () => {
     window.location.href = 'https://web.whatsapp.com';
+    changeBackground();
 });
+
+const backgrounds = [
+    "linear-gradient(120deg, #ff9a9e, #fad0c4)", 
+    "linear-gradient(120deg, #a1c4fd, #c2e9fb)", 
+    "linear-gradient(120deg, #fbc2eb, #a6c1ee)", 
+    "linear-gradient(120deg, #ffecd2, #fcb69f)"
+];
+
+function changeBackground() {
+    document.body.style.background = backgrounds[currentIndex % backgrounds.length];
+}
 
 document.querySelector('.forward-button').addEventListener('click', () => {
     if (currentIndex < instructions.length - 1) {
         currentIndex++;
         updateInstruction();
+        changeBackground();
     } else {
         showScreen(thirdScreen);
+        changeBackground();
     }
 });
 
@@ -134,8 +148,10 @@ document.querySelector('.backward-button').addEventListener('click', () => {
     if (currentIndex > 0) {
         currentIndex--;
         updateInstruction();
+        changeBackground();
     } else {
         showScreen(firstScreen);
+        changeBackground();
     }
 });
 
@@ -143,6 +159,7 @@ document.querySelector('.backward2-button').addEventListener('click', () => {
     showScreen(secondScreen);
     currentIndex = instructions.length - 1;
     updateInstruction();
+    changeBackground();
 });
 
 document.querySelector('.start-button').addEventListener('click', () => {
