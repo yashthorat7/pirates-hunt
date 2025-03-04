@@ -20,6 +20,7 @@ const outroRoutes = {
 app.use(cors());
 app.use(express.json());
 
+app.use('/api/lobby', lobbyRoutes.getLobby);
 app.use('/', puzzleRoutes.getHint);
 app.use('/api/intro', introRoutes.getIntro);
 app.use('/api/intro/move', introRoutes.getIntroMove);
