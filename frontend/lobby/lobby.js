@@ -137,22 +137,20 @@ document.querySelector('.forward-button').addEventListener('click', () => {
     if (currentIndex < instructions.length - 1) {
         currentIndex++;
         updateInstruction();
-        changeBackground();
     } else {
         showScreen(thirdScreen);
-        changeBackground();
     }
+    changeBackground();
 });
 
 document.querySelector('.backward-button').addEventListener('click', () => {
     if (currentIndex > 0) {
         currentIndex--;
         updateInstruction();
-        changeBackground();
     } else {
         showScreen(firstScreen);
-        changeBackground();
     }
+    changeBackground();
 });
 
 document.querySelector('.backward2-button').addEventListener('click', () => {
@@ -164,11 +162,19 @@ document.querySelector('.backward2-button').addEventListener('click', () => {
 
 document.querySelector('.start-button').addEventListener('click', () => {
     const password = document.querySelector('.password-input').value;
-    if (password === '1234') {
-        window.location.href = 'https://www.google.com';
-    } else {
-        alert('wait...we will give u the password');
+    if (password.length != 7) {
+        alert('wait till we give u the password');
+        return;
     }
+    fetch(`/api/lobby?password=${password}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.href = data.redirect;
+            } else {
+                alert('wait...we will give u the password');
+            }
+        });
 });
 
 createDots();
