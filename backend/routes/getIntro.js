@@ -8,10 +8,10 @@ router.get('/', async (req, res) => {
     const index = gameData.introId.findIndex(id => id === introId);
     const gameNo = (index + 1);
     const titleName = gameData.titleName[index];
-    const introMessages = messages.introMessages[gameNo];
+    const messages = messages.introMessages[gameNo];
 
     res.json({
-        titleName, introMessages
+        titleName, messages
     });
 });
 

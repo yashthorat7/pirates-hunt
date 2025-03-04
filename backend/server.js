@@ -2,6 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
+const lobbyRoutes = {
+    getLobby: require('./routes/getLobby')
+};
+
 const introRoutes = {
     getIntro: require('./routes/getIntro'),
     getIntroMove: require('./routes/getIntroMove')

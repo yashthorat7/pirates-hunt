@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
     const index = gameData.outroId.findIndex(id => id === outroId);
     const gameNo = index + 1;
     const titleName = gameData.titleName[index];
-    const outroMessages = messages.outroMessages[gameNo];
+    const messages = messages.outroMessages[gameNo];
 
     await db.writeShipData('endtime', gameNo, shipNo);
 
@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
     console.log(titleName, baseMark, clueLetter, message, clueImageName);
 
     res.json({
-        titleName, outroMessages, baseMark, clueLetter, clueImageName
+        titleName, messages, baseMark, clueLetter, clueImageName
     });
 });
 

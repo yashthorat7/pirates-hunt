@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
     const index = gameData.gameId.findIndex(id => id === gameId);
     const titleName = gameData.titleName[index];
     const gameNo = index + 1;
-    const connectMessages = messages.connectMessages[gameNo];
+    const messages = messages.connectMessages[gameNo];
 
     await db.writeShipData('starttime', gameNo, shipNo);
     
@@ -93,7 +93,7 @@ router.get('/', async (req, res) => {
 
     res.json({
         titleName,
-        connectMessages,
+        messages,
         ...puzzleData.puzzleData
     });
 });
