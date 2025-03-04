@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const gameData = require('../data/gameData');
+const messages = require('../data/messages');
 const db = require('./db');
 
 router.get('/', async (req, res) => {
@@ -8,7 +9,7 @@ router.get('/', async (req, res) => {
     const index = gameData.outroId.findIndex(id => id === outroId);
     const gameNo = index + 1;
     const titleName = gameData.titleName[index];
-    const message = gameData.outroMessages[gameNo];
+    const outroMessages = messages.outroMessages[gameNo];
 
     await db.writeShipData('endtime', gameNo, shipNo);
 
@@ -20,7 +21,7 @@ router.get('/', async (req, res) => {
     console.log(titleName, baseMark, clueLetter, message, clueImageName);
 
     res.json({
-        titleName,  baseMark, clueLetter, message, clueImageName
+        titleName, outroMessages, baseMark, clueLetter, clueImageName
     });
 });
 

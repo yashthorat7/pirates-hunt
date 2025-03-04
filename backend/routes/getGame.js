@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const gameData = require('../data/gameData');
+const messages = require('../data/messages');
 const getHomeRouter = require('./puzzles/getHome');
 const getHattoriRouter = require('./puzzles/getHattori');
 const getParadiseRouter = require('./puzzles/getParadise');
@@ -17,7 +18,7 @@ router.get('/', async (req, res) => {
     const index = gameData.gameId.findIndex(id => id === gameId);
     const titleName = gameData.titleName[index];
     const gameNo = index + 1;
-    const messages = gameData.connectMessages[gameNo];
+    const connectMessages = messages.connectMessages[gameNo];
 
     await db.writeShipData('starttime', gameNo, shipNo);
     
@@ -92,7 +93,7 @@ router.get('/', async (req, res) => {
 
     res.json({
         titleName,
-        messages,
+        connectMessages,
         ...puzzleData.puzzleData
     });
 });
