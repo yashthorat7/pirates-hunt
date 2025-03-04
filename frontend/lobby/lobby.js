@@ -163,7 +163,12 @@ document.querySelector('.backward2-button').addEventListener('click', () => {
 });
 
 document.querySelector('.start-button').addEventListener('click', () => {
-    window.location.href = 'https://www.google.com';
+    const password = document.querySelector('.password-input').value;
+    if (password === '1234') {
+        window.location.href = 'https://www.google.com';
+    } else {
+        alert('wait...we will give u the password');
+    }
 });
 
 createDots();

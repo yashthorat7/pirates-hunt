@@ -19,18 +19,13 @@ body {
     font-family: 'Salsa', sans-serif;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(0deg, #ff90da 0%, #ff8396 100%);
+    background: linear-gradient(0deg, #78d7ff 0%, #63fedc 100%);
     user-select: none;
     touch-action: none;
     overflow: hidden;
     justify-content: center;
     align-items: center;
 }
-
-
-
-
-
 
 .background-container {
     position: absolute;
@@ -100,24 +95,6 @@ body {
     height: auto;
 }
 
-.glitter-effect {
-    position: absolute;
-    width: 100svw;
-    height: 100svh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
-
-.glitter-image {
-    height: 95svh;
-    width: auto;
-    position: relative;
-    animation: spin 10s linear infinite;
-    mix-blend-mode: color-dodge;
-}
-
 .first-screen, .second-screen, .third-screen {
     width: 100%;
     height: 100svh;
@@ -170,7 +147,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 1vw 0 #cbd1dd,
+    box-shadow: 0 1vw 0 #a0b4d9,
                 0 1vw 1.2vw rgba(25, 10, 90, 0.42);
     transition: transform 0.1s ease, box-shadow 0.1s ease;
     font-family: 'Salsa', sans-serif;
@@ -351,4 +328,35 @@ body {
     100% {
         transform: Scale(1);
     }
+}
+
+.password-hint {
+    color: #ffffff;
+    font-size: 3.5vw;
+    margin-bottom: 2vh;
+    text-align: center;
+    font-family: sans-serif;
+}
+
+.password-input {
+    width: 60vw;
+    padding: 2vh 2vw;
+    margin-bottom: 3vh;
+    border: 0.4vw solid #8b4513;
+    border-radius: 3vw;
+    background-color: rgba(255, 255, 255, 0.9);
+    font-size: 4vw;
+    text-align: center;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.password-input:focus {
+    border-color: #ffd700;
+    box-shadow: 0 0 2.5vw rgba(255, 215, 0, 0.3);
+}
+
+.password-input::placeholder {
+    color: #8b4513;
+    opacity: 0.7;
 }
