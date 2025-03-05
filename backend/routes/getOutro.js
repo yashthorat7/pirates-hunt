@@ -18,8 +18,6 @@ router.get('/', async (req, res) => {
     const clueLetter = gameData.clueLetters[shipIndex][index];
     const clueImageName = gameData.clueImageName[baseMark - 1];
 
-    console.log(titleName, baseMark, clueLetter, message, clueImageName);
-
     res.json({
         titleName, messages, baseMark, clueLetter, clueImageName
     });

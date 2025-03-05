@@ -30,7 +30,6 @@ router.get('/getHattoriWin', async (req, res) => {
         const parsedInputs = JSON.parse(userInputs);
         const inputs = Array.isArray(parsedInputs) ? parsedInputs.map(Number) : [];
         const hasWon = correctCount.every((v, i) => v === inputs[i]);
-        console.log(correctCount,inputs,hasWon);
         res.json({ hasWon });
     } catch {
         res.json({ hasWon: false });

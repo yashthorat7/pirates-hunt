@@ -7,7 +7,6 @@ router.get('/getParadise', async (req, res) => {
     const { shipNo } = req.query;
     const mazeNo = ((parseInt(shipNo) - 11) % 4);
     const fileName = mazeName[mazeNo];
-    console.log(fileName);
 
     res.json({
         puzzleData: {

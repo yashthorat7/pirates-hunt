@@ -14,7 +14,6 @@ router.get('/getHint', async (req, res) => {
     const outroId = gameData.outroId[index];
     const currentTime = db.getTime();
     const timeDiffMinutes = (currentTime - startTime) / 60;
-    console.log(currentTime, startTime, timeDiffMinutes);
 
     if (timeDiffMinutes >= HINTTIME && startTime !== 0) {
         await db.writeShipData('Unlocked', gameNo, shipNo, 2);

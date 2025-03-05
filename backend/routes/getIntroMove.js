@@ -15,7 +15,6 @@ router.get('/', async (req, res) => {
     } catch (error) {
         isUnlocked = 0;
     }
-    console.log(gameNo, shipNo, isUnlocked);
     await db.writeShipData('begintime', gameNo, shipNo);
     const titleName = gameData.titleName[index];
 

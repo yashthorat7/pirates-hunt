@@ -16,7 +16,6 @@ router.get('/getHolo', async (req, res) => {
 router.get('/getHoloWin', async (req, res) => {
     const { shipNo, userInputs } = req.query;
     const remainingCount = parseInt(userInputs) || 0;
-    console.log(remainingCount);
     const hasWon = remainingCount == 0;
     
     res.json({ hasWon });

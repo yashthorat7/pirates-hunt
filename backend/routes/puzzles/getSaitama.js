@@ -52,7 +52,6 @@ router.get('/getSaitamaWin', async (req, res) => {
             letterCount[cArr[i]]--;
         }
     }
-    console.log(result);
 
     res.json({ 
         hasWon: word === chosenAnswer,

@@ -18,7 +18,6 @@ router.get('/getUchihaWin', async (req, res) => {
     const correctSequence = gameData.clueLetters[index];
     const guessedArray = JSON.parse(userInputs);
     
-    console.log(correctSequence, guessedArray);
     let isCorrect = true;
     for (let i = 0; i < 8; i++) {
         if (guessedArray[i] !== correctSequence[i]) {
