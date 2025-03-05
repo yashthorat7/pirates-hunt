@@ -7,7 +7,7 @@ const gameId = new URLSearchParams(window.location.search).get('id');
 const shipNo = new URLSearchParams(window.location.search).get('ship');
 
 window.onload = async function() {
-    const response = await fetch(`http://localhost:3000/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`);
+    const response = await fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`);
     const data = await response.json();
     maxLives = data.lives;
     remainingCount = maxLives;
@@ -29,7 +29,7 @@ async function updateProgressBar() {
     progressMessage.textContent = `${Math.round(percentage)}%`;
 
     if (clickCounter >= maxLives) {
-        const response = await fetch(`http://localhost:3000/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${remainingCount}`);
+        const response = await fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${remainingCount}`);
         const data = await response.json();
         if (data.hasWon) {
             document.querySelector('.game-part').style.pointerEvents = 'none';
@@ -74,7 +74,6 @@ function handleMoving() {
     if (!isLost) {
         clickCounter++;
         remainingCount--;
-        console.log(clickCounter, "  ", remainingCount);
         updateProgressBar();
         const progressFill = document.querySelector('.progress-fill');
         if (progressFill >= 100) {

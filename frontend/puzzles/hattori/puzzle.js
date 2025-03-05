@@ -4,7 +4,7 @@ let titleName;
 
 window.onload = function() {    
     if (shipNo) {
-        fetch(`http://localhost:3000/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`)
+        fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`)
         .then(response => response.json())
         .then(data => {
             titleName = data.titleName;
@@ -58,7 +58,7 @@ function handleVerificationClick() {
         parseInt(document.querySelector('.counter-box:nth-child(4) .number-box span').textContent)
     ];
 
-    fetch(`http://localhost:3000/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${JSON.stringify(userInputs)}`)
+    fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${JSON.stringify(userInputs)}`)
     .then(response => response.json())
     .then(data => {
         if (data.hasWon) {

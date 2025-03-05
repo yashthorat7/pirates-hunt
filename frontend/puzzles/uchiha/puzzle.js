@@ -6,7 +6,7 @@ let maplink = '';
 
 window.onload = async () => {
     if (shipNo) {
-        const response = await fetch(`http://localhost:3000/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`);
+        const response = await fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`);
         const data = await response.json();
         
         window.gameData = {
@@ -58,7 +58,7 @@ function checkWin() {
         return false;
     }
     
-    fetch(`http://localhost:3000/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${JSON.stringify(guessedArray)}`)
+    fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${JSON.stringify(guessedArray)}`)
         .then(response => response.json())
         .then(data => {
             if (data.hasWon) {

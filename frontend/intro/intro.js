@@ -51,7 +51,7 @@ async function handleForwardClick(event) {
 
     if (!isNaN(inputValue) && inputValue >= 11 && inputValue <= 50) {
         try {
-            const response = await fetch(`http://localhost:3000/api/intro/move?introId=${gameData.introId}&shipNo=${inputValue}`);
+            const response = await fetch(`https://pirateshuntbackend.onrender.com/api/intro/move?introId=${gameData.introId}&shipNo=${inputValue}`);
             const data = await response.json();
             redirect = data.redirect;
             
@@ -126,7 +126,7 @@ function createRipple(container) {
 async function initializeGame() {
     const introId = new URLSearchParams(window.location.search).get('id');
     try {
-        const response = await fetch(`http://localhost:3000/api/intro?introId=${introId}`);
+        const response = await fetch(`https://pirateshuntbackend.onrender.com/api/intro?introId=${introId}`);
         if (!response.ok) throw new Error('Failed to fetch game data');
         
         const data = await response.json();
@@ -134,7 +134,6 @@ async function initializeGame() {
             titleName: data.titleName,
             introId: introId
         };
-        console.log(gameData.titleName, gameData.introId);
         messages = data.messages;
 
         const titleElement = document.querySelector('.title-name');

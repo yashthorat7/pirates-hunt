@@ -3,7 +3,7 @@ const gameId = new URLSearchParams(window.location.search).get('id');
 
 window.onload = async function() {
     if (shipNo) {
-        fetch(`http://localhost:3000/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`)
+        fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`)
         .then(response => response.json())
         .then(data => {
             titleName = data.titleName;
@@ -138,7 +138,7 @@ function checkForWin() {
     const lastCol = mazeWidth - 1;
 
     if (playerRow === lastRow && playerCol === lastCol) {
-        fetch(`http://localhost:3000/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}`)
+        fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}`)
         .then(response => response.json())
         .then(data => {
             if (data.hasWon) {

@@ -10,7 +10,7 @@ const columns = 5;
 
 window.onload = () => {
     if (shipNo) {
-        fetch(`http://localhost:3000/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`)
+        fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`)
         .then(response => response.json())
         .then(data => {
             titleName = data.titleName;
@@ -72,7 +72,7 @@ function submitGuess() {
 }
 
 function checkWordWin(chosenAnswer) {
-    fetch(`http://localhost:3000/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${JSON.stringify(chosenAnswer)}`)
+    fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${JSON.stringify(chosenAnswer)}`)
     .then(response => response.json())
     .then(data => {
         const { verdictArray } = data;

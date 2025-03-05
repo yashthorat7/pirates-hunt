@@ -2,7 +2,7 @@ window.onload = () => {
     const outroId = new URLSearchParams(window.location.search).get('id');
     const shipNo = new URLSearchParams(window.location.search).get('ship');
 
-    fetch(`http://localhost:3000/api/outro?outroId=${outroId}&shipNo=${shipNo}`)
+    fetch(`https://pirateshuntbackend.onrender.com/api/outro?outroId=${outroId}&shipNo=${shipNo}`)
         .then((response) => response.json())
         .then((data) => {
             document.querySelector('.island-name').textContent = `${data.titleName.toUpperCase()} ISLAND`;

@@ -5,9 +5,8 @@ let questions = [];
 let fileName = '';
 
 window.onload = () => {
-    console.log(shipNo);
     if (shipNo) {
-        fetch(`http://localhost:3000/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`)
+        fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`)
             .then(response => response.json())
             .then(data => {
                 window.gameData = {
@@ -56,7 +55,7 @@ async function checkAnswer(selectedOption, riddleNo) {
         answer: selectedOption
     };
 
-    const response = await fetch(`http://localhost:3000/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${JSON.stringify(userInput)}`);
+    const response = await fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${JSON.stringify(userInput)}`);
     const data = await response.json();
     
     optionBoxes.forEach(box => {

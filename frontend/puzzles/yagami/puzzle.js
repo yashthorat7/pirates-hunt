@@ -11,7 +11,7 @@ let blocks = document.getElementsByClassName("puzzle-block");
 initGame(1);
 window.onload = function() {
     if (shipNo) {
-        fetch(`http://localhost:3000/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`)
+        fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`)
         .then(response => response.json())
         .then(data => {
             const slideImages = document.querySelectorAll('.puzzle-block img');
@@ -100,7 +100,7 @@ function onClickOnBlock(blockIdx) {
             const emptyElement = document.querySelector('.empty');
             emptyElement.style.opacity = '1';
             emptyElement.style.animation = 'bounce-in 0.3s ease-in-out';
-            fetch(`http://localhost:3000/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}`)
+            fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}`)
             .then(response => response.json())
             .then(data => {
                 if (data.hasWon) {

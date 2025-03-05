@@ -5,7 +5,7 @@ const shipNo = new URLSearchParams(window.location.search).get('ship');
 
 window.onload = async () => {
     if (shipNo) {
-        const response = await fetch(`http://localhost:3000/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`);
+        const response = await fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`);
         const data = await response.json();
         
         window.gameData = {
@@ -47,7 +47,7 @@ function handleGuessClick() {
 }
 
 async function compareNumbers(guessedNumber) {
-    const response = await fetch(`http://localhost:3000/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${guessedNumber}`);
+    const response = await fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${guessedNumber}`);
     const data = await response.json();
     
     const [guessedNo, bulls, cows] = data.verdictArray;
