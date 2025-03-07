@@ -4,7 +4,7 @@ const router = express.Router();
 const db = require('./db');
 const gameData = require('../data/gameData');
 
-const HINTTIME = 1;
+const HINTTIME = 12;
 
 router.get('/getHint', async (req, res) => {
     const { gameId, shipNo } = req.query;
