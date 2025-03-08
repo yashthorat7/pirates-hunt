@@ -19,8 +19,6 @@ router.get('/', async (req, res) => {
     const titleName = gameData.titleName[index];
     const gameNo = index + 1;
     const messages = connectMessages.connectMessages[gameNo];
-
-    await db.writeShipData('starttime', gameNo, shipNo);
     
     const mockReq = { query: { shipNo } };
     let puzzleData;
@@ -90,6 +88,8 @@ router.get('/', async (req, res) => {
             });
             break;
     }
+
+    await db.writeShipData('starttime', gameNo, shipNo);
 
     res.json({
         titleName,

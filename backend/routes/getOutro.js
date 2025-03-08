@@ -11,8 +11,6 @@ router.get('/', async (req, res) => {
     const titleName = gameData.titleName[index];
     const message = outroMessage.outroMessages[gameNo];
 
-    await db.writeShipData('endtime', gameNo, shipNo);
-
     const shipIndex = parseInt(shipNo) - 11;
     const baseMark = gameData.baseMarks[shipIndex][index];
     const clueLetter = gameData.clueLetters[shipIndex][index];

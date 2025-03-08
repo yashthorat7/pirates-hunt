@@ -1,4 +1,5 @@
 const express = require('express');
+const db = require('../db');
 const router = express.Router();
 
 const questionSet = [
@@ -33,19 +34,30 @@ router.get('/getGoku', async (req, res) => {
     let offset = (shipNo - 11) % 4;
     if (offset < 0) offset += 4;
     
-    const questions = [];
-    for (let i = offset; i < questionSet.length; i += 4) {
-        questions.push({
-            riddleNo: questionSet[i].riddleNo,
-            options: questionSet[i].options
+    const prevStartTime = await db.readShipData('starttime', 4, shipNo);
+    let timeWaited = prevStartTime !== 0 ? db.getTime() - prevStartTime : null;
+
+    if (prevStartTime === 0 || timeWaited > 80) {
+        let questions = [];
+        for (let i = offset; i < questionSet.length; i += 4) {
+            questions.push({
+                riddleNo: questionSet[i].riddleNo,
+                options: questionSet[i].options
+            });
+        }
+
+        return res.json({
+            puzzleData: {
+                doWait: false,
+                fileName: "fsdniew",
+                questions
+            }
         });
     }
+
     res.json({
-        puzzleData: {
-            fileName: "fsdniew",
-            questions
-        }
-    });
+        puzzleData: { doWait: true }
+    });   
 });
 
 router.get('/getGokuWin', async (req, res) => {

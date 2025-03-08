@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
     if (password === correctPassword) {
         res.json({
             success: true,
-            redirect: 'http://127.0.0.1:5500/frontend/intro/intro.html?id=vujkqpxyt'
+            redirect: '../intro/intro.html?id=vujkqpxyt'
         });
     } else {
         res.json({
