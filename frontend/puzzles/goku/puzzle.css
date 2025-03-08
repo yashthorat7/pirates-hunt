@@ -32,6 +32,44 @@ body, html {
 
 
 
+.wait-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #ff401f85;
+    backdrop-filter: blur(10px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.overlay-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay-message {
+    font-size: 3vw;
+    color: white;
+    margin-bottom: 2vh;
+}
+
+.timer {
+    font-size: 7vw;
+    color: white;
+    background: #00000080;
+    padding: 2vh 4vw;
+    border-radius: 1vw;
+    font-weight: bold;
+}
+
+
+
 
 
 .stone-bg {
@@ -77,7 +115,7 @@ body, html {
     height: 75vw;
     z-index: 10;
     border-radius: 4vw;
-    background-color: transparent;
+    background-color: grey;
     pointer-events: none;
     user-select: none;
     cursor: none;

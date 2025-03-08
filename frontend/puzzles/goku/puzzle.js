@@ -6,22 +6,31 @@ let fileName = '';
 
 window.onload = () => {
     if (shipNo) {
-        fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`)
-            .then(response => response.json())
-            .then(data => {
+        fetchGameData();
+    }
+};
+
+function fetchGameData() {
+    fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            if (data.doWait) {
+                showTimerOverlay(90);
+            } else {
                 window.gameData = {
                     titleName: data.titleName,
                     messages: data.messages
                 };
-
                 questions = data.questions;
                 fileName = data.fileName;
+                removeTimerOverlay();
                 if (questions && questions.length > 0) {
                     makeOptions();
                 }
-            });
-    }
-};
+            }
+        });
+}
 
 function makeOptions() {
     const questionElement = document.querySelector('.riddle');
@@ -93,11 +102,41 @@ async function checkAnswer(selectedOption, riddleNo) {
         messageElement.textContent = `wrong stone!`;
         messageElement.style.color = "#d32020";
         setTimeout(() => {
-            currentQuestionIndex = 0;
-            makeOptions();
+            window.location.reload();
         }, 1200);
     }
 }
+
+function formatTime(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins < 10 ? '0' + mins : mins}:${secs < 10 ? '0' + secs : secs}`;
+}
+  
+function showTimerOverlay(duration) {
+    const overlay = document.querySelector('.wait-overlay');
+    const timerElement = document.querySelector('.timer');
+    overlay.style.display = 'flex';
+    timerElement.textContent = formatTime(duration);
+    const interval = setInterval(() => {
+        duration--;
+        timerElement.textContent = formatTime(duration);
+        if (duration <= 0) {
+            clearInterval(interval);
+            removeTimerOverlay();
+            fetchGameData();
+        }
+    }, 1000);
+}
+
+function removeTimerOverlay() {
+    const overlay = document.querySelector('.wait-overlay');
+    overlay.style.display = 'none';
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    showTimerOverlay(90);
+});
 
 fetch('../../common/connect.html')
     .then(response => response.text())
