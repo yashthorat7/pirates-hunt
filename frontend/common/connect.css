@@ -7,10 +7,10 @@
 
 .character-image {
     position: absolute;
-    width: 25vw;
+    width: 35vw;
     height: auto;
-    bottom: -5vw;
-    left: 1vw;
+    bottom: -48vw;
+    left: -3vw;
     animation: float 3s ease-in-out infinite;
     display: flex;
     align-items: center;
