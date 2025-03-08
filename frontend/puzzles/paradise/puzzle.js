@@ -61,8 +61,8 @@ function createMaze(mazeData) {
                     const startCell = document.createElement('div');
                     startCell.classList.add('start-cell');
                     const startImage = document.createElement('img');
-                    startImage.src = '../../assets/paradise/stickman.png';
-                    startImage.alt = 'Start Stickman';
+                    startImage.src = '../../assets/paradise/ship-icon.png';
+                    startImage.alt = 'Start Icon';
                     startCell.appendChild(startImage);
                     cellElement.appendChild(startCell);
  
@@ -80,7 +80,7 @@ function createMaze(mazeData) {
                     const endCell = document.createElement('div');
                     endCell.classList.add('end-cell');
                     const endImage = document.createElement('img');
-                    endImage.src = '../../assets/paradise/card-icon.png';
+                    endImage.src = '../../assets/paradise/pet-icon.png';
                     endImage.alt = 'End Icon';
                     endCell.appendChild(endImage);
                     cellElement.appendChild(endCell);

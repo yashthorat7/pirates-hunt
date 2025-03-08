@@ -78,18 +78,18 @@ body, html {
 }
 
 .start-cell img {
-    height: 9vh;
-    width: auto;
-    margin-left: -8vh;
-    margin-top: -4vh;
+    height: auto;
+    width: 13vw;
+    margin-left: -13vw;
+    margin-top: -6vh;
     animation: float 1s ease-in-out infinite;
 }
 
 .end-cell img {
-    height: 8vh;
-    width: auto;
+    height: auto;
+    width: 12vw;
     margin-top: -7vh;
-    margin-left: 2vh;
+    margin-left: 4vw;
     z-index: 30;
     animation: float 1s ease-in-out infinite;
 }

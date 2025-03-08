@@ -176,7 +176,7 @@ body, html {
     height: auto;
     position: absolute;
     left: -2vw;
-    bottom: -10vw;
+    bottom: 0vw;
     animation: float 3s ease-in-out infinite;
 }
 
