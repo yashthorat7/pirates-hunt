@@ -71,7 +71,7 @@ function createGlitter() {
     glitter.style.transform = `translateX(${Math.random() * 100 - 50}px)`;
     document.body.appendChild(glitter);
 
-    setTimeout(() => glitter.remove(), 12000);
+    setTimeout(() => glitter.remove(), 6000);
 }
 
 autoRotate();
@@ -80,7 +80,6 @@ setInterval(createGlitter, 300);
 document.querySelector('.camera-icon').addEventListener('click', function() {
     document.querySelector('.card-back').style.display = 'none';
     const cardFront = document.querySelector('.card-wrapper');
-    
     html2canvas(cardFront).then(function(canvas) {
         let link = document.createElement('a');
         link.href = canvas.toDataURL('image/png');
