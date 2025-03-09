@@ -1,5 +1,5 @@
-const shipNo = new URLSearchParams(window.location.search).get('ship');
-const gameId = new URLSearchParams(window.location.search).get('id');
+let shipNo;
+let gameId;
 let currentQuestionIndex = 0;
 let questions = [];
 let fileName = '';
@@ -11,6 +11,8 @@ window.onload = () => {
 };
 
 function fetchGameData() {
+    shipNo = new URLSearchParams(window.location.search).get('ship');
+    gameId = new URLSearchParams(window.location.search).get('Id');
     fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`)
         .then(response => response.json())
         .then(data => {
@@ -133,10 +135,6 @@ function removeTimerOverlay() {
     const overlay = document.querySelector('.wait-overlay');
     overlay.style.display = 'none';
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-    showTimerOverlay(90);
-});
 
 fetch('../../common/connect.html')
     .then(response => response.text())
