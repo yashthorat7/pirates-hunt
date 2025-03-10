@@ -42,6 +42,7 @@ function handleError(error, inputBox = null) {
     console.error('Error:', error);
     if (navigator.vibrate) navigator.vibrate(100);
     if (inputBox) inputBox.value = '';
+    alert('Invalid shipNo');
 }
 
 async function handleForwardClick(event) {
