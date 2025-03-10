@@ -14,7 +14,6 @@ function fetchGameData() {
     fetch(`http://localhost:3000/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             if (data.doWait) {
                 showTimerOverlay(90);
             } else {

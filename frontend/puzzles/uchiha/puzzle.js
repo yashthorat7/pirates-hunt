@@ -36,7 +36,7 @@ submitButton.addEventListener('click', () => {
 });
 
 function getNextLetter(current) {
-    const letters = 'ABCDEFGHI';
+    const letters = 'ABCDEFGH';
     const currentIndex = letters.indexOf(current);
     return currentIndex === -1 ? 'A' : letters[(currentIndex + 1) % letters.length];
 }
@@ -46,7 +46,7 @@ function checkWin() {
         .sort((a, b) => a.className.match(/\d+/) - b.className.match(/\d+/));
     const guessedArray = buttons.map(button => button.textContent.trim());
     
-    if (!/^[A-I]+$/.test(guessedArray.join(''))) {
+    if (!/^[A-H]+$/.test(guessedArray.join(''))) {
         return false;
     }
 
