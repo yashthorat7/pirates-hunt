@@ -1,19 +1,17 @@
-let shipNo;
-let gameId;
+shipNo = new URLSearchParams(window.location.search).get('ship');
+gameId = new URLSearchParams(window.location.search).get('id');
 let currentQuestionIndex = 0;
 let questions = [];
 let fileName = '';
 
-window.onload = () => {
+document.addEventListener('DOMContentLoaded', () => {
     if (shipNo) {
         fetchGameData();
     }
-};
+});
 
 function fetchGameData() {
-    shipNo = new URLSearchParams(window.location.search).get('ship');
-    gameId = new URLSearchParams(window.location.search).get('Id');
-    fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`)
+    fetch(`http://localhost:3000/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`)
         .then(response => response.json())
         .then(data => {
             console.log(data);
