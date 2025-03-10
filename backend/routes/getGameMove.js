@@ -19,8 +19,6 @@ router.get('/', async (req, res) => {
     const gameNo = index + 1;
     const outroId = gameData.outroId[index];
 
-    await db.writeShipData('endtime', gameNo, shipNo);
-
     const mockReq = { query: { shipNo, userInputs: userInputs || '[]' } };
     let result;
 
@@ -90,7 +88,8 @@ router.get('/', async (req, res) => {
             break;
     }
 
-    if (result.hasWon) {
+    if (result.hasWon) {   
+        await db.writeShipData('endtime', gameNo, shipNo);
         await db.writeShipData('unlocked', gameNo, shipNo, 1);
     }
 
