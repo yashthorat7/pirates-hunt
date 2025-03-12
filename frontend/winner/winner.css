@@ -29,27 +29,17 @@ body {
     user-select: none;
     overflow: hidden;
     touch-action: none;
+    background-image: url('../assets/images/treasure-background.jpg');
+    background-size: cover;
+    background-position: center;
 }
 
-
-
-
-.ripple-container {
-    position: relative;
+.chest-image {
+    object-fit: cover;
+    height: 100vh;
     width: 100vw;
-    height: 100svh;
-    overflow: hidden;
-    z-index: -100;
-}
-
-.ripple {
     position: absolute;
-    border-radius: 50%;
-    border: 4vw solid #ffffffcc;
-    background: transparent;
-    animation: ripple 4s ease-out;
-    pointer-events: none;
-    opacity: 1;
+    
 }
 
 .title-part {
@@ -59,7 +49,7 @@ body {
     width: 100%;
     background-color: transparent;
     position: absolute;
-    top: 3vh;
+    top: 30vh;
 }
 
 .title-text span{
@@ -67,7 +57,7 @@ body {
     color: #ffffff;
     text-shadow: 0 0.5vw 0vh #C9E1F3,
         0 1vw 0vh #C9E1F3,
-        0 1vw 1.4vh #190a5a6b;
+        0 1vw 3.4vh #0d023fec;
     font-family: "Funky", sans-serif;
     line-height: 16vw;
     text-align: center;
@@ -75,34 +65,13 @@ body {
     animation: bounce 3s ease-in-out infinite;
 }
 
-.island-part {
-    position: absolute;
-    top: 18vh;
-    height: 48vh;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: transparent;
-}
-
-.island-image {
-    width: 77vw;
-    height: auto;
-    filter: saturate(70%);
-}
-
-
-
-
-
 .first-screen {
     display: flex;
     flex-direction: column;
     height: 30vh;
     width: 100%;
     position: absolute;
-    bottom: 0;
+    bottom: 10vh;
 }
 
 .register-box {
@@ -119,7 +88,6 @@ body {
     border-radius: 2.6vw;
     box-shadow: 0 0.2vw 1.2vw #190a5a6b;
 }
-
 
 .text-box {
     font-size: 8vw;
@@ -177,48 +145,40 @@ body {
         0 0vw 0.2vw #190a5a6b;
 }
 
-.credits {
-    height: 30vh;
+.forward-arrow-image {
+    height: 10vw;
+    width: auto;
+}
+
+.victory-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    background-color: transparent;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
-.credits-text span {
-    font-family: "Gotham";
-    font-weight: bold;
-    font-size: 4.2vw;
-    letter-spacing: 3.7vw;
-    color: #b4b4b4;
-    line-height: 5vh;
-    text-align: center;
-    display: block;
-    mix-blend-mode: overlay;
-}
-
-
-
-
-
-.second-screen {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    height: 100%;
+    background-color: #ffffff;
     display: none;
-    height: 30vh;
-    width: 100%;
-    background-color: transparent;
-    position: absolute;
-    bottom: 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
 }
 
+.message-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 40vh;
+}
 
-
-
-
+.typing-message {
+    font-family: "Salsa", sans-serif;
+    font-size: 6vw;
+    color: #292321;
+    text-align: center;
+    line-height: 1.5;
+}
 
 @keyframes bounce {
     0% {
@@ -229,18 +189,6 @@ body {
     }
     100% {
         transform: Scale(1);
-    }
-}
-
-@keyframes float {
-    0% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(1vh);
-    }
-    100% {
-        transform: translateY(0);
     }
 }
 
