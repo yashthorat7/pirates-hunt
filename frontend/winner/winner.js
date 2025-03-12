@@ -20,7 +20,7 @@ async function handleForwardClick(event) {
     if(!isNaN(inputValue) && inputValue >= 11 && inputValue <= 99) {
         try {
             triggerUnlock();
-            const response = await fetch("https://pirateshuntbackend.onrender.com/api/intro?introId=${winId}&shipNo=${inputValue}");
+            const response = await fetch("https://pirateshuntbackend.onrender.com/api/win?winId=${winId}&shipNo=${inputValue}");
             const firstScreen = document.querySelector('.first-screen');
             const chestImage = document.querySelector('.chest-image');
             const victoryScreen = document.querySelector('.victory-screen');

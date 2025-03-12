@@ -21,6 +21,10 @@ const outroRoutes = {
     getOutro: require('./routes/getOutro')
 };
 
+const winRoutes = {
+    getWin: require('./routes/getWin')
+};
+
 app.use(cors());
 app.use(express.json());
 
@@ -34,6 +38,7 @@ app.use('/api/puzzle/hint', puzzleRoutes.getHint);
 app.use('/api/puzzle/move', puzzleRoutes.getGameMove);
 
 app.use('/api/outro', outroRoutes.getOutro);
+app.use('/api/win', winRoutes.getWin);
 
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
