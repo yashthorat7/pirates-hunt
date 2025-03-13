@@ -1,38 +1,33 @@
 const winId = new URLSearchParams(window.location.search).get('id');
-const GOOGLE_FORM_URL = "https://forms.gle/35423423";
+const GOOGLE_FORM_URL = "https://forms.gle/Awmm1gqKVu5aHKeQ8";
 const victoryMessages = [
     "congratulations!",
-    "you have won the treasure!",
+    "you have found the treasure!",
     "now return back to home island"
 ];
 let typingTimeout;
 let currentMessageIndex = 0;
-function handleError(error, inputBox = null) {
-    console.error('Error:', error);
-    if(navigator.vibrate) navigator.vibrate(100);
-    if(inputBox) inputBox.value = '';
-    alert('Invalid shipNo');
-}
+
 async function handleForwardClick(event) {
     event.preventDefault();
     const inputBox = document.querySelector('.input-box');
     const inputValue = Number(inputBox.value);
     if(!isNaN(inputValue) && inputValue >= 11 && inputValue <= 99) {
-        try {
-            triggerUnlock();
-            const response = await fetch("https://pirateshuntbackend.onrender.com/api/win?winId=${winId}&shipNo=${inputValue}");
-            const firstScreen = document.querySelector('.first-screen');
-            const chestImage = document.querySelector('.chest-image');
-            const victoryScreen = document.querySelector('.victory-screen');
-            firstScreen.style.display = 'none';
-            chestImage.style.display = 'none';
-            victoryScreen.style.display = 'flex';
-            startTypingSequence();
-        } catch(error) {
-            handleError(error, inputBox);
-        }
+        const response = await fetch(`https://pirateshuntbackend.onrender.com/api/win?winId=${winId}&shipNo=${inputValue}`);
+        const firstScreen = document.querySelector('.first-screen');
+        const chestImage = document.querySelector('.chest-image');
+        const titlePart = document.querySelector('.title-part');
+        const victoryScreen = document.querySelector('.victory-screen');
+        firstScreen.style.display = 'none';
+        chestImage.style.display = 'none';
+        titlePart.style.display = 'none';
+        victoryScreen.style.display = 'flex';
+        triggerUnlock();
+        startTypingSequence();
     } else {
-        handleError('Invalid input', inputBox);
+        if(navigator.vibrate) navigator.vibrate(100);
+        if(inputBox) inputBox.value = '';
+        alert('Invalid shipNo');
     }
 }
 function startTypingSequence(){

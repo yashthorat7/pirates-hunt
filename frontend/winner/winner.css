@@ -29,7 +29,6 @@ body {
     user-select: none;
     overflow: hidden;
     touch-action: none;
-    background-image: url('../assets/images/treasure-background.jpg');
     background-size: cover;
     background-position: center;
 }
