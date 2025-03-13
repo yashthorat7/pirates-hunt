@@ -107,7 +107,7 @@ const gameData = {
         "(6)amnoh", "(7)sihte", "(8)btair", "(9)lpoea", "(10)ouldn",
         "(11)acrto", "(12)egnli", "(13)swloe", "(14)uoylk", "(15)apels",
         "(16)irtbe", "(17)aelpt", "(18)uoyrn"
-      ],
+    ],
 };
 
 module.exports = gameData;

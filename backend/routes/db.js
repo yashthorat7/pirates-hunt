@@ -36,7 +36,7 @@ async function writeShipData(table, gameNo, shipNo, value) {
     const col = `game${gameNo}`;
     const timeVal = (value !== undefined) ? value : getTime();
     
-    if (table === 'begintime') {
+    if (table === 'begintime' || table === 'endtime' || table === 'starttime') {
         const selectQuery = `SELECT ${col} FROM ${table} WHERE shipNo = $1`;
         const selectResult = await pool.query(selectQuery, [shipNo]);
 

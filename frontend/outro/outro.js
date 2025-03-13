@@ -6,7 +6,7 @@ window.onload = () => {
         .then((response) => response.json())
         .then((data) => {
             document.querySelector('.island-name').textContent = `${data.titleName.toUpperCase()} ISLAND`;
-            document.querySelector('.character-image').src = `../assets/${data.titleName}/character-face2.png`;
+            document.querySelector('.character-image').src = `../assets/images/card-avatar.png`;
             document.querySelector('.ship-code').textContent = `SHIP ${shipNo}`;
             document.querySelector('.clue-text').textContent = data.clueLetter;
             document.querySelector('.base-mark').textContent = `Base ${data.baseMark}`;
