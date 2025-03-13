@@ -11,7 +11,7 @@ window.onload = () => {
             document.querySelector('.clue-text').textContent = data.clueLetter;
             document.querySelector('.base-mark').textContent = `Base ${data.baseMark}`;
             document.querySelector('.chat-message').textContent = data.message;
-            document.querySelector('.checkpoint-image').src = `../assets/checkpoints/${data.clueImageName}.png`;
+            document.querySelector('.checkpoint-image').src = `${data.fileUrl}`;
         })
 }
 

@@ -29,7 +29,7 @@ router.get('/getUchihaWin', async (req, res) => {
     if (isCorrect) {
         res.json({ 
             hasWon: true,
-            fileName: "../../assets/uchiha/cvhasui.png"
+            fileName: "https://ik.imagekit.io/gg83pklk8/cvhasui.png"
         });
     } else {
         res.json({ hasWon: false });

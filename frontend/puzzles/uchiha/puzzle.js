@@ -63,11 +63,11 @@ function checkWin() {
         .then(data => {
             if (data.hasWon) {
                 UnlockTrigger();
-                if (data.fileName) {
+                if (data.fileUrl) {
                     setTimeout(() => {
                         const image = document.createElement('img');
                         image.classList.add('map-image');
-                        image.src = data.fileName;
+                        image.src = data.firlUrl;
                         document.querySelector('.game-part').appendChild(image);
                     }, 500);
                 }
