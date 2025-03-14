@@ -75,7 +75,7 @@ function createGlitter() {
 }
 
 autoRotate();
-setInterval(createGlitter, 300);
+// setInterval(createGlitter, 300);
 
 document.querySelector('.camera-icon').addEventListener('click', function() {
     document.querySelector('.card-back').style.display = 'none';
