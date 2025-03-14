@@ -145,6 +145,11 @@ async function initializeGame() {
         
         const islandImage = document.querySelector('.island-image');
         islandImage.src = `../assets/${gameData.titleName}/island.png`;
+
+        if (introId === 'ylxqtwoba') {
+            const body = document.querySelector('body');
+            body.style.background = "linear-gradient(0deg, rgb(5, 40, 65) 0%, rgb(0, 35, 99) 58%, rgb(0, 5, 53) 100%)";
+        }
     } catch (error) {
         handleError(error);
     }

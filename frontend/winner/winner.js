@@ -30,10 +30,12 @@ async function handleForwardClick(event) {
         alert('Invalid shipNo');
     }
 }
+
 function startTypingSequence(){
     currentMessageIndex = 0;
     typeNextMessage();
 }
+
 function typeNextMessage(){
     if(currentMessageIndex >= victoryMessages.length){
         setTimeout(() => { window.location.href = GOOGLE_FORM_URL; }, 100);
@@ -49,6 +51,7 @@ function typeNextMessage(){
         }, 1500);
     });
 }
+
 function typeMessage(message, element, callback){
     clearTimeout(typingTimeout);
     element.textContent = '';
@@ -64,6 +67,7 @@ function typeMessage(message, element, callback){
     }
     typing();
 }
+
 function triggerUnlock(){
     if(navigator.vibrate) navigator.vibrate([100,50,400]);
     confetti({

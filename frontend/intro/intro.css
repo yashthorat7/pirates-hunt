@@ -38,6 +38,7 @@ body {
     position: relative;
     width: 100vw;
     height: 100svh;
+    margin-top: 5vh;
     overflow: hidden;
     z-index: -100;
 }
@@ -87,9 +88,9 @@ body {
 }
 
 .island-image {
-    width: 77vw;
+    width: 95vw;
     height: auto;
-    filter: saturate(70%);
+    filter: saturate(125%);
 }
 
 
