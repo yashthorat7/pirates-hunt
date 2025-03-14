@@ -17,7 +17,7 @@ router.get('/getHint', async (req, res) => {
 
     if (timeDiffMinutes >= HINTTIME && startTime !== 0) {
         await db.writeShipData('endtime', gameNo, shipNo);
-        await db.writeShipData('Unlocked', gameNo, shipNo, 2);
+        await db.writeShipData('unlocked', gameNo, shipNo, 2);
         res.json({
             message: "Times Up! Here I have solved it for you",
             redirect: `../../outro/outro.html?ship=${shipNo}&id=${outroId}`
