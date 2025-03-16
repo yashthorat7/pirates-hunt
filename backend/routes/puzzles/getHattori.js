@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 
 const counts = [
-    [2, 1, 11, 4],
-    [3, 1, 16, 7],
-    [1, 1, 12, 2],
-    [0, 1, 19, 6]
+    [2, 7, 7, 4], //coin, bottle, diamond, pearl
+    [7, 3, 5, 2],
+    [6, 1, 5, 5],
+    [7, 2, 6, 3]
 ];
 imageName = ['(1)lsdja', '(2)menkj', '(3)wenvi', '(4)xqztr'];
 
