@@ -52,7 +52,7 @@ async function handleForwardClick(event) {
 
     if (!isNaN(inputValue) && inputValue >= 11 && inputValue <= 50) {
         try {
-            const response = await fetch(`https://pirateshuntbackend.onrender.com/api/intro/move?introId=${gameData.introId}&shipNo=${inputValue}`);
+            const response = await fetch(`http://pirateshuntbackend.onrender.com/api/intro/move?introId=${gameData.introId}&shipNo=${inputValue}`);
             const data = await response.json();
             redirect = data.redirect;
             
@@ -126,34 +126,30 @@ function createRipple(container) {
 
 async function initializeGame() {
     const introId = new URLSearchParams(window.location.search).get('id');
-    try {
-        const response = await fetch(`https://pirateshuntbackend.onrender.com/api/intro?introId=${introId}`);
-        if (!response.ok) throw new Error('Failed to fetch game data');
-        
-        const data = await response.json();
-        gameData = {
-            titleName: data.titleName,
-            introId: introId
-        };
-        messages = data.messages;
+    const response = await fetch(`http://pirateshuntbackend.onrender.com/api/intro?introId=${introId}`);
+    if (!response.ok) throw new Error('Failed to fetch game data');
+    
+    const data = await response.json();
+    gameData = {
+        titleName: data.titleName,
+        introId: introId
+    };
+    messages = data.messages;
 
-        const titleElement = document.querySelector('.title-name');
-        titleElement.textContent = gameData.titleName.toUpperCase();
-        
-        const characterImage = document.querySelector('.character-image');
-        characterImage.src = `../assets/${gameData.titleName}/character.png`;
-        
-        const islandImage = document.querySelector('.island-image');
-        islandImage.src = `../assets/${gameData.titleName}/island.png`;
+    const titleElement = document.querySelector('.title-name');
+    titleElement.textContent = gameData.titleName.toUpperCase();
+    
+    const characterImage = document.querySelector('.character-image');
+    characterImage.src = `../assets/${gameData.titleName}/character.png`;
+    
+    const islandImage = document.querySelector('.island-image');
+    islandImage.src = `../assets/${gameData.titleName}/island.png`;
 
-        if (introId === 'ylxqtwoba') {
-            const body = document.querySelector('body');
-            const messages = document.querySelector('.message');
-            body.style.background = "linear-gradient(0deg, rgb(5, 40, 65) 0%, rgb(0, 35, 99) 58%, rgb(0, 5, 53) 100%)";
-            messages.style.color = "white";
-        }
-    } catch (error) {
-        handleError(error);
+    if (introId === 'ylxqtwoba') {
+        const body = document.querySelector('body');
+        const messages = document.querySelector('.message');
+        body.style.background = "linear-gradient(0deg, rgb(5, 40, 65) 0%, rgb(0, 35, 99) 58%, rgb(0, 5, 53) 100%)";
+        messages.style.color = "white";
     }
 }
 
