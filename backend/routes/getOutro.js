@@ -13,16 +13,30 @@ const imagekit = new ImageKit({
 
 router.get('/', async (req, res) => {
     const { outroId, shipNo } = req.query;
-    const index = gameData.outroId.findIndex(id => id === outroId);
-    const gameNo = index + 1;
-    const titleName = gameData.titleName[index];
+    const gameIndex = gameData.outroId.findIndex(id => id === outroId);
+    const gameNo = gameIndex + 1;
+    const titleName = gameData.titleName[gameIndex];
     const message = outroMessage.outroMessages[gameNo];
 
+    let attemptIndex;
     const shipIndex = parseInt(shipNo) - 11;
-    const baseMark = gameData.baseMarks[shipIndex][index];
-    const clueLetter = gameData.clueLetters[shipIndex][index];
-    const clueImageName = gameData.clueImageName[baseMark - 1];
-    const fileUrl = `${process.env.IMAGEKIT_URL_ENDPOINT}${clueImageName}.png`;
+
+    let baseMark, clueLetter, clueImageName;
+
+    if (gameIndex === 0) {
+        attemptIndex = 0;
+        baseMark = gameData.baseMarks[shipIndex][attemptIndex];
+        clueLetter = gameData.clueLetters[shipIndex][attemptIndex];
+        clueImageName = gameData.clueImageName[baseMark - 1];
+        fileUrl = `${process.env.IMAGEKIT_URL_ENDPOINT}${clueImageName}.png`;
+    } else {
+        attemptIndex = gameData.baseMarks[shipIndex].findIndex(mark => mark === gameIndex);
+        baseMark = gameData.baseMarks[shipIndex][attemptIndex + 1];
+        clueLetter = gameData.clueLetters[shipIndex][attemptIndex + 1];
+        clueImageName = gameData.clueImageName[baseMark - 1];
+
+        fileUrl = `${process.env.IMAGEKIT_URL_ENDPOINT}${clueImageName}.png`;
+    }
 
     res.json({
         titleName, 

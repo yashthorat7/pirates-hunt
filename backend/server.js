@@ -35,5 +35,5 @@ app.use('/api/puzzle/move', puzzleRoutes.getGameMove);
 app.use('/api/outro', outroRoutes.getOutro);
 app.use('/api/win', winRoutes.getWin);
 
-const PORT = 3000;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
