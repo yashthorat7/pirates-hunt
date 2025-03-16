@@ -12,7 +12,7 @@ window.onload = function() {
             
             pannellum.viewer('panorama', {
                 type: "equirectangular",
-                panorama: `../../assets/hattori/${image}.webp`,
+                panorama: `../../assets/hattori/${image}.png`,
                 autoLoad: true,
                 showZoomCtrl: false,
                 showFullscreenCtrl: false,

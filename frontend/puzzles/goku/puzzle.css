@@ -115,7 +115,7 @@ body, html {
     height: 75vw;
     z-index: 10;
     border-radius: 4vw;
-    background-color: grey;
+    background-color: rgb(255, 255, 255);
     pointer-events: none;
     user-select: none;
     cursor: none;

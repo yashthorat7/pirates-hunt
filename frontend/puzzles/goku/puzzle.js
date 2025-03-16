@@ -15,7 +15,7 @@ function fetchGameData() {
         .then(response => response.json())
         .then(data => {
             if (data.doWait) {
-                showTimerOverlay(90);
+                showTimerOverlay(30);
             } else {
                 window.gameData = {
                     titleName: data.titleName,
@@ -44,13 +44,18 @@ function makeOptions() {
     const questionNumber = document.querySelector('.question-title');
     questionNumber.textContent = `JUMP STONE ${currentQuestionIndex + 1}`;
 
+    const nextQuestion = questions[currentQuestionIndex + 1];
+    if (nextQuestion) {
+        const preloadedImage = new Image();
+        preloadedImage.src = `../../assets/goku/${fileName}/riddle (${nextQuestion.riddleNo}).png`;
+    }
+
     currentQuestion.options.forEach((option, index) => {
         const optionBox = document.createElement('div');
         optionBox.classList.add('option-box');
         optionBox.id = option - (index + 1);
         optionBox.textContent = option;
         optionBox.onclick = () => checkAnswer(option, currentQuestion.riddleNo);
-
         optionBox.style.animation = 'slideIn 0.6s ease forwards';
         optionsPart.appendChild(optionBox);
     });
