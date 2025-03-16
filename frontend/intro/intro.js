@@ -148,7 +148,9 @@ async function initializeGame() {
 
         if (introId === 'ylxqtwoba') {
             const body = document.querySelector('body');
+            const messages = document.querySelector('.message');
             body.style.background = "linear-gradient(0deg, rgb(5, 40, 65) 0%, rgb(0, 35, 99) 58%, rgb(0, 5, 53) 100%)";
+            messages.style.color = "white";
         }
     } catch (error) {
         handleError(error);
