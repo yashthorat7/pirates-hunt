@@ -5,7 +5,7 @@ const router = express.Router();
 const questionSet = [
     { riddleNo:  1, options: ['6', '2', '4'], correctAns: '4' },
     { riddleNo:  2, options: ['5', '2', '6'], correctAns: '2' },
-    { riddleNo:  3, options: ['8', '9', '12'], correctAns: '12' },
+    { riddleNo:  3, options: ['8', '14', '12'], correctAns: '14' },
     { riddleNo:  4, options: ['10', '12', '9'], correctAns: '10' },
     { riddleNo:  5, options: ['E', 'D', 'C'], correctAns: 'E' },
     { riddleNo:  6, options: ['A', 'D', 'B'], correctAns: 'D' },
