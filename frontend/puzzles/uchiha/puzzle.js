@@ -1,10 +1,10 @@
 const gameId = new URLSearchParams(window.location.search).get('id');
-const shipNo = new URLSearchParams(window.location.search).get('ship');
 const numberButtons = document.querySelectorAll('.dial-button:not(:nth-child(9))');
 const submitButton = document.querySelector('.dial-button:nth-child(9)');
 let maplink = '';
 
 window.onload = async () => {
+    const shipNo = new URLSearchParams(window.location.search).get('ship');
     if (shipNo) {
         const response = await fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`);
         const data = await response.json();
