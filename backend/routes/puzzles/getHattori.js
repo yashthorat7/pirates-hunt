@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const counts = [
-    [2, 7, 7, 4], //coin, bottle, diamond, pearl
+    [7, 2, 7, 4], //coin, bottle, diamond, pearl
     [7, 3, 5, 2],
     [6, 1, 5, 5],
     [7, 2, 6, 3]
