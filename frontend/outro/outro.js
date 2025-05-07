@@ -1,18 +1,15 @@
-window.onload = () => {
+window.onload = async () => {
     const outroId = new URLSearchParams(window.location.search).get('id');
     const shipNo = new URLSearchParams(window.location.search).get('ship');
 
-    fetch(`https://pirateshuntbackend.onrender.com/api/outro?outroId=${outroId}&shipNo=${shipNo}`)
-        .then((response) => response.json())
-        .then((data) => {
-            document.querySelector('.island-name').textContent = `${data.titleName.toUpperCase()} ISLAND`;
-            document.querySelector('.character-image').src = `../assets/images/card-avatar.png`;
-            document.querySelector('.ship-code').textContent = `SHIP ${shipNo}`;
-            document.querySelector('.clue-text').textContent = data.clueLetter;
-            document.querySelector('.base-mark').textContent = `Base ${data.baseMark}`;
-            document.querySelector('.chat-message').textContent = data.message;
-            document.querySelector('.checkpoint-image').src = `${data.fileUrl}`;
-        })
+    const data = await API.getOutro(outroId, shipNo);
+    document.querySelector('.island-name').textContent = `${data.titleName.toUpperCase()} ISLAND`;
+    document.querySelector('.character-image').src = `../assets/images/card-avatar.png`;
+    document.querySelector('.ship-code').textContent = `SHIP ${shipNo}`;
+    document.querySelector('.clue-text').textContent = data.clueLetter;
+    document.querySelector('.base-mark').textContent = `Base ${data.baseMark}`;
+    document.querySelector('.chat-message').textContent = data.message;
+    document.querySelector('.checkpoint-image').src = `${data.fileUrl}`;
 }
 
 let card = document.getElementById("card");
@@ -31,10 +28,6 @@ function autoRotate() {
     }
     requestAnimationFrame(autoRotate);
 }
-
-window.addEventListener("touchstart", startDrag);
-window.addEventListener("touchend", endDrag);
-window.addEventListener("touchmove", drag);
 
 function startDrag(event) {
     isDragging = true;
@@ -59,23 +52,11 @@ function drag(event) {
     startX = currentX;
 }
 
-// function createGlitter() {
-//     const glitter = document.createElement('div');
-//     glitter.classList.add('glitter');
-//     const size = 5 + Math.random() * 15;
-//     glitter.style.width = `${size * 2}px`;
-//     glitter.style.height = `${size * 2}px`;
-//     glitter.style.left = `${Math.random() * window.innerWidth}px`;
-//     glitter.style.top = `${window.innerHeight}px`;
-//     glitter.style.animationDuration = `${4 + Math.random() * 6}s`;
-//     glitter.style.transform = `translateX(${Math.random() * 100 - 50}px)`;
-//     document.body.appendChild(glitter);
-
-//     setTimeout(() => glitter.remove(), 6000);
-// }
+window.addEventListener("touchstart", startDrag);
+window.addEventListener("touchend", endDrag);
+window.addEventListener("touchmove", drag);
 
 autoRotate();
-// setInterval(createGlitter, 300);
 
 document.querySelector('.camera-icon').addEventListener('click', function() {
     document.querySelector('.card-back').style.display = 'none';

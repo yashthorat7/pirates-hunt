@@ -5,9 +5,7 @@ const shipNo = new URLSearchParams(window.location.search).get('ship');
 
 window.onload = async () => {
     if (shipNo) {
-        const response = await fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`);
-        const data = await response.json();
-        
+        const data = await API.getGame(gameId, shipNo);
         window.gameData = {
             titleName: data.titleName,
             messages: data.messages
@@ -16,40 +14,30 @@ window.onload = async () => {
 };
 
 function changeNumber(rectId, change) {
-    const digitElement = document.getElementById(`digit-${rectId}`);
-    const currentValue = parseInt(digitElement.textContent);
-    const newValue = (currentValue + change + 10) % 10;
-    digitElement.textContent = newValue;
+    const rect = document.querySelector(`.rect${rectId}`);
+    let currentNum = parseInt(rect.textContent);
+    currentNum = (currentNum + change + 10) % 10;
+    rect.textContent = currentNum;
 }
 
 function handleGuessClick() {
-    const guessedNumber = Array.from({ length: 4 }, (_, i) => document.getElementById(`digit-${i + 1}`).textContent).join('');
+    const rect1 = document.querySelector('.rect1').textContent;
+    const rect2 = document.querySelector('.rect2').textContent;
+    const rect3 = document.querySelector('.rect3').textContent;
+    const rect4 = document.querySelector('.rect4').textContent;
+    const guessedNumber = rect1 + rect2 + rect3 + rect4;
 
-    setTimeout(() => {
-        if (guessedNumbers.has(guessedNumber)) {
-            showErrorMessage("This number was already guessed");
-            return;
-        }
+    if (guessedNumbers.has(guessedNumber)) {
+        showErrorMessage("You've already tried this combination");
+        return;
+    }
 
-        if (new Set(guessedNumber).size !== guessedNumber.length) {
-            showErrorMessage("No repetition allowed");
-            return;
-        }
-
-        if (isFirstGuess) {
-            document.querySelector('.log-part').innerHTML = '';
-            isFirstGuess = false;
-        }
-
-        guessedNumbers.add(guessedNumber);
-        compareNumbers(guessedNumber);
-    }, 100);
+    guessedNumbers.add(guessedNumber);
+    compareNumbers(guessedNumber);
 }
 
 async function compareNumbers(guessedNumber) {
-    const response = await fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${guessedNumber}`);
-    const data = await response.json();
-    
+    const data = await API.makeGameMove(gameId, shipNo, guessedNumber);
     const [guessedNo, bulls, cows] = data.verdictArray;
 
     if (bulls + cows === 4 && bulls !== 4) {
@@ -64,52 +52,53 @@ async function compareNumbers(guessedNumber) {
 }
 
 function logResult(guessedNumber, bulls, cows) {
-    const logBox = document.querySelector('.log-part');
-    const logEntry = document.createElement('div');
-    logEntry.classList.add('log-entry');
-    const guessedNumberEl = document.createElement('span');
-    guessedNumberEl.classList.add('guessed-number');
-    guessedNumberEl.textContent = guessedNumber;
-
-    const resultContainer = document.createElement('div');
-    resultContainer.classList.add('result-container');
-    const bullsEl = document.createElement('p');
-    const cowsEl = document.createElement('p');
-
-    if (bulls > 0) {
-        bullsEl.innerHTML = `${bulls} right no, right place`;
-        bullsEl.style.color = '#6eea54';
+    const resultLogElement = document.querySelector('.result-log');
+    const resultElement = document.createElement('div');
+    resultElement.classList.add('result-box');
+    
+    const guessElement = document.createElement('div');
+    guessElement.classList.add('guess');
+    guessElement.textContent = guessedNumber;
+    
+    const bullsCowsElement = document.createElement('div');
+    bullsCowsElement.classList.add('bulls-cows');
+    bullsCowsElement.textContent = `${bulls}B ${cows}C`;
+    
+    resultElement.appendChild(guessElement);
+    resultElement.appendChild(bullsCowsElement);
+    resultLogElement.insertBefore(resultElement, resultLogElement.firstChild);
+    
+    if (isFirstGuess) {
+        const headerElement = document.createElement('div');
+        headerElement.classList.add('result-box', 'header');
+        
+        const guessHeaderElement = document.createElement('div');
+        guessHeaderElement.classList.add('guess');
+        guessHeaderElement.textContent = 'Guess';
+        
+        const bullsCowsHeaderElement = document.createElement('div');
+        bullsCowsHeaderElement.classList.add('bulls-cows');
+        bullsCowsHeaderElement.textContent = 'Result';
+        
+        headerElement.appendChild(guessHeaderElement);
+        headerElement.appendChild(bullsCowsHeaderElement);
+        resultLogElement.insertBefore(headerElement, resultLogElement.firstChild);
+        
+        isFirstGuess = false;
     }
-
-    if (cows > 0) {
-        cowsEl.innerHTML = `${cows} right no, wrong place`;
-        cowsEl.style.color = '#ead656';
-    } else if (bulls === 0 && cows === 0) {
-        cowsEl.innerHTML = 'No number is correct';
-        cowsEl.style.color = '#FF6F91';
-    }
-
-    resultContainer.appendChild(bullsEl);
-    if (cowsEl.innerHTML !== '') resultContainer.appendChild(cowsEl);
-
-    logEntry.appendChild(guessedNumberEl);
-    logEntry.appendChild(resultContainer);
-    logBox.appendChild(logEntry);
-    logBox.scrollTop = logBox.scrollHeight;
 }
 
 function showErrorMessage(message) {
-    navigator.vibrate(400);
     const messageElement = document.querySelector('.message');
     messageElement.textContent = message;
     messageElement.style.color = "#d32020";
+    if (navigator.vibrate) navigator.vibrate(100);
 }
 
 fetch('../../common/connect.html')
     .then(response => response.text())
     .then(data => {
         document.querySelector('.connect-container').innerHTML = data;
-
         const script = document.createElement('script');
         script.src = '../../common/connect.js';
         document.body.appendChild(script);

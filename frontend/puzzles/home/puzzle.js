@@ -5,25 +5,22 @@ const shipNo = new URLSearchParams(window.location.search).get('ship');
 const gameId = new URLSearchParams(window.location.search).get('id');
 let titleName;
 
-window.onload = function() {
+window.onload = async function() {
     if (shipNo) {
-        fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`)
-        .then(response => response.json())
-        .then(data => {
-            const tileImages = document.querySelectorAll('.tile img');
-            titleName = data.titleName;
-            const { fileName } = data;
-            
-            tileImages.forEach((img, index) => {
-                const tileNumber = index + 1;
-                img.src = `../../assets/home/${fileName}/tile (${tileNumber}).png`;
-            });
-
-            window.gameData = {
-                titleName: data.titleName,
-                messages: data.messages
-            };
+        const data = await API.getGame(gameId, shipNo);
+        const tileImages = document.querySelectorAll('.tile img');
+        titleName = data.titleName;
+        const { fileName } = data;
+        
+        tileImages.forEach((img, index) => {
+            const tileNumber = index + 1;
+            img.src = `../../assets/home/${fileName}/tile (${tileNumber}).png`;
         });
+
+        window.gameData = {
+            titleName: data.titleName,
+            messages: data.messages
+        };
     }
 };
 
@@ -34,15 +31,6 @@ function getRandomPosition(tileWidth, tileHeight) {
     const y = Math.random() * (screenHeight - tileHeight - 50);
     return { x, y };
 }
-
-tiles.forEach(tile => {
-    const tileWidth = tile.offsetWidth;
-    const tileHeight = tile.offsetHeight;
-    const { x, y } = getRandomPosition(tileWidth, tileHeight);
-    tile.style.position = 'absolute';
-    tile.style.left = `${x}px`;
-    tile.style.top = `${y}px`;
-});
 
 function getNearestGrid(tile) {
     let nearestGrid = null;
@@ -85,15 +73,41 @@ function checkCompletion() {
     });
 
     if (allOccupied && allCorrect) {
-        fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.hasWon) {
-                triggerUnlock(data.redirect);
-            }
-        });
+        API.makeGameMove(gameId, shipNo)
+            .then(data => {
+                if (data.hasWon) {
+                    triggerUnlock(data.redirect);
+                }
+            });
     }
 }    
+
+function checkForLastUnoccupied() {
+    const unoccupiedTiles = Array.from(tiles).filter(tile => !tile.parentElement.getAttribute('data-occupied'));
+    const unoccupiedGrids = Array.from(grids).filter(grid => grid.getAttribute('data-occupied') !== 'true');
+
+    if (unoccupiedTiles.length === 1 && unoccupiedGrids.length === 1) {
+        const lastTile = unoccupiedTiles[0];
+        const lastGrid = unoccupiedGrids[0];
+        const gridRect = lastGrid.getBoundingClientRect();
+
+        lastTile.style.left = `${gridRect.left}px`;
+        lastTile.style.top = `${gridRect.top}px`;
+
+        lastGrid.setAttribute('data-occupied', 'true');
+        currentlyOccupiedGrid = lastGrid;
+        lastTile.style.zIndex = 5;
+    }
+}
+
+tiles.forEach(tile => {
+    const tileWidth = tile.offsetWidth;
+    const tileHeight = tile.offsetHeight;
+    const { x, y } = getRandomPosition(tileWidth, tileHeight);
+    tile.style.position = 'absolute';
+    tile.style.left = `${x}px`;
+    tile.style.top = `${y}px`;
+});
 
 tiles.forEach(tile => {
     let offsetX, offsetY;
@@ -149,28 +163,10 @@ tiles.forEach(tile => {
     });
 });
 
-function checkForLastUnoccupied() {
-    const unoccupiedTiles = Array.from(tiles).filter(tile => !tile.parentElement.getAttribute('data-occupied'));
-    const unoccupiedGrids = Array.from(grids).filter(grid => grid.getAttribute('data-occupied') !== 'true');
-
-    if (unoccupiedTiles.length === 1 && unoccupiedGrids.length === 1) {
-        const lastTile = unoccupiedTiles[0];
-        const lastGrid = unoccupiedGrids[0];
-        const gridRect = lastGrid.getBoundingClientRect();
-
-        lastTile.style.left = `${gridRect.left}px`;
-        lastTile.style.top = `${gridRect.top}px`;
-
-        lastGrid.setAttribute('data-occupied', 'true');
-        lastTile.style.zIndex = 5;
-    }
-}
-
 fetch('../../common/connect.html')
     .then(response => response.text())
     .then(data => {
         document.querySelector('.connect-container').innerHTML = data;
-
         const script = document.createElement('script');
         script.src = '../../common/connect.js';
         document.body.appendChild(script);

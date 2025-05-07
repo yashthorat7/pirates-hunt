@@ -10,55 +10,43 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-function fetchGameData() {
-    fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.doWait) {
-                showTimerOverlay(30);
-            } else {
-                window.gameData = {
-                    titleName: data.titleName,
-                    messages: data.messages
-                };
-                questions = data.questions;
-                fileName = data.fileName;
-                removeTimerOverlay();
-                if (questions && questions.length > 0) {
-                    makeOptions();
-                }
-            }
-        });
+async function fetchGameData() {
+    const data = await API.getGame(gameId, shipNo);
+    if (data.doWait) {
+        showTimerOverlay(30);
+    } else {
+        window.gameData = {
+            titleName: data.titleName,
+            messages: data.messages
+        };
+        questions = data.questions;
+        fileName = data.fileName;
+        removeTimerOverlay();
+        if (questions && questions.length > 0) {
+            makeOptions();
+        }
+    }
 }
 
 function makeOptions() {
-    const questionElement = document.querySelector('.riddle');
-    const optionsPart = document.querySelector('.options-part');
-
-    const currentQuestion = questions[currentQuestionIndex];
-    if (!currentQuestion) return;
-
-    questionElement.src = `../../assets/goku/${fileName}/riddle (${currentQuestion.riddleNo}).png`;
-    optionsPart.innerHTML = '';
+    const riddles = document.querySelector('.riddle-container');
+    riddles.innerHTML = '';
     
-    const questionNumber = document.querySelector('.question-title');
-    questionNumber.textContent = `JUMP STONE ${currentQuestionIndex + 1}`;
+    const optionContainer = document.createElement('div');
+    optionContainer.classList.add('option-container');
 
-    const nextQuestion = questions[currentQuestionIndex + 1];
-    if (nextQuestion) {
-        const preloadedImage = new Image();
-        preloadedImage.src = `../../assets/goku/${fileName}/riddle (${nextQuestion.riddleNo}).png`;
+    if (currentQuestionIndex < questions.length) {
+        const options = questions[currentQuestionIndex].options;
+        options.forEach(option => {
+            const optionBox = document.createElement('div');
+            optionBox.classList.add('option-box');
+            optionBox.textContent = option;
+            optionBox.addEventListener('click', () => checkAnswer(option, currentQuestionIndex));
+            optionContainer.appendChild(optionBox);
+        });
+        
+        riddles.appendChild(optionContainer);
     }
-
-    currentQuestion.options.forEach((option, index) => {
-        const optionBox = document.createElement('div');
-        optionBox.classList.add('option-box');
-        optionBox.id = option - (index + 1);
-        optionBox.textContent = option;
-        optionBox.onclick = () => checkAnswer(option, currentQuestion.riddleNo);
-        optionBox.style.animation = 'slideIn 0.6s ease forwards';
-        optionsPart.appendChild(optionBox);
-    });
 }
 
 async function checkAnswer(selectedOption, riddleNo) {
@@ -68,8 +56,7 @@ async function checkAnswer(selectedOption, riddleNo) {
         answer: selectedOption
     };
 
-    const response = await fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${JSON.stringify(userInput)}`);
-    const data = await response.json();
+    const data = await API.makeGameMove(gameId, shipNo, JSON.stringify(userInput));
     
     optionBoxes.forEach(box => {
         if (data.isCorrect) {
@@ -92,50 +79,57 @@ async function checkAnswer(selectedOption, riddleNo) {
     });
 
     if (data.isCorrect) {
-        setTimeout(() => { 
-            if (data.hasWon) {
-                triggerUnlock(data.redirect);
-            } else {
-                currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length - 1) {
+            currentQuestionIndex++;
+            setTimeout(() => {
                 makeOptions();
-            }
-        }, 600);
+            }, 1000);
+        } else if (data.redirect) {
+            document.querySelector('.game-part').style.userSelect = 'none';
+            triggerUnlock(data.redirect);
+        }
     } else {
-        navigator.vibrate(400);
-        const messageElement = document.querySelector('.message');
-        messageElement.textContent = `wrong stone!`;
-        messageElement.style.color = "#d32020";
         setTimeout(() => {
-            window.location.reload();
-        }, 1200);
+            showTimerOverlay(30);
+            setTimeout(() => {
+                location.reload();
+            }, 30000);
+        }, 1000);
     }
 }
 
 function formatTime(seconds) {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins < 10 ? '0' + mins : mins}:${secs < 10 ? '0' + secs : secs}`;
+    return `${Math.floor(seconds)}`;
 }
   
 function showTimerOverlay(duration) {
-    const overlay = document.querySelector('.wait-overlay');
-    const timerElement = document.querySelector('.timer');
-    overlay.style.display = 'flex';
-    timerElement.textContent = formatTime(duration);
+    const overlay = document.createElement('div');
+    overlay.classList.add('timer-overlay');
+    
+    const timerText = document.createElement('div');
+    timerText.classList.add('timer-text');
+    timerText.textContent = formatTime(duration);
+    
+    overlay.appendChild(timerText);
+    document.querySelector('.game-part').appendChild(overlay);
+    
+    let timeLeft = duration;
     const interval = setInterval(() => {
-        duration--;
-        timerElement.textContent = formatTime(duration);
-        if (duration <= 0) {
+        timeLeft--;
+        timerText.textContent = formatTime(timeLeft);
+        
+        if (timeLeft <= 0) {
             clearInterval(interval);
             removeTimerOverlay();
-            fetchGameData();
         }
     }, 1000);
 }
 
 function removeTimerOverlay() {
-    const overlay = document.querySelector('.wait-overlay');
-    overlay.style.display = 'none';
+    const overlay = document.querySelector('.timer-overlay');
+    if (overlay) {
+        overlay.remove();
+    }
 }
 
 fetch('../../common/connect.html')

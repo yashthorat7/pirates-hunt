@@ -7,35 +7,24 @@ let gameData = null;
 let rippleInProgress = false;
 
 function startTypingAnimation(index, typingDelay = 35) {
-    const messageElement = document.getElementById('animated-message');
-    const backwardButton = document.querySelector('.backward-button');
-    const fastTyping = visitedMessages[index] && index !== 0;
-
-    visitedMessages[index] = true;
-    typeMessage(messages[index], messageElement, typingDelay, fastTyping);
-    backwardButton.style.display = currentMessageIndex === 0 ? 'none' : 'block';
+    const messageElement = document.querySelector('.message');
+    messageElement.textContent = '';
+    typeMessage(messages[index], messageElement, typingDelay);
 }
 
 function typeMessage(message, element, delay, fastTyping = false) {
+    const characters = message.split('');
+    let i = 0;
     clearTimeout(typingTimeout);
-    element.textContent = '';
-    let index = 0;
 
-    const forwardButton = document.querySelector('.forward-button');
-    forwardButton.disabled = true;
-
-    if (fastTyping) delay = 5;
-
-    function typing() {
-        if (index < message.length) {
-            element.textContent += message.charAt(index);
-            index++;
-            typingTimeout = setTimeout(typing, delay);
-        } else {
-            forwardButton.disabled = false;
+    function type() {
+        if (i < characters.length) {
+            element.textContent += characters[i];
+            i++;
+            typingTimeout = setTimeout(type, fastTyping ? delay / 2 : delay);
         }
     }
-    typing();
+    type();
 }
 
 function handleError(error, inputBox = null) {
@@ -52,8 +41,7 @@ async function handleForwardClick(event) {
 
     if (!isNaN(inputValue) && inputValue >= 11 && inputValue <= 50) {
         try {
-            const response = await fetch(`http://pirateshuntbackend.onrender.com/api/intro/move?introId=${gameData.introId}&shipNo=${inputValue}`);
-            const data = await response.json();
+            const data = await API.getIntroMove(gameData.introId, inputValue);
             redirect = data.redirect;
             
             const firstScreen = document.querySelector('.first-screen');
@@ -126,10 +114,8 @@ function createRipple(container) {
 
 async function initializeGame() {
     const introId = new URLSearchParams(window.location.search).get('id');
-    const response = await fetch(`http://pirateshuntbackend.onrender.com/api/intro?introId=${introId}`);
-    if (!response.ok) throw new Error('Failed to fetch game data');
+    const data = await API.getIntro(introId);
     
-    const data = await response.json();
     gameData = {
         titleName: data.titleName,
         introId: introId

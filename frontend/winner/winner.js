@@ -13,7 +13,7 @@ async function handleForwardClick(event) {
     const inputBox = document.querySelector('.input-box');
     const inputValue = Number(inputBox.value);
     if(!isNaN(inputValue) && inputValue >= 11 && inputValue <= 99) {
-        const response = await fetch(`https://pirateshuntbackend.onrender.com/api/win?winId=${winId}&shipNo=${inputValue}`);
+        await API.submitWin(winId, inputValue);
         const firstScreen = document.querySelector('.first-screen');
         const chestImage = document.querySelector('.chest-image');
         const titlePart = document.querySelector('.title-part');
@@ -31,62 +31,55 @@ async function handleForwardClick(event) {
     }
 }
 
-function startTypingSequence(){
+function startTypingSequence() {
     currentMessageIndex = 0;
     typeNextMessage();
 }
 
-function typeNextMessage(){
-    if(currentMessageIndex >= victoryMessages.length){
-        setTimeout(() => { window.location.href = GOOGLE_FORM_URL; }, 100);
-        return;
+function typeNextMessage() {
+    if (currentMessageIndex < victoryMessages.length) {
+        typeMessage(victoryMessages[currentMessageIndex], document.querySelector('.message'), () => {
+            setTimeout(() => {
+                currentMessageIndex++;
+                typeNextMessage();
+            }, 1000);
+        });
     }
-    const messageElement = document.querySelector('.typing-message');
-    const message = victoryMessages[currentMessageIndex];
-    typeMessage(message, messageElement, () => {
-        setTimeout(() => {
-            messageElement.textContent = '';
-            currentMessageIndex++;
-            typeNextMessage();
-        }, 1500);
-    });
 }
 
-function typeMessage(message, element, callback){
+function typeMessage(message, element, callback) {
+    const characters = message.split('');
+    let i = 0;
     clearTimeout(typingTimeout);
-    element.textContent = '';
-    let index = 0;
-    function typing(){
-        if(index < message.length){
-            element.textContent += message.charAt(index);
-            index++;
-            typingTimeout = setTimeout(typing, 70);
-        } else {
-            if(callback) callback();
+
+    function type() {
+        if (i < characters.length) {
+            element.textContent += characters[i];
+            i++;
+            typingTimeout = setTimeout(type, 50);
+        } else if (callback) {
+            callback();
         }
     }
-    typing();
+
+    element.textContent = '';
+    type();
 }
 
-function triggerUnlock(){
-    if(navigator.vibrate) navigator.vibrate([100,50,400]);
+function triggerUnlock() {
+    if (navigator.vibrate) {
+        navigator.vibrate([100, 50, 400]);
+    }
+    
     confetti({
-        particleCount: 50,
-        spread: 60,
-        startVelocity: 50,
-        angle: 60,
-        colors: ["#FFD700"],
-        shapes: ["circle"],
-        origin: { x: 0, y: 1 }
-    });
-    confetti({
-        particleCount: 50,
-        spread: 60,
-        startVelocity: 50,
-        angle: 120,
-        colors: ["#FFD700"],
-        shapes: ["circle"],
-        origin: { x: 1, y: 1 }
+        particleCount: 100,
+        spread: 30,
+        startVelocity: 90,
+        angle: 90,
+        scalar: 1,
+        gravity: 5,
+        origin: { y: 0.9 },
+        tick: 1500,
     });
 }
 

@@ -8,17 +8,14 @@ let previousGuesses = [];
 const rows = 6;
 const columns = 5;
 
-window.onload = () => {
+window.onload = async () => {
     if (shipNo) {
-        fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`)
-        .then(response => response.json())
-        .then(data => {
-            titleName = data.titleName;
-            window.gameData = {
-                titleName: data.titleName,
-                messages: data.messages
-            };
-        });
+        const data = await API.getGame(gameId, shipNo);
+        titleName = data.titleName;
+        window.gameData = {
+            titleName: data.titleName,
+            messages: data.messages
+        };
     }
 };
 
@@ -39,111 +36,94 @@ document.querySelectorAll('.key').forEach(key => {
 function addLetter(letter) {
     if (currentGuess.length < columns) {
         currentGuess += letter;
-        updateGrid();
+        const cell = document.querySelector(`.row:nth-child(${currentRow + 1}) .cell:nth-child(${currentGuess.length})`);
+        cell.textContent = letter;
+        cell.classList.add('filled');
     }
 }
 
 function deleteLetter() {
     if (currentGuess.length > 0) {
+        const cell = document.querySelector(`.row:nth-child(${currentRow + 1}) .cell:nth-child(${currentGuess.length})`);
+        cell.textContent = '';
+        cell.classList.remove('filled');
         currentGuess = currentGuess.slice(0, -1);
-        updateGrid();
     }
 }
 
 function updateGrid() {
-    for (let i = 0; i < columns; i++) {
-        const cellIndex = currentRow * columns + i;
-        const cell = document.querySelectorAll('.cell')[cellIndex];
-        cell.textContent = currentGuess[i] || '';
-        cell.classList.remove('absent', 'present', 'correct');
-    }
-}
-
-function submitGuess() {
-    if (currentGuess.length < columns) {
-        showErrorMessage("write a 5-letter word");
-        return;
-    }
-    if (previousGuesses.includes(currentGuess)) {
-        showErrorMessage("you have already guessed that word");
-        return;
-    }
-    checkWordWin(currentGuess);
-}
-
-function checkWordWin(chosenAnswer) {
-    fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${JSON.stringify(chosenAnswer)}`)
-    .then(response => response.json())
-    .then(data => {
-        const { verdictArray } = data;
-        
-        verdictArray.forEach((value, index) => {
-            const cell = document.querySelectorAll('.cell')[currentRow * columns + index];
-            cell.style.animation = 'reveal 0.6s ease-in-out';
-            
-            setTimeout(() => {
-                if (value === 0) {
-                    cell.classList.add('absent');
-                } else if (value === 1) {
-                    cell.classList.add('present');
-                } else if (value === 2) {
-                    cell.classList.add('correct');
-                }
-            }, 300);
-        });
-
-        if (data.hasWon) {
-            triggerUnlock(data.redirect);
-        } else {
-            handleIncorrectGuess();
-        }
+    const currentRowElement = document.querySelector(`.row:nth-child(${currentRow + 1})`);
+    const cells = currentRowElement.querySelectorAll('.cell');
+    
+    cells.forEach((cell, index) => {
+        cell.textContent = currentGuess[index] || '';
     });
 }
 
-function handleIncorrectGuess() {
-    previousGuesses.push(currentGuess);
-    currentGuess = '';
-    currentRow++;
+function submitGuess() {
+    if (currentGuess.length !== columns) {
+        showErrorMessage("Not enough letters");
+        return;
+    }
 
-    if (currentRow >= rows) {
-        setTimeout(() => {
-            showErrorMessage("we are changing the secret word");
-            window.location.reload();
-        }, 1200);
+    if (previousGuesses.includes(currentGuess)) {
+        showErrorMessage("Word already tried");
+        return;
+    }
+
+    previousGuesses.push(currentGuess);
+    
+    checkWordWin(currentGuess);
+}
+
+async function checkWordWin(chosenAnswer) {
+    const data = await API.makeGameMove(gameId, shipNo, JSON.stringify({ chosenAnswer }));
+    const currentRowElement = document.querySelector(`.row:nth-child(${currentRow + 1})`);
+    
+    if (data.hasWon) {
+        currentRowElement.querySelectorAll('.cell').forEach(cell => {
+            cell.classList.add('correct');
+        });
+        document.querySelector('.game-part').style.userSelect = 'none';
+        triggerUnlock(data.redirect);
+    } else {
+        handleIncorrectGuess();
     }
 }
 
+function handleIncorrectGuess() {
+    const currentRowElement = document.querySelector(`.row:nth-child(${currentRow + 1})`);
+    currentRowElement.querySelectorAll('.cell').forEach(cell => {
+        cell.classList.add('incorrect');
+    });
+
+    if (currentRow === rows - 1) {
+        document.querySelector('.game-part').style.userSelect = 'none';
+        showErrorMessage("Game Over!");
+        return;
+    }
+
+    currentRow++;
+    currentGuess = '';
+    updateGrid();
+}
+
 function showErrorMessage(message) {
-    navigator.vibrate(400);
     const messageElement = document.querySelector('.message');
     messageElement.textContent = message;
     messageElement.style.color = "#d32020";
+    if (navigator.vibrate) navigator.vibrate(100);
 }
 
 function createSnowflake() {
-    const snowContainer = document.getElementById('snow-container');
     const snowflake = document.createElement('div');
-    snowflake.classList.add('snowflake');
-
-    const size = Math.random() * 1.5 + 0.5;
-    const positionX = Math.random() * 100;
-    const fallDuration = Math.random() * 3 + 2;
-
-    snowflake.style.width = `${size}vh`;
-    snowflake.style.height = `${size}vh`;
-    snowflake.style.left = `${positionX}vw`;
-    snowflake.style.top = `-5vh`;
-    snowflake.style.transition = `transform ${fallDuration}s linear`;
-    
-    snowContainer.appendChild(snowflake);
-
-    setTimeout(() => {
-        snowflake.style.transform = `translateY(110vh)`;
-    }, 10);
+    snowflake.className = 'snowflake';
+    snowflake.style.left = Math.random() * 100 + 'vw';
+    document.querySelector('.game-part').appendChild(snowflake);
 
     setTimeout(() => {
         snowflake.remove();
-    }, fallDuration * 1000);
+    }, 10000);
 }
 
 setInterval(createSnowflake, 200);

@@ -2,37 +2,34 @@ const shipNo = new URLSearchParams(window.location.search).get('ship');
 const gameId = new URLSearchParams(window.location.search).get('id');
 let titleName;
 
-window.onload = function() {    
+window.onload = async function() {    
     if (shipNo) {
-        fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`)
-        .then(response => response.json())
-        .then(data => {
-            titleName = data.titleName;
-            const { image } = data;
-            
-            pannellum.viewer('panorama', {
-                type: "equirectangular",
-                panorama: `../../assets/hattori/${image}.png`,
-                autoLoad: true,
-                showZoomCtrl: false,
-                showFullscreenCtrl: false,
-                hfov: 110,
-                minHfov: 50,
-                maxHfov: 60,
-            });
-
-            window.gameData = {
-                titleName: data.titleName,
-                messages: data.messages
-            };
+        const data = await API.getGame(gameId, shipNo);
+        titleName = data.titleName;
+        const { image } = data;
+        
+        pannellum.viewer('panorama', {
+            type: "equirectangular",
+            panorama: `../../assets/hattori/${image}.png`,
+            autoLoad: true,
+            showZoomCtrl: false,
+            showFullscreenCtrl: false,
+            hfov: 110,
+            minHfov: 50,
+            maxHfov: 60,
         });
+
+        window.gameData = {
+            titleName: data.titleName,
+            messages: data.messages
+        };
     }
 };
 
 function handleCounterClick() {
     setTimeout(() => {
-    document.querySelector('.first-screen').style.display = 'flex';
-    document.querySelector('.second-screen').style.display = 'none';
+        document.querySelector('.first-screen').style.display = 'flex';
+        document.querySelector('.second-screen').style.display = 'none';
     }, 100);
 }
 
@@ -58,18 +55,17 @@ function handleVerificationClick() {
         parseInt(document.querySelector('.counter-box:nth-child(4) .number-box span').textContent)
     ];
 
-    fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${JSON.stringify(userInputs)}`)
-    .then(response => response.json())
-    .then(data => {
-        if (data.hasWon) {
-            triggerUnlock(data.redirect);
-        } else {
-            const messageElement = document.querySelector('.message');
-            messageElement.textContent = "Something's incorrect.";
-            messageElement.style.color = "#d32020";
-            navigator.vibrate?.(100);
-        }
-    });
+    API.makeGameMove(gameId, shipNo, userInputs)
+        .then(data => {
+            if (data.hasWon) {
+                triggerUnlock(data.redirect);
+            } else {
+                const messageElement = document.querySelector('.message');
+                messageElement.textContent = "Something's incorrect.";
+                messageElement.style.color = "#d32020";
+                navigator.vibrate?.(100);
+            }
+        });
 }
 
 fetch('../../common/connect.html')

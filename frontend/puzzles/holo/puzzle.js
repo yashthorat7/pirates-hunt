@@ -7,8 +7,7 @@ const gameId = new URLSearchParams(window.location.search).get('id');
 const shipNo = new URLSearchParams(window.location.search).get('ship');
 
 window.onload = async function() {
-    const response = await fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`);
-    const data = await response.json();
+    const data = await API.getGame(gameId, shipNo);
     maxLives = data.lives;
     remainingCount = maxLives;
 
@@ -29,8 +28,7 @@ async function updateProgressBar() {
     progressMessage.textContent = `${Math.round(percentage)}%`;
 
     if (clickCounter >= maxLives) {
-        const response = await fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${remainingCount}`);
-        const data = await response.json();
+        const data = await API.makeGameMove(gameId, shipNo, remainingCount);
         if (data.hasWon) {
             document.querySelector('.game-part').style.pointerEvents = 'none';
             if (data.redirect) {
@@ -132,7 +130,6 @@ fetch('../../common/connect.html')
     .then(response => response.text())
     .then(data => {
         document.querySelector('.connect-container').innerHTML = data;
-
         const script = document.createElement('script');
         script.src = '../../common/connect.js';
         document.body.appendChild(script);

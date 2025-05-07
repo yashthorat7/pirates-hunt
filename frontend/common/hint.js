@@ -5,10 +5,7 @@
 
     async function checkForHint() {
         try {
-            const response = await fetch(`https://pirateshuntbackend.onrender.com/api/puzzle/hint/getHint?gameId=${gameId}&shipNo=${shipNo}`);
-            if (response.status === 204) return null;
-            
-            const data = await response.json();
+            const data = await API.checkHint(gameId, shipNo);
             if (data?.message && data?.redirect) {
                 alert(data.message);
                 window.location.href = data.redirect;

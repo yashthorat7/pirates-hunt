@@ -2,10 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-const lobbyRoutes = {
-    getLobby: require('./routes/getLobby')
-};
-
 const introRoutes = {
     getIntro: require('./routes/getIntro'),
     getIntroMove: require('./routes/getIntroMove')
@@ -24,7 +20,6 @@ const outroRoutes = {
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/lobby', lobbyRoutes.getLobby);
 app.use('/', puzzleRoutes.getHint);
 app.use('/api/intro', introRoutes.getIntro);
 app.use('/api/intro/move', introRoutes.getIntroMove);
