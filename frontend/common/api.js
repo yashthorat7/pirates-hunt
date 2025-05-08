@@ -1,4 +1,4 @@
-const BASE_URL = 'https://pirateshuntapi.vercel.app/';
+const BASE_URL = 'https://pirateshuntapi.vercel.app';
 
 
 const debounce = (func, wait) => {
