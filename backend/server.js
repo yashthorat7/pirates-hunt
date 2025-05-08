@@ -17,18 +17,28 @@ const outroRoutes = {
     getOutro: require('./routes/getOutro')
 };
 
-app.use(cors());
+const corsOptions = {
+    origin: (origin, callback) => {
+        if (!origin || process.env.ALLOWED_ORIGINS.split(',').includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use('/', puzzleRoutes.getHint);
-app.use('/api/intro', introRoutes.getIntro);
-app.use('/api/intro/move', introRoutes.getIntroMove);
+app.use('/intro', introRoutes.getIntro);
+app.use('/intro/move', introRoutes.getIntroMove);
 
-app.use('/api/puzzle/game', puzzleRoutes.getGame);
-app.use('/api/puzzle/hint', puzzleRoutes.getHint);
-app.use('/api/puzzle/move', puzzleRoutes.getGameMove);
+app.use('/puzzle/game', puzzleRoutes.getGame);
+app.use('/puzzle/hint', puzzleRoutes.getHint);
+app.use('/puzzle/move', puzzleRoutes.getGameMove);
 
-app.use('/api/outro', outroRoutes.getOutro);
+app.use('/outro', outroRoutes.getOutro);
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

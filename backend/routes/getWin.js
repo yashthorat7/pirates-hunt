@@ -4,7 +4,7 @@ const db = require('./db');
 
 router.get('/', async (req, res) => {
     const { shipNo, winId } = req.query;
-    if (winId === 'winnerhehum') {
+    if (winId === 'winnerq') {
         try {
             console.log('Writing ship', shipNo);
             await db.writeShipData('begintime', 10, shipNo);
