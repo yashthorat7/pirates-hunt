@@ -18,13 +18,9 @@ const outroRoutes = {
 };
 
 const corsOptions = {
-    origin: (origin, callback) => {
-        if (!origin || process.env.ALLOWED_ORIGINS.split(',').includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    }
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 };
 
 app.use(cors(corsOptions));
