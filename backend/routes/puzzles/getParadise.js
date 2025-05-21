@@ -3,23 +3,36 @@ const router = express.Router();
 
 const mazeName = ["(1)fsldk", "(2)gbnwe", "(3)omhfg", "(4)bnewl"];
 
-router.get('/getParadise', async (req, res) => {
-    const { shipNo } = req.query;
+
+async function getPuzzleData(shipNo) {
     const mazeNo = ((parseInt(shipNo) - 11) % 4);
     const fileName = mazeName[mazeNo];
 
-    res.json({
+    return {
         puzzleData: {
             fileName: fileName
         }
-    });
+    };
+}
+
+async function checkWinCondition(shipNo, userInputs = []) {
+    return {
+        hasWon: true
+    };
+}
+
+router.get('/getParadise', async (req, res) => {
+    const { shipNo } = req.query;
+    const result = await getPuzzleData(shipNo);
+    res.json(result);
 });
 
 router.get('/getParadiseWin', async (req, res) => {
     const { shipNo } = req.query;
-    res.json( {
-        hasWon: true
-    });
+    const result = await checkWinCondition(shipNo);
+    res.json(result);
 });
 
 module.exports = router;
+module.exports.getPuzzleData = getPuzzleData;
+module.exports.checkWinCondition = checkWinCondition;

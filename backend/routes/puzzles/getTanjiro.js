@@ -8,22 +8,27 @@ const secretCodes = [
     "8637", "4823", "6781", "2953", "0695", "8076", "3518", "9573", "7148", "6582"
 ];
 
-router.get('/getTanjiro', async (req, res) => {
-    const { shipNo } = req.query;
+// Direct function to get puzzle data
+async function getPuzzleData(shipNo) {
     const setNo = ((parseInt(shipNo) - 11) % 4);
 
-    res.json({
+    return {
         puzzleData: {
             exists: setNo >= 0
         }
-    });
-});
+    };
+}
 
-router.get('/getTanjiroWin', async (req, res) => {
-    const shipNo = parseInt(req.query.shipNo);
-    const userInputs = req.query.userInputs;
-    const guessedNo = String(userInputs);
-    const secretCode = secretCodes[shipNo - 11];
+// Direct function to check win condition
+async function checkWinCondition(shipNo, userInputs = []) {
+    const shipIndex = parseInt(shipNo) - 11;
+    const guessedNo = userInputs.length > 0 ? String(userInputs[0]) : "";
+    const secretCode = secretCodes[shipIndex];
+    
+    if (!guessedNo || !secretCode) {
+        return { verdictArray: [guessedNo, 0, 0], hasWon: false };
+    }
+    
     const guessedArray = guessedNo.split('');
     const secretArray = secretCode.split('');
 
@@ -56,7 +61,29 @@ router.get('/getTanjiroWin', async (req, res) => {
     const verdictArray = [guessedNo, bulls, cows];
     const hasWon = bulls === 4;
 
-    res.json({ verdictArray, hasWon });
+    return { verdictArray, hasWon };
+}
+
+// Express routes that use the direct functions
+router.get('/getTanjiro', async (req, res) => {
+    const { shipNo } = req.query;
+    const result = await getPuzzleData(shipNo);
+    res.json(result);
 });
 
+router.get('/getTanjiroWin', async (req, res) => {
+    const { shipNo, userInputs } = req.query;
+    let parsedInputs = [];
+    try {
+        parsedInputs = [userInputs];
+    } catch {
+        // Keep default empty array if parsing fails
+    }
+    const result = await checkWinCondition(shipNo, parsedInputs);
+    res.json(result);
+});
+
+// Export both the router and the direct functions
 module.exports = router;
+module.exports.getPuzzleData = getPuzzleData;
+module.exports.checkWinCondition = checkWinCondition;

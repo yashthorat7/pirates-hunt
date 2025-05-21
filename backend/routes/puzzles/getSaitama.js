@@ -10,26 +10,29 @@ const pirateWords = [
 
 const assignedWord = new Array(40).fill(null);
 
-router.get('/getSaitama', async (req, res) => {
-    const shipNo = parseInt(req.query.shipNo) - 11;
+
+async function getPuzzleData(shipNo) {
+    const shipIndex = parseInt(shipNo) - 11;
     const randomIndex = Math.floor(Math.random() * pirateWords.length);
     const word = pirateWords[randomIndex];
-    assignedWord[shipNo] = word;
+    assignedWord[shipIndex] = word;
 
-    res.json({
+    return {
         puzzleData: {
             word
         }
-    });
-});
+    };
+}
 
-router.get('/getSaitamaWin', async (req, res) => {
-    const shipNo = parseInt(req.query.shipNo) - 11;
-    const chosenAnswer = JSON.parse(req.query.userInputs)?.toUpperCase();
-    const word = assignedWord[shipNo]?.toUpperCase();
+async function checkWinCondition(shipNo, userInputs = []) {
+    const shipIndex = parseInt(shipNo) - 11;
+    const chosenAnswer = Array.isArray(userInputs) && userInputs.length > 0 
+        ? userInputs[0]?.toUpperCase() 
+        : "";
+    const word = assignedWord[shipIndex]?.toUpperCase();
 
     if (!word || !chosenAnswer) {
-        return res.json({ hasWon: false });
+        return { hasWon: false };
     }
 
     const result = new Array(5).fill(0);
@@ -53,10 +56,31 @@ router.get('/getSaitamaWin', async (req, res) => {
         }
     }
 
-    res.json({ 
+    return { 
         hasWon: word === chosenAnswer,
         verdictArray: result 
-    });
+    };
+}
+
+
+router.get('/getSaitama', async (req, res) => {
+    const { shipNo } = req.query;
+    const result = await getPuzzleData(shipNo);
+    res.json(result);
+});
+
+router.get('/getSaitamaWin', async (req, res) => {
+    const { shipNo, userInputs } = req.query;
+    let parsedInputs = [];
+    try {
+        parsedInputs = [JSON.parse(userInputs)];
+    } catch {
+        
+    }
+    const result = await checkWinCondition(shipNo, parsedInputs);
+    res.json(result);
 });
 
 module.exports = router;
+module.exports.getPuzzleData = getPuzzleData;
+module.exports.checkWinCondition = checkWinCondition;

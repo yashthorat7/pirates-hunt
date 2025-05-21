@@ -31,12 +31,13 @@ const questionSet = [
 
 let startTimes = new Array(40).fill(0);
 
-router.get('/getGoku', async (req, res) => {
-    const shipNo = parseInt(req.query.shipNo, 10);
-    let offset = (shipNo - 11) % 4;
+// Direct function to get puzzle data
+async function getPuzzleData(shipNo) {
+    const shipNoInt = parseInt(shipNo, 10);
+    let offset = (shipNoInt - 11) % 4;
     if (offset < 0) offset += 4;
     const currentTime = db.getTime();
-    const shipIndex = shipNo - 11;
+    const shipIndex = shipNoInt - 11;
 
     const prevStartTime = startTimes[shipIndex];
 
@@ -50,32 +51,62 @@ router.get('/getGoku', async (req, res) => {
                 options: questionSet[i].options
             });
         }
-        return res.json({
+        return {
             puzzleData: {
                 doWait: false,
                 fileName: "fsdniew",
                 questions
             }
-        });
+        };
     }
-    res.json({
+    return {
         puzzleData: { doWait: true }
-    });   
-});
+    };
+}
 
-router.get('/getGokuWin', async (req, res) => {
-    const userInput = JSON.parse(req.query.userInputs);
-
+// Direct function to check win condition
+async function checkWinCondition(shipNo, userInputs = []) {
+    if (!userInputs || !userInputs.length) {
+        return { isCorrect: false, hasWon: false };
+    }
+    
+    const userInput = userInputs[0];
     const questionIndex = parseInt(userInput.riddleNo, 10) - 1;
     const isCorrect = questionSet[questionIndex].correctAns === userInput.answer;
 
     if (isCorrect && questionIndex >= 20) {
-        res.json({
-            isCorrect, hasWon: true,
-        });
+        return {
+            isCorrect, 
+            hasWon: true,
+        };
     } else {
-        res.json({ isCorrect, hasWon: false });
+        return { 
+            isCorrect, 
+            hasWon: false 
+        };
     }
+}
+
+// Express routes that use the direct functions
+router.get('/getGoku', async (req, res) => {
+    const { shipNo } = req.query;
+    const result = await getPuzzleData(shipNo);
+    res.json(result);
 });
 
+router.get('/getGokuWin', async (req, res) => {
+    const { shipNo, userInputs } = req.query;
+    let parsedInputs = [];
+    try {
+        parsedInputs = [JSON.parse(userInputs)];
+    } catch (error) {
+        console.error('Error parsing userInputs:', error);
+    }
+    const result = await checkWinCondition(shipNo, parsedInputs);
+    res.json(result);
+});
+
+// Export both the router and the direct functions
 module.exports = router;
+module.exports.getPuzzleData = getPuzzleData;
+module.exports.checkWinCondition = checkWinCondition;
