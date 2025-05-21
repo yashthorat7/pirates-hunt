@@ -13,78 +13,60 @@ const getTanjiroRouter = require('./puzzles/getTanjiro');
 const getUchihaRouter = require('./puzzles/getUchiha');
 
 
+const winFunctions = {
+    checkHomeWin: require('./puzzles/getHome').checkWinCondition,
+    checkHattoriWin: require('./puzzles/getHattori').checkWinCondition,
+    checkParadiseWin: require('./puzzles/getParadise').checkWinCondition,
+    checkGokuWin: require('./puzzles/getGoku').checkWinCondition,
+    checkSaitamaWin: require('./puzzles/getSaitama').checkWinCondition,
+    checkYagamiWin: require('./puzzles/getYagami').checkWinCondition,
+    checkHoloWin: require('./puzzles/getHolo').checkWinCondition,
+    checkTanjiroWin: require('./puzzles/getTanjiro').checkWinCondition,
+    checkUchihaWin: require('./puzzles/getUchiha').checkWinCondition,
+};
+
 router.get('/', async (req, res) => {
     const { gameId, shipNo, userInputs } = req.query;
     const index = gameData.gameId.findIndex(id => id === gameId);
     const gameNo = index + 1;
     const outroId = gameData.outroId[index];
 
-    const mockReq = { query: { shipNo, userInputs: userInputs || '[]' } };
+    let parsedInputs = [];
+    try {
+        parsedInputs = userInputs ? JSON.parse(userInputs) : [];
+    } catch (error) {
+        console.error('Error parsing userInputs:', error);
+    }
+
     let result;
 
     switch(gameNo) {
         case 1:
-            result = await new Promise(resolve => {
-                getHomeRouter.stack
-                    .find(layer => layer.route?.path === '/getHomeWin')
-                    .route.stack[0].handle(mockReq, { json: resolve });
-            });
+            result = await winFunctions.checkHomeWin(shipNo, parsedInputs);
             break;
         case 2:
-            result = await new Promise(resolve => {
-                getHattoriRouter.stack
-                    .find(layer => layer.route?.path === '/getHattoriWin')
-                    .route.stack[0].handle(mockReq, { json: resolve });
-            });
+            result = await winFunctions.checkHattoriWin(shipNo, parsedInputs);
             break;
         case 3:
-            result = await new Promise(resolve => {
-                getParadiseRouter.stack
-                    .find(layer => layer.route?.path === '/getParadiseWin')
-                    .route.stack[0].handle(mockReq, { json: resolve });
-            });
+            result = await winFunctions.checkParadiseWin(shipNo, parsedInputs);
             break;
         case 4:
-            result = await new Promise(resolve => {
-                getGokuRouter.stack
-                    .find(layer => layer.route?.path === '/getGokuWin')
-                    .route.stack[0].handle(mockReq, { json: resolve });
-            });
+            result = await winFunctions.checkGokuWin(shipNo, parsedInputs);
             break;
         case 5:
-            result = await new Promise(resolve => {
-                getSaitamaRouter.stack
-                    .find(layer => layer.route?.path === '/getSaitamaWin')
-                    .route.stack[0].handle(mockReq, { json: resolve });
-            });
+            result = await winFunctions.checkSaitamaWin(shipNo, parsedInputs);
             break;
         case 6:
-            result = await new Promise(resolve => {
-                getYagamiRouter.stack
-                    .find(layer => layer.route?.path === '/getYagamiWin')
-                    .route.stack[0].handle(mockReq, { json: resolve });
-            });
+            result = await winFunctions.checkYagamiWin(shipNo, parsedInputs);
             break;
         case 7:
-            result = await new Promise(resolve => {
-                getHoloRouter.stack
-                    .find(layer => layer.route?.path === '/getHoloWin')
-                    .route.stack[0].handle(mockReq, { json: resolve });
-            });
+            result = await winFunctions.checkHoloWin(shipNo, parsedInputs);
             break;
         case 8:
-            result = await new Promise(resolve => {
-                getTanjiroRouter.stack
-                    .find(layer => layer.route?.path === '/getTanjiroWin')
-                    .route.stack[0].handle(mockReq, { json: resolve });
-            });
+            result = await winFunctions.checkTanjiroWin(shipNo, parsedInputs);
             break;
         case 9:
-            result = await new Promise(resolve => {
-                getUchihaRouter.stack
-                    .find(layer => layer.route?.path === '/getUchihaWin')
-                    .route.stack[0].handle(mockReq, { json: resolve });
-            });
+            result = await winFunctions.checkUchihaWin(shipNo, parsedInputs);
             break;
     }
 

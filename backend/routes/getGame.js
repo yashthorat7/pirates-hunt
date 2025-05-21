@@ -13,6 +13,18 @@ const getTanjiroRouter = require('./puzzles/getTanjiro');
 const getUchihaRouter = require('./puzzles/getUchiha');
 const db = require('./db');
 
+const puzzleFunctions = {
+    getHome: require('./puzzles/getHome').getPuzzleData,
+    getHattori: require('./puzzles/getHattori').getPuzzleData,
+    getParadise: require('./puzzles/getParadise').getPuzzleData,
+    getGoku: require('./puzzles/getGoku').getPuzzleData,
+    getSaitama: require('./puzzles/getSaitama').getPuzzleData,
+    getYagami: require('./puzzles/getYagami').getPuzzleData,
+    getHolo: require('./puzzles/getHolo').getPuzzleData,
+    getTanjiro: require('./puzzles/getTanjiro').getPuzzleData,
+    getUchiha: require('./puzzles/getUchiha').getPuzzleData,
+};
+
 router.get('/', async (req, res) => {
     const { gameId, shipNo } = req.query;
     const index = gameData.gameId.findIndex(id => id === gameId);
@@ -20,72 +32,35 @@ router.get('/', async (req, res) => {
     const gameNo = index + 1;
     const messages = connectMessages.connectMessages[gameNo];
     
-    const mockReq = { query: { shipNo } };
     let puzzleData;
 
     switch(gameNo) {
         case 1:
-            puzzleData = await new Promise(resolve => {
-                getHomeRouter.stack
-                    .find(layer => layer.route?.path === '/getHome')
-                    .route.stack[0].handle(mockReq, { json: resolve });
-            });
+            puzzleData = await puzzleFunctions.getHome(shipNo);
             break;
         case 2:
-            puzzleData = await new Promise(resolve => {
-                getHattoriRouter.stack
-                    .find(layer => layer.route?.path === '/getHattori')
-                    .route.stack[0].handle(mockReq, { json: resolve });
-            });
+            puzzleData = await puzzleFunctions.getHattori(shipNo);
             break;
         case 3:
-            puzzleData = await new Promise(resolve => {
-                getParadiseRouter.stack
-                    .find(layer => layer.route?.path === '/getParadise')
-                    .route.stack[0].handle(mockReq, { json: resolve });
-            });
+            puzzleData = await puzzleFunctions.getParadise(shipNo);
             break;
         case 4:
-            puzzleData = await new Promise(resolve => {
-                getGokuRouter.stack
-                    .find(layer => layer.route?.path === '/getGoku')
-                    .route.stack[0].handle(mockReq, { json: resolve });
-            });
+            puzzleData = await puzzleFunctions.getGoku(shipNo);
             break;
         case 5:
-            puzzleData = await new Promise(resolve => {
-                getSaitamaRouter.stack
-                    .find(layer => layer.route?.path === '/getSaitama')
-                    .route.stack[0].handle(mockReq, { json: resolve });
-            });
+            puzzleData = await puzzleFunctions.getSaitama(shipNo);
             break;
         case 6:
-            puzzleData = await new Promise(resolve => {
-                getYagamiRouter.stack
-                    .find(layer => layer.route?.path === '/getYagami')
-                    .route.stack[0].handle(mockReq, { json: resolve });
-            });
+            puzzleData = await puzzleFunctions.getYagami(shipNo);
             break;
         case 7:
-            puzzleData = await new Promise(resolve => {
-                getHoloRouter.stack
-                    .find(layer => layer.route?.path === '/getHolo')
-                    .route.stack[0].handle(mockReq, { json: resolve });
-            });
+            puzzleData = await puzzleFunctions.getHolo(shipNo);
             break;
         case 8:
-            puzzleData = await new Promise(resolve => {
-                getTanjiroRouter.stack
-                    .find(layer => layer.route?.path === '/getTanjiro')
-                    .route.stack[0].handle(mockReq, { json: resolve });
-            });
+            puzzleData = await puzzleFunctions.getTanjiro(shipNo);
             break;
         case 9:
-            puzzleData = await new Promise(resolve => {
-                getUchihaRouter.stack
-                    .find(layer => layer.route?.path === '/getUchiha')
-                    .route.stack[0].handle(mockReq, { json: resolve });
-            });
+            puzzleData = await puzzleFunctions.getUchiha(shipNo);
             break;
     }
 
