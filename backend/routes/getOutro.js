@@ -2,14 +2,8 @@ const express = require('express');
 const router = express.Router();
 const gameData = require('../data/gameData');
 const outroMessage = require('../data/messages');
-const ImageKit = require("imagekit");
 require('dotenv').config({ path: '.env.local' });
 
-const imagekit = new ImageKit({
-    publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
-    privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
-    urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT
-});
 
 router.get('/', async (req, res) => {
     const { outroId, shipNo } = req.query;
@@ -28,14 +22,12 @@ router.get('/', async (req, res) => {
         baseMark = gameData.baseMarks[shipIndex][attemptIndex];
         clueLetter = gameData.clueLetters[shipIndex][attemptIndex];
         clueImageName = gameData.clueImageName[baseMark - 1];
-        fileUrl = `${process.env.IMAGEKIT_URL_ENDPOINT}${clueImageName}.png`;
+        clueImageName = gameData.clueImageName[baseMark - 1];
     } else {
         attemptIndex = gameData.baseMarks[shipIndex].findIndex(mark => mark === gameIndex);
         baseMark = gameData.baseMarks[shipIndex][attemptIndex + 1];
         clueLetter = gameData.clueLetters[shipIndex][attemptIndex + 1];
         clueImageName = gameData.clueImageName[baseMark - 1];
-
-        fileUrl = `${process.env.IMAGEKIT_URL_ENDPOINT}${clueImageName}.png`;
     }
 
     res.json({
@@ -43,7 +35,7 @@ router.get('/', async (req, res) => {
         message, 
         baseMark, 
         clueLetter, 
-        fileUrl
+        clueImageName
     });
 });
 
