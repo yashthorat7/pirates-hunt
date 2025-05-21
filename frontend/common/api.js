@@ -14,30 +14,30 @@ const debounce = (func, wait) => {
 };
 
 class API {
-    static async getGame(gameId, shipNo) {
+    static getGame = debounce(async function(gameId, shipNo) {
         const response = await fetch(`${BASE_URL}/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`);
         return response.json();
-    }
+    }, 300);
 
-    static async getIntro(introId) {
+    static getIntro = debounce(async function(introId) {
         const response = await fetch(`${BASE_URL}/intro?introId=${introId}`);
         return response.json();
-    }
+    }, 300);
 
-    static async getIntroMove(introId, shipNo) {
+    static getIntroMove = debounce(async function(introId, shipNo) {
         const response = await fetch(`${BASE_URL}/intro/move?introId=${introId}&shipNo=${shipNo}`);
         return response.json();
-    }
+    }, 300);
 
     static makeGameMove = debounce(async function(gameId, shipNo, userInputs = []) {
         const response = await fetch(`${BASE_URL}/puzzle/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${JSON.stringify(userInputs)}`);
         return response.json();
     }, 300);
 
-    static async getOutro(outroId, shipNo) {
+    static getOutro = debounce(async function(outroId, shipNo) {
         const response = await fetch(`${BASE_URL}/outro?outroId=${outroId}&shipNo=${shipNo}`);
         return response.json();
-    }
+    }, 300);
 
     static checkHint = debounce(async function(gameId, shipNo) {
         const response = await fetch(`${BASE_URL}/puzzle/hint/getHint?gameId=${gameId}&shipNo=${shipNo}`);
@@ -45,10 +45,10 @@ class API {
         return response.json();
     }, 500);
     
-    static async submitWin(winId, shipNo) {
+    static submitWin = debounce(async function(winId, shipNo) {
         const response = await fetch(`${BASE_URL}/win?winId=${winId}&shipNo=${shipNo}`);
         return response;
-    }
+    }, 300);
 }
 
 window.API = API;
