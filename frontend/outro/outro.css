@@ -208,7 +208,7 @@ body {
     font-size: 80vw;
     font-family: 'Ancient';
     color: #cc1111;
-    height: 70vw;
+    height: 67vw;
 }
 
 .character-image {
@@ -227,6 +227,8 @@ body {
 
 .chat-message {
     font-size: 3.2vw;
+    position: relative;
+    margin-top: -20vw;
     line-height: 4vw;
     color: #735656;
 }
