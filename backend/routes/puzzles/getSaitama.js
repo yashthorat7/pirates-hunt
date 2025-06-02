@@ -16,12 +16,7 @@ async function getPuzzleData(shipNo) {
     const randomIndex = Math.floor(Math.random() * pirateWords.length);
     const word = pirateWords[randomIndex];
     assignedWord[shipIndex] = word;
-
-    return {
-        puzzleData: {
-            word
-        }
-    };
+    return null;
 }
 
 async function checkWinCondition(shipNo, userInputs = []) {
