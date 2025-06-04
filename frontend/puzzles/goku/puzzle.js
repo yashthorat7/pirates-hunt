@@ -29,7 +29,7 @@ async function fetchGameData() {
 }
 
 function makeOptions() {
-    const riddles = document.querySelector('.riddle-container');
+    const riddles = document.querySelector('.riddle-part');
     riddles.innerHTML = '';
     
     const optionContainer = document.createElement('div');
