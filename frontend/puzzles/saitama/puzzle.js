@@ -11,6 +11,7 @@ const columns = 5;
 window.onload = async () => {
     if (shipNo) {
         const data = await API.getGame(gameId, shipNo);
+        console.log(data);
         titleName = data.titleName;
         window.gameData = {
             titleName: data.titleName,
@@ -22,7 +23,7 @@ window.onload = async () => {
 document.querySelectorAll('.key').forEach(key => {
     key.addEventListener('click', () => {
         const keyPressed = key.textContent.trim();
-        
+
         if (key.id === 'delete-button') {
             deleteLetter();
         } else if (key.id === 'enter-button') {
@@ -36,28 +37,39 @@ document.querySelectorAll('.key').forEach(key => {
 function addLetter(letter) {
     if (currentGuess.length < columns) {
         currentGuess += letter;
-        const cell = document.querySelector(`.row:nth-child(${currentRow + 1}) .cell:nth-child(${currentGuess.length})`);
-        cell.textContent = letter;
-        cell.classList.add('filled');
+        const cells = document.querySelectorAll('.grid .cell');
+        const index = (currentRow * columns) + currentGuess.length - 1;
+        const cell = cells[index];
+        if (cell) {
+            cell.textContent = letter;
+            cell.classList.add('filled');
+        }
     }
 }
 
 function deleteLetter() {
     if (currentGuess.length > 0) {
-        const cell = document.querySelector(`.row:nth-child(${currentRow + 1}) .cell:nth-child(${currentGuess.length})`);
-        cell.textContent = '';
-        cell.classList.remove('filled');
+        const cells = document.querySelectorAll('.grid .cell');
+        const index = (currentRow * columns) + currentGuess.length - 1;
+        const cell = cells[index];
+        if (cell) {
+            cell.textContent = '';
+            cell.classList.remove('filled');
+        }
         currentGuess = currentGuess.slice(0, -1);
     }
 }
 
 function updateGrid() {
-    const currentRowElement = document.querySelector(`.row:nth-child(${currentRow + 1})`);
-    const cells = currentRowElement.querySelectorAll('.cell');
-    
-    cells.forEach((cell, index) => {
-        cell.textContent = currentGuess[index] || '';
-    });
+    const cells = document.querySelectorAll('.grid .cell');
+    const rowStart = currentRow * columns;
+
+    for (let i = 0; i < columns; i++) {
+        const cell = cells[rowStart + i];
+        if (cell) {
+            cell.textContent = currentGuess[i] || '';
+        }
+    }
 }
 
 function submitGuess() {
@@ -72,14 +84,14 @@ function submitGuess() {
     }
 
     previousGuesses.push(currentGuess);
-    
+
     checkWordWin(currentGuess);
 }
 
 async function checkWordWin(chosenAnswer) {
     const data = await API.makeGameMove(gameId, shipNo, JSON.stringify({ chosenAnswer }));
     const currentRowElement = document.querySelector(`.row:nth-child(${currentRow + 1})`);
-    
+
     if (data.hasWon) {
         currentRowElement.querySelectorAll('.cell').forEach(cell => {
             cell.classList.add('correct');
