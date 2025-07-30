@@ -9,13 +9,11 @@ async function getPuzzleData(shipNo) {
     const fileName = mazeName[mazeNo];
 
     return {
-        puzzleData: {
-            fileName: fileName
-        }
+        fileName: fileName
     };
 }
 
-async function checkWinCondition(shipNo, userInputs = []) {
+async function checkWinCondition(shipNo, userInputs = ["hi"]) {
     return {
         hasWon: true
     };
