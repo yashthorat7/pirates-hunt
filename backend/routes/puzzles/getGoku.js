@@ -3,15 +3,15 @@ const db = require('../db');
 const router = express.Router();
 
 const questionSet = [
-    { riddleNo:  1, options: ['6', '2', '4'], correctAns: '4' },
-    { riddleNo:  2, options: ['5', '2', '6'], correctAns: '2' },
-    { riddleNo:  3, options: ['8', '14', '12'], correctAns: '14' },
-    { riddleNo:  4, options: ['10', '12', '9'], correctAns: '10' },
-    { riddleNo:  5, options: ['E', 'D', 'C'], correctAns: 'E' },
-    { riddleNo:  6, options: ['A', 'D', 'B'], correctAns: 'D' },
-    { riddleNo:  7, options: ['W', 'M', 'J'], correctAns: 'J' },
-    { riddleNo:  8, options: ['A', 'W', 'B'], correctAns: 'A' },
-    { riddleNo:  9, options: ['12', '9', '11'], correctAns: '9' },
+    { riddleNo: 1, options: ['6', '2', '4'], correctAns: '4' },
+    { riddleNo: 2, options: ['5', '2', '6'], correctAns: '2' },
+    { riddleNo: 3, options: ['8', '14', '12'], correctAns: '14' },
+    { riddleNo: 4, options: ['10', '12', '9'], correctAns: '10' },
+    { riddleNo: 5, options: ['E', 'D', 'C'], correctAns: 'E' },
+    { riddleNo: 6, options: ['A', 'D', 'B'], correctAns: 'D' },
+    { riddleNo: 7, options: ['W', 'M', 'J'], correctAns: 'J' },
+    { riddleNo: 8, options: ['A', 'W', 'B'], correctAns: 'A' },
+    { riddleNo: 9, options: ['12', '9', '11'], correctAns: '9' },
     { riddleNo: 10, options: ['19', '21', '18'], correctAns: '18' },
     { riddleNo: 11, options: ['15', '18', '12'], correctAns: '15' },
     { riddleNo: 12, options: ['11', '14', '9'], correctAns: '11' },
@@ -31,7 +31,6 @@ const questionSet = [
 
 let startTimes = new Array(40).fill(0);
 
-// Direct function to get puzzle data
 async function getPuzzleData(shipNo) {
     const shipNoInt = parseInt(shipNo, 10);
     let offset = (shipNoInt - 11) % 4;
@@ -64,30 +63,28 @@ async function getPuzzleData(shipNo) {
     };
 }
 
-// Direct function to check win condition
 async function checkWinCondition(shipNo, userInputs = []) {
     if (!userInputs || !userInputs.length) {
         return { isCorrect: false, hasWon: false };
     }
-    
+
     const userInput = userInputs[0];
     const questionIndex = parseInt(userInput.riddleNo, 10) - 1;
     const isCorrect = questionSet[questionIndex].correctAns === userInput.answer;
 
     if (isCorrect && questionIndex >= 20) {
         return {
-            isCorrect, 
+            isCorrect,
             hasWon: true,
         };
     } else {
-        return { 
-            isCorrect, 
-            hasWon: false 
+        return {
+            isCorrect,
+            hasWon: false
         };
     }
 }
 
-// Express routes that use the direct functions
 router.get('/getGoku', async (req, res) => {
     const { shipNo } = req.query;
     const result = await getPuzzleData(shipNo);
@@ -106,7 +103,6 @@ router.get('/getGokuWin', async (req, res) => {
     res.json(result);
 });
 
-// Export both the router and the direct functions
 module.exports = router;
 module.exports.getPuzzleData = getPuzzleData;
 module.exports.checkWinCondition = checkWinCondition;
