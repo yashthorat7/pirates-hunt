@@ -1,5 +1,5 @@
-// const BACKEND = 'http://localhost:3000';
-const BACKEND = 'https://pirateshuntapi.vercel.app';
+const BACKEND = 'http://localhost:3000';
+// const BACKEND = 'https://pirateshuntapi.vercel.app';
 
 
 const debounce = (func, wait) => {
@@ -21,38 +21,38 @@ const debounce = (func, wait) => {
 };
 
 class API {
-    static getIntro = debounce(async function(introId) {
+    static getIntro = debounce(async function (introId) {
         const response = await fetch(`${BACKEND}/intro?introId=${introId}`);
         return response.json();
     }, 300);
 
-    static getIntroMove = debounce(async function(introId, shipNo) {
-        console.log('hi');
+    static getIntroMove = debounce(async function (introId, shipNo) {
         const response = await fetch(`${BACKEND}/intro/move?introId=${introId}&shipNo=${shipNo}`);
         return response.json();
     }, 300);
 
-    static getGame = debounce(async function(gameId, shipNo) {
+    static getGame = debounce(async function (gameId, shipNo) {
         const response = await fetch(`${BACKEND}/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`);
         return response.json();
     }, 300);
 
-    static makeGameMove = debounce(async function(gameId, shipNo, userInputs = []) {
+    static makeGameMove = debounce(async function (gameId, shipNo, userInputs) {
+        userInputs = userInputs ? userInputs : [];
         const response = await fetch(`${BACKEND}/puzzle/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${JSON.stringify(userInputs)}`);
         return response.json();
     }, 300);
-    
-    static submitWin = debounce(async function(winId, shipNo) {
-        const response = await fetch(`${BACKEND}/win?winId=${winId}&shipNo=${shipNo}`);
-        return response;
-    }, 300);
 
-    static getOutro = debounce(async function(outroId, shipNo) {
+    static getOutro = debounce(async function (outroId, shipNo) {
         const response = await fetch(`${BACKEND}/outro?outroId=${outroId}&shipNo=${shipNo}`);
         return response.json();
     }, 300);
 
-    static checkHint = debounce(async function(gameId, shipNo) {
+    static submitWin = debounce(async function (winId, shipNo) {
+        const response = await fetch(`${BACKEND}/win?winId=${winId}&shipNo=${shipNo}`);
+        return response;
+    }, 300);
+
+    static checkHint = debounce(async function (gameId, shipNo) {
         const response = await fetch(`${BACKEND}/puzzle/hint/getHint?gameId=${gameId}&shipNo=${shipNo}`);
         if (response.status === 204) return null;
         return response.json();
