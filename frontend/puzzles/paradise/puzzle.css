@@ -9,14 +9,15 @@
     box-sizing: border-box;
 }
 
-body, html {
+body,
+html {
     margin: 0;
     padding: 0;
     height: 100svh;
     font-family: 'Salsa', sans-serif;
     overflow: hidden;
     touch-action: none;
-    background: linear-gradient(180deg, #007246 0%, #0bc05c 5%, #0bc05c 90%, #006b42 100%); 
+    background: linear-gradient(180deg, #007246 0%, #0bc05c 5%, #0bc05c 90%, #006b42 100%);
     user-select: none;
 }
 
@@ -112,9 +113,11 @@ body, html {
     0% {
         transform: scale(0.2);
     }
+
     50% {
         transform: scale(1);
     }
+
     100% {
         transform: scale(0.2);
     }

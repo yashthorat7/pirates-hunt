@@ -2,7 +2,7 @@ const shipNo = new URLSearchParams(window.location.search).get('ship');
 const gameId = new URLSearchParams(window.location.search).get('id');
 let titleName;
 
-window.onload = async function() {
+window.onload = async function () {
     if (shipNo) {
         const data = await API.getGame(gameId, shipNo);
         titleName = data.titleName;
@@ -29,41 +29,108 @@ let playerRow = 1;
 let playerCol = 0;
 
 function createMaze(mazeData) {
-    for (let i = 0; i < mazeHeight; i++) {
-        const row = document.createElement("div");
-        row.className = "maze-row";
-        const cellsRow = [];
-        
-        for (let j = 0; j < mazeWidth; j++) {
-            const cell = document.createElement("div");
-            cell.className = "maze-cell";
-            
-            if (mazeData[i][j] === "#") {
-                cell.classList.add("wall");
-            } else if (mazeData[i][j] === ".") {
-                cell.classList.add("path");
-            } else if (mazeData[i][j] === "S") {
-                cell.classList.add("start");
-                playerRow = i;
-                playerCol = j;
-            } else if (mazeData[i][j] === "E") {
-                cell.classList.add("end");
+    const maze = document.createElement('div');
+    maze.classList.add('maze');
+
+    mazeData.forEach((row, rowIndex) => {
+        const rowElement = document.createElement('div');
+        rowElement.classList.add('maze-row');
+
+        row.forEach((cell, colIndex) => {
+            const cellElement = document.createElement('div');
+            cellElement.classList.add('maze-cell');
+
+            if (cell === 1) {
+                cellElement.classList.add('wall');
+            } else {
+                cellElement.classList.add('path');
+
+                const pathBlock = document.createElement('div');
+                pathBlock.classList.add('path-block');
+                cellElement.appendChild(pathBlock);
+
+                if (rowIndex === 1 && colIndex === 0) {
+                    const touchCell = document.createElement('div');
+                    touchCell.classList.add('touch-cell');
+                    const touchImage = document.createElement('img');
+                    touchImage.src = '../../assets/paradise/touch.png';
+                    touchCell.appendChild(touchImage);
+                    cellElement.appendChild(touchCell);
+
+                    const startCell = document.createElement('div');
+                    startCell.classList.add('start-cell');
+                    const startImage = document.createElement('img');
+                    startImage.src = '../../assets/paradise/ship-icon.png';
+                    startImage.alt = 'Start Icon';
+                    startCell.appendChild(startImage);
+                    cellElement.appendChild(startCell);
+
+                    const pathBlock = cellElement.querySelector('.path-block');
+                    if (pathBlock) {
+                        pathBlock.style.opacity = 1;
+                    }
+
+                    playerRow = rowIndex;
+                    playerCol = colIndex;
+                    setOpacityForPlayerCell(playerRow, playerCol);
+                }
+
+                if (rowIndex === mazeHeight - 2 && colIndex === mazeWidth - 1) {
+                    const endCell = document.createElement('div');
+                    endCell.classList.add('end-cell');
+                    const endImage = document.createElement('img');
+                    endImage.src = '../../assets/paradise/pet-icon.png';
+                    endImage.alt = 'End Icon';
+                    endCell.appendChild(endImage);
+                    cellElement.appendChild(endCell);
+                }
             }
-            
-            row.appendChild(cell);
-            cellsRow.push(cell);
+            rowElement.appendChild(cellElement);
+
+            mazeCells.push(cellElement);
+        });
+
+        maze.appendChild(rowElement);
+    });
+
+    mazeContainer.appendChild(maze);
+}
+
+function setOpacityForPlayerCell(newRow, newCol) {
+    mazeCells.forEach(cell => {
+        const pathBlock = cell.querySelector('.path-block');
+        if (pathBlock) {
+            pathBlock.style.opacity = 0;
         }
-        
-        mazeContainer.appendChild(row);
-        mazeCells.push(cellsRow);
+    });
+
+    const newCell = mazeCells[newRow * mazeWidth + newCol];
+
+    if (newCell) {
+        const pathBlock = newCell.querySelector('.path-block');
+        if (pathBlock) {
+            pathBlock.style.opacity = 1;
+        }
     }
-    
-    mazeCells[playerRow][playerCol].classList.add("player");
+}
+
+function updatePlayerPosition() {
+    const currentCell = mazeCells[playerRow * mazeWidth + playerCol];
+    const scrollToX = currentCell.offsetLeft - (mazeContainer.clientWidth / 2);
+    const scrollToY = currentCell.offsetTop - (mazeContainer.clientHeight / 2);
+
+    mazeContainer.scrollTo({
+        left: scrollToX,
+        top: scrollToY,
+        behavior: 'smooth'
+    });
 }
 
 function checkWin() {
-    const currentCell = mazeCells[playerRow][playerCol];
-    if (currentCell.classList.contains("end")) {
+    const lastRow = mazeHeight - 2;
+    const lastCol = mazeWidth - 1;
+
+    if (playerRow === lastRow && playerCol === lastCol) {
         API.makeGameMove(gameId, shipNo)
             .then(data => {
                 if (data.hasWon) {
@@ -73,31 +140,63 @@ function checkWin() {
     }
 }
 
-function movePlayer(newRow, newCol) {
-    if (newRow < 0 || newRow >= mazeHeight || newCol < 0 || newCol >= mazeWidth) return false;
-    if (mazeCells[newRow][newCol].classList.contains("wall")) return false;
-
-    mazeCells[playerRow][playerCol].classList.remove("player");
-    playerRow = newRow;
-    playerCol = newCol;
-    mazeCells[playerRow][playerCol].classList.add("player");
-
-    checkWin();
-    return true;
+function canMoveTo(row, col) {
+    if (row < 0 || row >= mazeHeight || col < 0 || col >= mazeWidth) return false;
+    const nextCell = mazeCells[row * mazeWidth + col];
+    return nextCell && !nextCell.classList.contains('wall');
 }
 
-document.addEventListener('touchstart', (e) => {
-    const touch = e.touches[0];
-    const playerCell = mazeCells[playerRow][playerCol];
-    const playerRect = playerCell.getBoundingClientRect();
-    const cellWidth = playerRect.width;
-    const cellCenterX = playerRect.left + cellWidth / 2;
-    const touchX = touch.clientX;
+let firstTouch = true;
+let touchTimeout;
+document.addEventListener('touchstart', function (event) {
+    const touchX = event.touches[0].clientX;
+    const touchY = event.touches[0].clientY;
 
-    if (touchX < cellCenterX) {
-        movePlayer(playerRow, playerCol - 1);
-    } else {
-        movePlayer(playerRow, playerCol + 1);
+    if (firstTouch) {
+        const touchCell = document.querySelector('.touch-cell');
+        touchCell.style.display = 'none';
+        firstTouch = false;
+    }
+
+    const playerCell = mazeCells[playerRow * mazeWidth + playerCol]?.getBoundingClientRect();
+
+    const playerX = playerCell.left + playerCell.width / 2;
+    const playerY = playerCell.top + playerCell.height / 2;
+
+    const deltaX = touchX - playerX;
+    const deltaY = touchY - playerY;
+
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+    const maxDistance = window.innerHeight * 0.30;
+
+    if (distance <= maxDistance) {
+        const angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
+
+        let newRow = playerRow;
+        let newCol = playerCol;
+
+        if (angle > -45 && angle < 45) {
+            newCol = playerCol + 1;
+        } else if (angle > 45 && angle < 135) {
+            newRow = playerRow + 1;
+        } else if (angle > 135 || angle < -135) {
+            newCol = playerCol - 1;
+        } else if (angle > -135 && angle < -45) {
+            newRow = playerRow - 1;
+        }
+
+        clearTimeout(touchTimeout);
+
+        touchTimeout = setTimeout(() => {
+            if (canMoveTo(newRow, newCol)) {
+                setOpacityForPlayerCell(newRow, newCol);
+                playerRow = newRow;
+                playerCol = newCol;
+                updatePlayerPosition();
+            }
+        }, 100);
+        checkWin();
     }
 });
 
