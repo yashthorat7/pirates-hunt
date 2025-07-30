@@ -9,12 +9,13 @@ let imageOrder = [1, 2, 3, 4, 5, 6, 7, 8, 0];
 let blocks = document.getElementsByClassName("puzzle-block");
 
 initGame(1);
-window.onload = async function() {
+window.onload = async function () {
     if (shipNo) {
         const data = await API.getGame(gameId, shipNo);
+        console.log(data);
         const slideImages = document.querySelectorAll('.puzzle-block img');
-        const { fileName } = data;
-        
+        const { fileName } = data.puzzleData;
+
         slideImages.forEach((img, index) => {
             const slideNumber = index + 1;
             img.src = `../../assets/yagami/${fileName}/slide (${slideNumber}).png`;
@@ -41,8 +42,8 @@ function initGame() {
         }
     }
 
-    emptyBlockCoords = [rows - 1, cols - 1]; 
-    indexes.push((rows - 1) * cols + (cols - 1)); 
+    emptyBlockCoords = [rows - 1, cols - 1];
+    indexes.push((rows - 1) * cols + (cols - 1));
     randomize();
 }
 
@@ -53,48 +54,23 @@ function positionBlockAtCoord(blockIdx, x, y) {
 }
 
 function randomize() {
-    let randomMoves = rows * cols * 6;
-    while (randomMoves-- > 0) {
-        let emptyBlockCoordY = Math.floor(emptyBlockCoords[0]);
-        let emptyBlockCoordX = Math.floor(emptyBlockCoords[1]);
-        
-        let coords = [
-            [emptyBlockCoordY - 1, emptyBlockCoordX],
-            [emptyBlockCoordY + 1, emptyBlockCoordX],
-            [emptyBlockCoordY, emptyBlockCoordX - 1],
-            [emptyBlockCoordY, emptyBlockCoordX + 1]
-        ];
-        
-        let availableMoves = coords.filter(coord => canMoveBlock({blockCoords: coord}));
-        if (availableMoves.length > 0) {
-            let randomIndex = Math.floor(Math.random() * availableMoves.length);
-            let move = availableMoves[randomIndex];
-            let blockIdx = move[0] * cols + move[1];
-            moveBlock(blockIdx);
-        }
+    for (let i = 0; i < 100; i++) {
+        let randomBlockIdx;
+        do {
+            randomBlockIdx = Math.floor(Math.random() * (count - 1));
+        } while (!moveBlock(randomBlockIdx));
     }
 }
 
 function moveBlock(blockIdx) {
-    if (canMoveBlock(blocks[blockIdx])) {
-        let block = blocks[blockIdx];
-        let blockCoords = [Math.floor(blockIdx / cols), blockIdx % cols];
-        
-        let emptyBlockIndex = emptyBlockCoords[0] * cols + emptyBlockCoords[1];
-        let emptyBlock = blocks[emptyBlockIndex];
-        
-        block.style.left = (emptyBlockCoords[1] * block.clientWidth) + "px";
-        block.style.top = (emptyBlockCoords[0] * block.clientHeight) + "px";
-        
-        emptyBlock.style.left = (blockCoords[1] * block.clientWidth) + "px";
-        emptyBlock.style.top = (blockCoords[0] * block.clientHeight) + "px";
-        
-        let blockOrderIndex = imageOrder.indexOf(parseInt(block.textContent));
-        let emptyBlockOrderIndex = imageOrder.indexOf(0);
-        
-        [imageOrder[blockOrderIndex], imageOrder[emptyBlockOrderIndex]] = 
-        [imageOrder[emptyBlockOrderIndex], imageOrder[blockOrderIndex]];
-        
+    let blockCoords = canMoveBlock(blocks[blockIdx]);
+    if (blockCoords != null) {
+        let emptyIdx = emptyBlockCoords[0] + emptyBlockCoords[1] * cols;
+
+        let blockOrderIdx = blockCoords[0] + blockCoords[1] * cols;
+        [imageOrder[blockOrderIdx], imageOrder[emptyIdx]] = [imageOrder[emptyIdx], imageOrder[blockOrderIdx]];
+
+        positionBlockAtCoord(blockIdx, emptyBlockCoords[0], emptyBlockCoords[1]);
         emptyBlockCoords = blockCoords;
         return true;
     }
@@ -102,21 +78,17 @@ function moveBlock(blockIdx) {
 }
 
 function canMoveBlock(block) {
-    let blockCoords = block.blockCoords || [Math.floor(Array.from(blocks).indexOf(block) / cols), Array.from(blocks).indexOf(block) % cols];
-    
-    if (blockCoords[0] < 0 || blockCoords[1] < 0 || blockCoords[0] >= rows || blockCoords[1] >= cols) {
-        return false;
+    let blockPos = [parseInt(block.style.left), parseInt(block.style.top)];
+    let blockWidth = block.clientWidth;
+    let blockCoords = [blockPos[0] / blockWidth, blockPos[1] / blockWidth];
+    let diff = [
+        Math.abs(blockCoords[0] - emptyBlockCoords[0]),
+        Math.abs(blockCoords[1] - emptyBlockCoords[1])
+    ];
+    if ((diff[0] === 1 && diff[1] === 0) || (diff[0] === 0 && diff[1] === 1)) {
+        return blockCoords;
     }
-    
-    if (blockCoords[0] === emptyBlockCoords[0] && Math.abs(blockCoords[1] - emptyBlockCoords[1]) === 1) {
-        return true;
-    }
-    
-    if (blockCoords[1] === emptyBlockCoords[1] && Math.abs(blockCoords[0] - emptyBlockCoords[0]) === 1) {
-        return true;
-    }
-    
-    return false;
+    return null;
 }
 
 function onClickOnBlock(blockIdx) {
@@ -126,8 +98,8 @@ function onClickOnBlock(blockIdx) {
             const emptyElement = document.querySelector('.empty');
             emptyElement.style.opacity = '1';
             emptyElement.style.animation = 'bounce-in 0.3s ease-in-out';
-            
-            API.makeGameMove(gameId, shipNo)
+
+            API.makeGameMove(gameId, shipNo, "hi")
                 .then(data => {
                     if (data.hasWon) {
                         triggerUnlock(data.redirect);
