@@ -9,9 +9,7 @@ async function getPuzzleData(shipNo) {
     const fileName = setName[setNo];
 
     return {
-        puzzleData: {
-            fileName: fileName
-        }
+        fileName: fileName
     };
 }
 
