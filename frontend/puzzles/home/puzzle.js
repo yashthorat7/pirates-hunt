@@ -5,13 +5,13 @@ const shipNo = new URLSearchParams(window.location.search).get('ship');
 const gameId = new URLSearchParams(window.location.search).get('id');
 let titleName;
 
-window.onload = async function() {
+window.onload = async function () {
     if (shipNo) {
         const data = await API.getGame(gameId, shipNo);
         const tileImages = document.querySelectorAll('.tile img');
         titleName = data.titleName;
         const { fileName } = data;
-        
+
         tileImages.forEach((img, index) => {
             const tileNumber = index + 1;
             img.src = `../../assets/home/${fileName}/tile (${tileNumber}).png`;
@@ -66,7 +66,7 @@ function checkCompletion() {
         const gridRect = grid.getBoundingClientRect();
         const tileRect = correspondingTile.getBoundingClientRect();
         const isCorrectlyPlaced =
-            Math.abs(tileRect.left - gridRect.left) < 5 && 
+            Math.abs(tileRect.left - gridRect.left) < 5 &&
             Math.abs(tileRect.top - gridRect.top) < 5;
 
         allCorrect = allCorrect && isCorrectlyPlaced;
@@ -80,7 +80,7 @@ function checkCompletion() {
                 }
             });
     }
-}    
+}
 
 function checkForLastUnoccupied() {
     const unoccupiedTiles = Array.from(tiles).filter(tile => !tile.parentElement.getAttribute('data-occupied'));
