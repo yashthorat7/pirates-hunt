@@ -8,7 +8,6 @@ const secretCodes = [
     "8637", "4823", "6781", "2953", "0695", "8076", "3518", "9573", "7148", "6582"
 ];
 
-// Direct function to get puzzle data
 async function getPuzzleData(shipNo) {
     const setNo = ((parseInt(shipNo) - 11) % 4);
 
@@ -19,16 +18,15 @@ async function getPuzzleData(shipNo) {
     };
 }
 
-// Direct function to check win condition
-async function checkWinCondition(shipNo, userInputs = []) {
+async function checkWinCondition(shipNo, userInputs) {
     const shipIndex = parseInt(shipNo) - 11;
-    const guessedNo = userInputs.length > 0 ? String(userInputs[0]) : "";
+    const guessedNo = userInputs;
     const secretCode = secretCodes[shipIndex];
-    
+
     if (!guessedNo || !secretCode) {
         return { verdictArray: [guessedNo, 0, 0], hasWon: false };
     }
-    
+
     const guessedArray = guessedNo.split('');
     const secretArray = secretCode.split('');
 
@@ -64,7 +62,6 @@ async function checkWinCondition(shipNo, userInputs = []) {
     return { verdictArray, hasWon };
 }
 
-// Express routes that use the direct functions
 router.get('/getTanjiro', async (req, res) => {
     const { shipNo } = req.query;
     const result = await getPuzzleData(shipNo);
@@ -72,18 +69,16 @@ router.get('/getTanjiro', async (req, res) => {
 });
 
 router.get('/getTanjiroWin', async (req, res) => {
-    const { shipNo, userInputs } = req.query;
+    const { shipNo, guessedNumber } = req.query;
     let parsedInputs = [];
     try {
         parsedInputs = [userInputs];
     } catch {
-        // Keep default empty array if parsing fails
     }
-    const result = await checkWinCondition(shipNo, parsedInputs);
+    const result = await checkWinCondition(shipNo, guessedNumber);
     res.json(result);
 });
 
-// Export both the router and the direct functions
 module.exports = router;
 module.exports.getPuzzleData = getPuzzleData;
 module.exports.checkWinCondition = checkWinCondition;
