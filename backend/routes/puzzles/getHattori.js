@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const counts = [
-    [7, 2, 7, 4], //coin, bottle, diamond, pearl
+    [7, 2, 7, 4],
     [7, 3, 5, 2],
     [6, 1, 5, 5],
     [7, 2, 6, 3]
@@ -15,9 +15,7 @@ async function getPuzzleData(shipNo) {
     const image = imageName[countNo];
 
     return {
-        puzzleData: {
-            image
-        }
+        image
     };
 }
 
@@ -25,7 +23,7 @@ async function getPuzzleData(shipNo) {
 async function checkWinCondition(shipNo, userInputs = []) {
     const setNo = (parseInt(shipNo, 10) - 11) % 4;
     const correctCount = counts[setNo];
-    
+
     try {
         const inputs = Array.isArray(userInputs) ? userInputs.map(Number) : [];
         const hasWon = correctCount.every((v, i) => v === inputs[i]);
@@ -48,7 +46,7 @@ router.get('/getHattoriWin', async (req, res) => {
     try {
         parsedInputs = JSON.parse(userInputs || '[]');
     } catch {
-        
+
     }
     const result = await checkWinCondition(shipNo, parsedInputs);
     res.json(result);
