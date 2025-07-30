@@ -1,10 +1,10 @@
 const gameId = new URLSearchParams(window.location.search).get('id');
+const shipNo = new URLSearchParams(window.location.search).get('ship');
 const numberButtons = document.querySelectorAll('.dial-button:not(:nth-child(9))');
 const submitButton = document.querySelector('.dial-button:nth-child(9)');
 let maplink = '';
 
 window.onload = async () => {
-    const shipNo = new URLSearchParams(window.location.search).get('ship');
     if (shipNo) {
         const data = await API.getGame(gameId, shipNo);
         window.gameData = {
@@ -24,19 +24,26 @@ numberButtons.forEach(button => {
         const nextLetter = getNextLetter(currentLetter);
         button.textContent = nextLetter;
         button.style.fontSize = '18vw';
+        button.style.fontFamily = 'Ancient';
+        button.style.color = '#ff0000b4';
     });
 });
 
-function getNextLetter(currentLetter) {
-    if (currentLetter === '') return 'A';
-    return String.fromCharCode((currentLetter.charCodeAt(0) - 65 + 1) % 8 + 65);
+submitButton.addEventListener('click', () => {
+    checkWin();
+});
+
+function getNextLetter(current) {
+    const letters = 'ABCDEFGH';
+    const currentIndex = letters.indexOf(current);
+    return currentIndex === -1 ? 'A' : letters[(currentIndex + 1) % letters.length];
 }
 
 function checkWin() {
     const buttons = Array.from(document.querySelectorAll('.dial-button:not(:nth-child(9))'))
         .sort((a, b) => a.className.match(/\d+/) - b.className.match(/\d+/));
     const guessedArray = buttons.map(button => button.textContent.trim());
-    
+
     if (!/^[A-H]+$/.test(guessedArray.join(''))) {
         return false;
     }
@@ -48,30 +55,44 @@ function checkWin() {
         }
         return false;
     }
-    
-    API.makeGameMove(gameId, shipNo, JSON.stringify(guessedArray))
+
+    API.makeGameMove(gameId, shipNo, guessedArray)
         .then(data => {
             if (data.hasWon) {
-                if (data.fileUrl) {
+                if (data.fileName) {
                     setTimeout(() => {
                         const image = document.createElement('img');
                         image.classList.add('map-image');
-                        image.src = data.fileUrl;
+                        image.src = data.fileName;
                         document.querySelector('.game-part').appendChild(image);
                     }, 500);
                 }
-                triggerUnlock(data.redirect);
+                UnlockTrigger();
             }
         });
 }
 
-submitButton.addEventListener('click', checkWin);
+function UnlockTrigger() {
+    if (navigator.vibrate) {
+        navigator.vibrate([100, 50, 400]);
+    }
 
-fetch('../../common/connect.html')
-    .then(response => response.text())
-    .then(data => {
-        document.querySelector('.connect-container').innerHTML = data;
-        const script = document.createElement('script');
-        script.src = '../../common/connect.js';
-        document.body.appendChild(script);
+    confetti({
+        particleCount: 100,
+        spread: 30,
+        startVelocity: 90,
+        angle: 90,
+        scalar: 1,
+        gravity: 5,
+        origin: { y: 0.9 },
+        tick: 1500,
     });
+
+    document.querySelectorAll('.dial-button').forEach(button => {
+        button.style.animation = 'zoom-out 1s ease-in-out';
+        button.style.pointerEvents = 'none';
+        setTimeout(() => {
+            button.remove();
+        }, 960);
+    });
+}

@@ -13,8 +13,9 @@
     padding: 0;
     box-sizing: border-box;
 }
-  
-body, html {
+
+body,
+html {
     margin: 0;
     padding: 0;
     height: 100svh;
@@ -201,9 +202,11 @@ body, html {
     0% {
         transform: translateY(0);
     }
+
     50% {
         transform: translateY(0.6vh);
     }
+
     100% {
         transform: translateY(0);
     }
@@ -213,6 +216,7 @@ body, html {
     0% {
         transform: scale(1);
     }
+
     100% {
         transform: scale(0);
     }
@@ -222,6 +226,7 @@ body, html {
     0% {
         transform: translateY(0);
     }
+
     100% {
         transform: translateY(20vh);
     }
