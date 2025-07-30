@@ -19,23 +19,41 @@ async function getPuzzleData(shipNo) {
     return null;
 }
 
-async function checkWinCondition(shipNo, userInputs = []) {
-    const shipIndex = parseInt(shipNo) - 11;
-    const chosenAnswer = Array.isArray(userInputs) && userInputs.length > 0 
-        ? userInputs[0]?.toUpperCase() 
-        : "";
-    const word = assignedWord[shipIndex]?.toUpperCase();
+async function checkWinCondition(shipNo, userInputs) {
+    let inputs = [];
+    if (typeof userInputs === 'string') {
+        try {
+            const parsed = JSON.parse(userInputs);
+            if (Array.isArray(parsed)) {
+                inputs = parsed;
+            } else if (typeof parsed === 'string') {
+                inputs = [parsed];
+            } else {
+                inputs = [];
+            }
+        } catch {
+            inputs = [userInputs];
+        }
+    } else if (Array.isArray(userInputs)) {
+        inputs = userInputs;
+    }
 
-    if (!word || !chosenAnswer) {
+    const rawGuess = (inputs[0] || '').toUpperCase();
+    if (!rawGuess) {
         return { hasWon: false };
     }
 
-    const result = new Array(5).fill(0);
+    const cArr = rawGuess.split('');
+    const shipIndex = parseInt(shipNo, 10) - 11;
+    const word = (assignedWord[shipIndex] || '').toUpperCase();
     const wArr = word.split('');
-    const cArr = chosenAnswer.split('');
-    const letterCount = {};
 
-    wArr.forEach(c => letterCount[c] = (letterCount[c] || 0) + 1);
+    const letterCount = {};
+    wArr.forEach(c => {
+        letterCount[c] = (letterCount[c] || 0) + 1;
+    });
+
+    const result = Array(5).fill(0);
 
     for (let i = 0; i < 5; i++) {
         if (wArr[i] === cArr[i]) {
@@ -45,18 +63,17 @@ async function checkWinCondition(shipNo, userInputs = []) {
     }
 
     for (let i = 0; i < 5; i++) {
-        if (result[i] !== 2 && letterCount[cArr[i]] > 0) {
+        if (result[i] === 0 && letterCount[cArr[i]] > 0) {
             result[i] = 1;
             letterCount[cArr[i]]--;
         }
     }
 
-    return { 
-        hasWon: word === chosenAnswer,
-        verdictArray: result 
+    return {
+        hasWon: word === rawGuess,
+        verdictArray: result
     };
 }
-
 
 router.get('/getSaitama', async (req, res) => {
     const { shipNo } = req.query;
@@ -66,12 +83,7 @@ router.get('/getSaitama', async (req, res) => {
 
 router.get('/getSaitamaWin', async (req, res) => {
     const { shipNo, userInputs } = req.query;
-    let parsedInputs = [];
-    try {
-        parsedInputs = [JSON.parse(userInputs)];
-    } catch {
-        
-    }
+    let parsedInputs = JSON.parse(userInputs || '[]');
     const result = await checkWinCondition(shipNo, parsedInputs);
     res.json(result);
 });
