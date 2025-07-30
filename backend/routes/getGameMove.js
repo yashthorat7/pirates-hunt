@@ -40,7 +40,7 @@ router.get('/', async (req, res) => {
 
     let result;
 
-    switch(gameNo) {
+    switch (gameNo) {
         case 1:
             result = await winFunctions.checkHomeWin(shipNo, parsedInputs);
             break;
@@ -70,7 +70,7 @@ router.get('/', async (req, res) => {
             break;
     }
 
-    if (result.hasWon) {   
+    if (result.hasWon) {
         await db.writeShipData('endtime', gameNo, shipNo);
         await db.writeShipData('unlocked', gameNo, shipNo, 1);
     }

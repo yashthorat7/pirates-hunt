@@ -31,10 +31,10 @@ router.get('/', async (req, res) => {
     const titleName = gameData.titleName[index];
     const gameNo = index + 1;
     const messages = connectMessages.connectMessages[gameNo];
-    
+
     let puzzleData;
 
-    switch(gameNo) {
+    switch (gameNo) {
         case 1:
             puzzleData = await puzzleFunctions.getHome(shipNo);
             break;
@@ -69,7 +69,7 @@ router.get('/', async (req, res) => {
     res.json({
         titleName,
         messages,
-        ...puzzleData.puzzleData
+        ...puzzleData
     });
 });
 
