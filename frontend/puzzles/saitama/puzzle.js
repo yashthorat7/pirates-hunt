@@ -11,7 +11,6 @@ const columns = 5;
 window.onload = async () => {
     if (shipNo) {
         const data = await API.getGame(gameId, shipNo);
-        console.log(data);
         titleName = data.titleName;
         window.gameData = {
             titleName: data.titleName,
@@ -37,66 +36,58 @@ document.querySelectorAll('.key').forEach(key => {
 function addLetter(letter) {
     if (currentGuess.length < columns) {
         currentGuess += letter;
-        const cells = document.querySelectorAll('.grid .cell');
-        const index = (currentRow * columns) + currentGuess.length - 1;
-        const cell = cells[index];
-        if (cell) {
-            cell.textContent = letter;
-            cell.classList.add('filled');
-        }
+        updateGrid();
     }
 }
 
 function deleteLetter() {
     if (currentGuess.length > 0) {
-        const cells = document.querySelectorAll('.grid .cell');
-        const index = (currentRow * columns) + currentGuess.length - 1;
-        const cell = cells[index];
-        if (cell) {
-            cell.textContent = '';
-            cell.classList.remove('filled');
-        }
         currentGuess = currentGuess.slice(0, -1);
+        updateGrid();
     }
 }
 
 function updateGrid() {
-    const cells = document.querySelectorAll('.grid .cell');
-    const rowStart = currentRow * columns;
-
     for (let i = 0; i < columns; i++) {
-        const cell = cells[rowStart + i];
-        if (cell) {
-            cell.textContent = currentGuess[i] || '';
-        }
+        const cellIndex = currentRow * columns + i;
+        const cell = document.querySelectorAll('.cell')[cellIndex];
+        cell.textContent = currentGuess[i] || '';
+        cell.classList.remove('absent', 'present', 'correct');
     }
 }
 
 function submitGuess() {
-    if (currentGuess.length !== columns) {
-        showErrorMessage("Not enough letters");
+    if (currentGuess.length < columns) {
+        showErrorMessage("write a 5-letter word");
         return;
     }
-
     if (previousGuesses.includes(currentGuess)) {
-        showErrorMessage("Word already tried");
+        showErrorMessage("you have already guessed that word");
         return;
     }
-
-    previousGuesses.push(currentGuess);
-
     checkWordWin(currentGuess);
 }
 
 async function checkWordWin(chosenAnswer) {
-    const data = await API.makeGameMove(gameId, shipNo, JSON.stringify({ chosenAnswer }));
-    const currentRowElement = document.querySelector(`.row:nth-child(${currentRow + 1})`);
+    const data = await API.makeGameMove(gameId, shipNo, chosenAnswer);
+    const { verdictArray } = data;
+
+    verdictArray.forEach((value, index) => {
+        const cell = document.querySelectorAll('.cell')[currentRow * columns + index];
+        cell.style.animation = 'reveal 0.6s ease-in-out';
+
+        setTimeout(() => {
+            if (value === 0) {
+                cell.classList.add('absent');
+            } else if (value === 1) {
+                cell.classList.add('present');
+            } else if (value === 2) {
+                cell.classList.add('correct');
+            }
+        }, 300);
+    });
 
     if (data.hasWon) {
-        currentRowElement.querySelectorAll('.cell').forEach(cell => {
-            cell.classList.add('correct');
-        });
-        document.querySelector('.game-part').style.userSelect = 'none';
         triggerUnlock(data.redirect);
     } else {
         handleIncorrectGuess();
@@ -104,38 +95,49 @@ async function checkWordWin(chosenAnswer) {
 }
 
 function handleIncorrectGuess() {
-    const currentRowElement = document.querySelector(`.row:nth-child(${currentRow + 1})`);
-    currentRowElement.querySelectorAll('.cell').forEach(cell => {
-        cell.classList.add('incorrect');
-    });
-
-    if (currentRow === rows - 1) {
-        document.querySelector('.game-part').style.userSelect = 'none';
-        showErrorMessage("Game Over!");
-        return;
-    }
-
-    currentRow++;
+    previousGuesses.push(currentGuess);
     currentGuess = '';
-    updateGrid();
+    currentRow++;
+
+    if (currentRow >= rows) {
+        setTimeout(() => {
+            showErrorMessage("we are changing the secret word");
+            window.location.reload();
+        }, 1200);
+    }
 }
 
 function showErrorMessage(message) {
+    navigator.vibrate(400);
     const messageElement = document.querySelector('.message');
     messageElement.textContent = message;
     messageElement.style.color = "#d32020";
-    if (navigator.vibrate) navigator.vibrate(100);
 }
 
 function createSnowflake() {
+    const snowContainer = document.getElementById('snow-container');
     const snowflake = document.createElement('div');
-    snowflake.className = 'snowflake';
-    snowflake.style.left = Math.random() * 100 + 'vw';
-    document.querySelector('.game-part').appendChild(snowflake);
+    snowflake.classList.add('snowflake');
+
+    const size = Math.random() * 1.5 + 0.5;
+    const positionX = Math.random() * 100;
+    const fallDuration = Math.random() * 3 + 2;
+
+    snowflake.style.width = `${size}vh`;
+    snowflake.style.height = `${size}vh`;
+    snowflake.style.left = `${positionX}vw`;
+    snowflake.style.top = `-5vh`;
+    snowflake.style.transition = `transform ${fallDuration}s linear`;
+
+    snowContainer.appendChild(snowflake);
+
+    setTimeout(() => {
+        snowflake.style.transform = `translateY(110vh)`;
+    }, 10);
 
     setTimeout(() => {
         snowflake.remove();
-    }, 10000);
+    }, fallDuration * 1000);
 }
 
 setInterval(createSnowflake, 200);
