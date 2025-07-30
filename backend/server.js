@@ -17,6 +17,10 @@ const outroRoutes = {
     getOutro: require('./routes/getOutro')
 };
 
+const winRoutes = {
+    getWin: require('./routes/getWin')
+};
+
 const corsOptions = {
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -35,6 +39,7 @@ app.use('/puzzle/hint', puzzleRoutes.getHint);
 app.use('/puzzle/move', puzzleRoutes.getGameMove);
 
 app.use('/outro', outroRoutes.getOutro);
+app.use('/win', winRoutes.getWin);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
