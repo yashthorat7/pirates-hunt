@@ -2,73 +2,35 @@ const express = require('express');
 const router = express.Router();
 const gameData = require('../data/gameData');
 const db = require('./db');
-const getHomeRouter = require('./puzzles/getHome');
-const getHattoriRouter = require('./puzzles/getHattori');
-const getParadiseRouter = require('./puzzles/getParadise');
-const getGokuRouter = require('./puzzles/getGoku');
-const getSaitamaRouter = require('./puzzles/getSaitama');
-const getYagamiRouter = require('./puzzles/getYagami');
-const getHoloRouter = require('./puzzles/getHolo');
-const getTanjiroRouter = require('./puzzles/getTanjiro');
-const getUchihaRouter = require('./puzzles/getUchiha');
 
-
-const winFunctions = {
-    checkHomeWin: require('./puzzles/getHome').checkWinCondition,
-    checkHattoriWin: require('./puzzles/getHattori').checkWinCondition,
-    checkParadiseWin: require('./puzzles/getParadise').checkWinCondition,
-    checkGokuWin: require('./puzzles/getGoku').checkWinCondition,
-    checkSaitamaWin: require('./puzzles/getSaitama').checkWinCondition,
-    checkYagamiWin: require('./puzzles/getYagami').checkWinCondition,
-    checkHoloWin: require('./puzzles/getHolo').checkWinCondition,
-    checkTanjiroWin: require('./puzzles/getTanjiro').checkWinCondition,
-    checkUchihaWin: require('./puzzles/getUchiha').checkWinCondition,
+const winModules = {
+    1: './puzzles/getHome',
+    2: './puzzles/getHattori',
+    3: './puzzles/getParadise',
+    4: './puzzles/getGoku',
+    5: './puzzles/getSaitama',
+    6: './puzzles/getYagami',
+    7: './puzzles/getHolo',
+    8: './puzzles/getTanjiro',
+    9: './puzzles/getUchiha',
 };
 
 router.get('/', async (req, res) => {
     const { gameId, shipNo, userInputs } = req.query;
+    const shipIndex = parseInt(shipNo) - 11;
     const index = gameData.gameId.findIndex(id => id === gameId);
     const gameNo = index + 1;
     const outroId = gameData.outroId[index];
 
-    let parsedInputs = [];
+    let parsedInputs;
     try {
-        parsedInputs = userInputs ? JSON.parse(userInputs) : [];
+        parsedInputs = JSON.parse(userInputs);
     } catch (error) {
         console.error('Error parsing userInputs:', error);
     }
 
-    let result;
-
-    switch (gameNo) {
-        case 1:
-            result = await winFunctions.checkHomeWin(shipNo, parsedInputs);
-            break;
-        case 2:
-            result = await winFunctions.checkHattoriWin(shipNo, parsedInputs);
-            break;
-        case 3:
-            result = await winFunctions.checkParadiseWin(shipNo, parsedInputs);
-            break;
-        case 4:
-            result = await winFunctions.checkGokuWin(shipNo, parsedInputs);
-            break;
-        case 5:
-            result = await winFunctions.checkSaitamaWin(shipNo, parsedInputs);
-            break;
-        case 6:
-            result = await winFunctions.checkYagamiWin(shipNo, parsedInputs);
-            break;
-        case 7:
-            result = await winFunctions.checkHoloWin(shipNo, parsedInputs);
-            break;
-        case 8:
-            result = await winFunctions.checkTanjiroWin(shipNo, parsedInputs);
-            break;
-        case 9:
-            result = await winFunctions.checkUchihaWin(shipNo, parsedInputs);
-            break;
-    }
+    const { getGameWin } = require(winModules[gameNo]);
+    let result = parsedInputs.length !== 0 ? await getGameWin(shipIndex, parsedInputs) : await getGameWin(shipIndex);
 
     if (result.hasWon) {
         await db.writeShipData('endtime', gameNo, shipNo);
