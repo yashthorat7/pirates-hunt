@@ -5,6 +5,50 @@ const visitedMessages = [];
 let redirect = null;
 let gameData = null;
 let rippleInProgress = false;
+const introId = new URLSearchParams(window.location.search).get('id');
+
+window.onload = function () {
+    initializeGame();
+
+    const container = document.querySelector('.ripple-container');
+    setInterval(() => {
+        if (!rippleInProgress) {
+            createRipple(container);
+            setTimeout(() => createRipple(container), Math.random() * 2000 + 1000);
+        }
+    }, 3000);
+};
+
+async function initializeGame() {
+    const introId = new URLSearchParams(window.location.search).get('id');
+    const data = await API.getIntro(introId);
+    gameData = {
+        title: data.title,
+        messages: data.messages,
+    };
+    messages = gameData.messages;
+
+    const titleElement = document.querySelector('.title-name');
+    titleElement.textContent = gameData.title.toUpperCase();
+
+    const characterImage = document.querySelector('.character-image');
+    characterImage.src = `../assets/${gameData.title}/character.png`;
+
+    const islandImage = document.querySelector('.island-image');
+    islandImage.src = `../assets/${gameData.title}/island.png`;
+
+    if (introId === 'ylxqtwoba') {
+        const body = document.querySelector('body');
+        const messages = document.querySelector('.message');
+        body.style.background = "linear-gradient(0deg, rgb(5, 40, 65) 0%, rgb(0, 35, 99) 58%, rgb(0, 5, 53) 100%)";
+        messages.style.color = "white";
+    }
+}
+
+document.querySelector('.enter-button').addEventListener('click', handleForwardClick);
+document.querySelector('.forward-button').addEventListener('click', handleNextClick);
+document.querySelector('.backward-button').addEventListener('click', handleBackwardClick);
+document.querySelector('.title-part').addEventListener('click', redirectToNextPage);
 
 function startTypingAnimation(index, typingDelay = 35) {
     const messageElement = document.querySelector('.message');
@@ -41,14 +85,15 @@ async function handleForwardClick(event) {
 
     if (!isNaN(inputValue) && inputValue >= 11 && inputValue <= 50) {
         try {
-            const data = await API.getIntroMove(gameData.introId, inputValue);
+            const data = await API.getIntroMove(introId, inputValue);
+            console.log('Redirecting to:', data.redirect);
             redirect = data.redirect;
-            
+
             const firstScreen = document.querySelector('.first-screen');
             const secondScreen = document.querySelector('.second-screen');
             const shipMark = document.querySelector('.ship-mark');
-            
-            gameData.shipNo = inputValue;
+
+            const shipNo = inputValue;
             shipMark.textContent = `#${inputValue}`;
             firstScreen.style.display = 'none';
             secondScreen.style.display = 'flex';
@@ -66,13 +111,13 @@ async function handleForwardClick(event) {
 }
 
 async function redirectToNextPage() {
-    if (!gameData?.shipNo) return;
     window.location.href = redirect;
 }
 
 function handleNextClick() {
     if (currentMessageIndex < messages.length - 1) {
         currentMessageIndex++;
+        console.log('Current message index:', currentMessageIndex);
         startTypingAnimation(currentMessageIndex);
     } else {
         redirectToNextPage();
@@ -111,47 +156,3 @@ function createRipple(container) {
         rippleInProgress = false;
     });
 }
-
-async function initializeGame() {
-    const introId = new URLSearchParams(window.location.search).get('id');
-    const data = await API.getIntro(introId);
-    
-    gameData = {
-        titleName: data.titleName,
-        introId: introId
-    };
-    messages = data.messages;
-
-    const titleElement = document.querySelector('.title-name');
-    titleElement.textContent = gameData.titleName.toUpperCase();
-    
-    const characterImage = document.querySelector('.character-image');
-    characterImage.src = `../assets/${gameData.titleName}/character.png`;
-    
-    const islandImage = document.querySelector('.island-image');
-    islandImage.src = `../assets/${gameData.titleName}/island.png`;
-
-    if (introId === 'ylxqtwoba') {
-        const body = document.querySelector('body');
-        const messages = document.querySelector('.message');
-        body.style.background = "linear-gradient(0deg, rgb(5, 40, 65) 0%, rgb(0, 35, 99) 58%, rgb(0, 5, 53) 100%)";
-        messages.style.color = "white";
-    }
-}
-
-window.onload = function () {
-    initializeGame();
-    
-    const container = document.querySelector('.ripple-container');
-    setInterval(() => {
-        if (!rippleInProgress) {
-            createRipple(container);
-            setTimeout(() => createRipple(container), Math.random() * 2000 + 1000);
-        }
-    }, 3000);
-};
-
-document.querySelector('.enter-button').addEventListener('click', handleForwardClick);
-document.querySelector('.forward-button').addEventListener('click', handleNextClick);
-document.querySelector('.backward-button').addEventListener('click', handleBackwardClick);
-document.querySelector('.title-part').addEventListener('click', redirectToNextPage);

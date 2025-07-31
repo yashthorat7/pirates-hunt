@@ -14,7 +14,7 @@ const gameData = {
         "bhxrmqjky", "kouvlnatz", "twyzfjepq", "lapgmrchs", "dithcqawy",
         "fmxpljokn", "qbrnkswxy", "jwlefoatz", "czkvutgrs"
     ],
-    titleName: [
+    title: [
         "home", "hattori", "paradise", "goku", "saitama",
         "yagami", "holo", "tanjiro", "uchiha"
     ],
