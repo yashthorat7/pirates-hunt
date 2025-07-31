@@ -12,8 +12,8 @@
     const checkGameData = setInterval(() => {
         if (window.gameData) {
             const image = document.querySelector('.character-image');
-            image.src = `../../assets/${window.gameData.titleName}/character.png`;
-            
+            image.src = `../../assets/${window.gameData.title}/character.png`;
+
             if (messageElement && window.gameData.messages) {
                 messageElement.textContent = window.gameData.messages[0];
                 startMessageUpdates(window.gameData.messages);
