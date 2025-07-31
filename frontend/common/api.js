@@ -32,13 +32,13 @@ class API {
     }, 300);
 
     static getGame = debounce(async function (gameId, shipNo) {
-        const response = await fetch(`${BACKEND}/puzzle/game?gameId=${gameId}&shipNo=${shipNo}`);
+        const response = await fetch(`${BACKEND}/game?gameId=${gameId}&shipNo=${shipNo}`);
         return response.json();
     }, 300);
 
     static makeGameMove = debounce(async function (gameId, shipNo, userInputs) {
         userInputs = userInputs ? userInputs : [];
-        const response = await fetch(`${BACKEND}/puzzle/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${JSON.stringify(userInputs)}`);
+        const response = await fetch(`${BACKEND}/game/move?gameId=${gameId}&shipNo=${shipNo}&userInputs=${JSON.stringify(userInputs)}`);
         return response.json();
     }, 300);
 
@@ -53,7 +53,7 @@ class API {
     }, 300);
 
     static checkHint = debounce(async function (gameId, shipNo) {
-        const response = await fetch(`${BACKEND}/puzzle/hint/getHint?gameId=${gameId}&shipNo=${shipNo}`);
+        const response = await fetch(`${BACKEND}/game/hint/getHint?gameId=${gameId}&shipNo=${shipNo}`);
         if (response.status === 204) return null;
         return response.json();
     }, 500);

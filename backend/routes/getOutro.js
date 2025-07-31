@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
     const { outroId, shipNo } = req.query;
     const gameIndex = gameData.outroId.findIndex(id => id === outroId);
     const gameNo = gameIndex + 1;
-    const titleName = gameData.titleName[gameIndex];
+    const title = gameData.title[gameIndex];
     const message = outroMessage.outroMessages[gameNo];
 
     let attemptIndex;
@@ -31,10 +31,10 @@ router.get('/', async (req, res) => {
     }
 
     res.json({
-        titleName, 
-        message, 
-        baseMark, 
-        clueLetter, 
+        title,
+        message,
+        baseMark,
+        clueLetter,
         clueImageName
     });
 });

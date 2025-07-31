@@ -26,9 +26,9 @@ app.use(express.json());
 app.use('/intro', getIntro);
 app.use('/intro/move', getIntroMove);
 
-app.use('/puzzle/game', getGame);
-app.use('/puzzle/hint', getHint);
-app.use('/puzzle/move', getGameMove);
+app.use('/game', getGame);
+app.use('/game/hint', getHint);
+app.use('/game/move', getGameMove);
 
 app.use('/outro', getOutro);
 app.use('/win', getWin);
