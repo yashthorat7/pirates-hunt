@@ -1,6 +1,3 @@
-const express = require('express');
-const router = express.Router();
-
 const secretCodes = [
     "6209", "8137", "8402", "9634", "7019", "2834", "9061", "3876", "5709", "9501",
     "1269", "7930", "7069", "8125", "5293", "3196", "1795", "8635", "7930", "7481",
@@ -8,18 +5,15 @@ const secretCodes = [
     "8637", "4823", "6781", "2953", "0695", "8076", "3518", "9573", "7148", "6582"
 ];
 
-async function getPuzzleData(shipNo) {
-    const setNo = ((parseInt(shipNo) - 11) % 4);
+async function getGame(shipIndex) {
+    const setNo = shipIndex % 4;
 
     return {
-        puzzleData: {
-            exists: setNo >= 0
-        }
+        exists: setNo >= 0
     };
 }
 
-async function checkWinCondition(shipNo, userInputs) {
-    const shipIndex = parseInt(shipNo) - 11;
+async function getGameWin(shipIndex, userInputs) {
     const guessedNo = userInputs;
     const secretCode = secretCodes[shipIndex];
 
@@ -56,29 +50,10 @@ async function checkWinCondition(shipNo, userInputs) {
         }
     }
 
-    const verdictArray = [guessedNo, bulls, cows];
+    const result = [guessedNo, bulls, cows];
     const hasWon = bulls === 4;
 
-    return { verdictArray, hasWon };
+    return { hasWon, result };
 }
 
-router.get('/getTanjiro', async (req, res) => {
-    const { shipNo } = req.query;
-    const result = await getPuzzleData(shipNo);
-    res.json(result);
-});
-
-router.get('/getTanjiroWin', async (req, res) => {
-    const { shipNo, guessedNumber } = req.query;
-    let parsedInputs = [];
-    try {
-        parsedInputs = [userInputs];
-    } catch {
-    }
-    const result = await checkWinCondition(shipNo, guessedNumber);
-    res.json(result);
-});
-
-module.exports = router;
-module.exports.getPuzzleData = getPuzzleData;
-module.exports.checkWinCondition = checkWinCondition;
+module.exports = { getGame, getGameWin };
