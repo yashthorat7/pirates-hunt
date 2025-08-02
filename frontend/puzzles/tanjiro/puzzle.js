@@ -8,7 +8,7 @@ window.onload = async () => {
     if (shipNo) {
         const data = await API.getGame(gameId, shipNo);
         window.gameData = {
-            titleName: data.titleName,
+            title: data.title,
             messages: data.messages
         };
     }
@@ -46,8 +46,8 @@ function handleGuessClick() {
 }
 
 async function compareNumbers(guessedNumber) {
-    const data = await API.makeGameMove(gameId, shipNo, guessedNumber);
-    const [guessedNo, bulls, cows] = data.verdictArray;
+    const data = await API.getGameMove(gameId, shipNo, guessedNumber);
+    const [guessedNo, bulls, cows] = data.result;
 
     if (bulls + cows === 4 && bulls !== 4) {
         showErrorMessage("You found the right numbers... now just rearrange them");
