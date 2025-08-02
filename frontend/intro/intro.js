@@ -86,14 +86,12 @@ async function handleForwardClick(event) {
     if (!isNaN(inputValue) && inputValue >= 11 && inputValue <= 50) {
         try {
             const data = await API.getIntroMove(introId, inputValue);
-            console.log('Redirecting to:', data.redirect);
             redirect = data.redirect;
 
             const firstScreen = document.querySelector('.first-screen');
             const secondScreen = document.querySelector('.second-screen');
             const shipMark = document.querySelector('.ship-mark');
 
-            const shipNo = inputValue;
             shipMark.textContent = `#${inputValue}`;
             firstScreen.style.display = 'none';
             secondScreen.style.display = 'flex';
@@ -117,7 +115,6 @@ async function redirectToNextPage() {
 function handleNextClick() {
     if (currentMessageIndex < messages.length - 1) {
         currentMessageIndex++;
-        console.log('Current message index:', currentMessageIndex);
         startTypingAnimation(currentMessageIndex);
     } else {
         redirectToNextPage();

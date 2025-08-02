@@ -3,7 +3,7 @@ window.onload = async () => {
     const shipNo = new URLSearchParams(window.location.search).get('ship');
 
     const data = await API.getOutro(outroId, shipNo);
-    document.querySelector('.island-name').textContent = `${data.titleName.toUpperCase()} ISLAND`;
+    document.querySelector('.island-name').textContent = `${data.title.toUpperCase()} ISLAND`;
     document.querySelector('.character-image').src = `../assets/images/card-avatar.png`;
     document.querySelector('.ship-code').textContent = `SHIP ${shipNo}`;
     document.querySelector('.clue-text').textContent = data.clueLetter;
@@ -58,15 +58,15 @@ window.addEventListener("touchmove", drag);
 
 autoRotate();
 
-document.querySelector('.camera-icon').addEventListener('click', function() {
+document.querySelector('.camera-icon').addEventListener('click', function () {
     document.querySelector('.card-back').style.display = 'none';
     const cardFront = document.querySelector('.card-wrapper');
-    html2canvas(cardFront).then(function(canvas) {
+    html2canvas(cardFront).then(function (canvas) {
         let link = document.createElement('a');
         link.href = canvas.toDataURL('image/png');
         link.download = 'itachi-island.png';
         link.click();
     });
-    
+
     document.querySelector('.card-back').style.display = 'flex';
 });
