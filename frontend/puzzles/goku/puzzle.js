@@ -16,7 +16,7 @@ async function fetchGameData() {
         showTimerOverlay(30);
     } else {
         window.gameData = {
-            titleName: data.titleName,
+            title: data.title,
             messages: data.messages
         };
         questions = data.questions;
@@ -29,35 +29,41 @@ async function fetchGameData() {
 }
 
 function makeOptions() {
-    const riddles = document.querySelector('.riddle-part');
-    riddles.innerHTML = '';
-    
-    const optionContainer = document.createElement('div');
-    optionContainer.classList.add('option-container');
+    const questionElement = document.querySelector('.riddle');
+    const optionsPart = document.querySelector('.options-part');
 
-    if (currentQuestionIndex < questions.length) {
-        const options = questions[currentQuestionIndex].options;
-        options.forEach(option => {
-            const optionBox = document.createElement('div');
-            optionBox.classList.add('option-box');
-            optionBox.textContent = option;
-            optionBox.addEventListener('click', () => checkAnswer(option, currentQuestionIndex));
-            optionContainer.appendChild(optionBox);
-        });
-        
-        riddles.appendChild(optionContainer);
+    const currentQuestion = questions[currentQuestionIndex];
+    if (!currentQuestion) return;
+
+    questionElement.src = `../../assets/goku/${fileName}/riddle (${currentQuestion.riddleNo}).png`;
+    optionsPart.innerHTML = '';
+
+    const questionNumber = document.querySelector('.question-title');
+    questionNumber.textContent = `JUMP STONE ${currentQuestionIndex + 1}`;
+
+    const nextQuestion = questions[currentQuestionIndex + 1];
+    if (nextQuestion) {
+        const preloadedImage = new Image();
+        preloadedImage.src = `../../assets/goku/${fileName}/riddle (${nextQuestion.riddleNo}).png`;
     }
+
+    currentQuestion.options.forEach((option, index) => {
+        const optionBox = document.createElement('div');
+        optionBox.classList.add('option-box');
+        optionBox.id = option - (index + 1);
+        optionBox.textContent = option;
+        optionBox.onclick = () => checkAnswer(option, currentQuestion.riddleNo);
+        optionBox.style.animation = 'slideIn 0.6s ease forwards';
+        optionsPart.appendChild(optionBox);
+    });
 }
 
 async function checkAnswer(selectedOption, riddleNo) {
     const optionBoxes = document.querySelectorAll('.option-box');
-    const userInput = {
-        riddleNo: riddleNo,
-        answer: selectedOption
-    };
+    const userInputs = [riddleNo, selectedOption];
 
-    const data = await API.makeGameMove(gameId, shipNo, JSON.stringify(userInput));
-    
+    const data = await API.getGameMove(gameId, shipNo, JSON.stringify(userInputs));
+
     optionBoxes.forEach(box => {
         if (data.isCorrect) {
             if (box.textContent === selectedOption) {
@@ -79,57 +85,50 @@ async function checkAnswer(selectedOption, riddleNo) {
     });
 
     if (data.isCorrect) {
-        if (currentQuestionIndex < questions.length - 1) {
-            currentQuestionIndex++;
-            setTimeout(() => {
-                makeOptions();
-            }, 1000);
-        } else if (data.redirect) {
-            document.querySelector('.game-part').style.userSelect = 'none';
-            triggerUnlock(data.redirect);
-        }
-    } else {
         setTimeout(() => {
-            showTimerOverlay(30);
-            setTimeout(() => {
-                location.reload();
-            }, 30000);
-        }, 1000);
+            if (data.hasWon) {
+                triggerUnlock(data.redirect);
+            } else {
+                currentQuestionIndex++;
+                makeOptions();
+            }
+        }, 600);
+    } else {
+        navigator.vibrate(400);
+        const messageElement = document.querySelector('.message');
+        messageElement.textContent = `wrong stone!`;
+        messageElement.style.color = "#d32020";
+        setTimeout(() => {
+            window.location.reload();
+        }, 1200);
     }
 }
 
 function formatTime(seconds) {
-    return `${Math.floor(seconds)}`;
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins < 10 ? '0' + mins : mins}:${secs < 10 ? '0' + secs : secs}`;
 }
-  
+
 function showTimerOverlay(duration) {
-    const overlay = document.createElement('div');
-    overlay.classList.add('timer-overlay');
-    
-    const timerText = document.createElement('div');
-    timerText.classList.add('timer-text');
-    timerText.textContent = formatTime(duration);
-    
-    overlay.appendChild(timerText);
-    document.querySelector('.game-part').appendChild(overlay);
-    
-    let timeLeft = duration;
+    const overlay = document.querySelector('.wait-overlay');
+    const timerElement = document.querySelector('.timer');
+    overlay.style.display = 'flex';
+    timerElement.textContent = formatTime(duration);
     const interval = setInterval(() => {
-        timeLeft--;
-        timerText.textContent = formatTime(timeLeft);
-        
-        if (timeLeft <= 0) {
+        duration--;
+        timerElement.textContent = formatTime(duration);
+        if (duration <= 0) {
             clearInterval(interval);
             removeTimerOverlay();
+            fetchGameData();
         }
     }, 1000);
 }
 
 function removeTimerOverlay() {
-    const overlay = document.querySelector('.timer-overlay');
-    if (overlay) {
-        overlay.remove();
-    }
+    const overlay = document.querySelector('.wait-overlay');
+    overlay.style.display = 'none';
 }
 
 fetch('../../common/connect.html')
