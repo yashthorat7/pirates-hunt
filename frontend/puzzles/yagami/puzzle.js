@@ -12,9 +12,8 @@ initGame(1);
 window.onload = async function () {
     if (shipNo) {
         const data = await API.getGame(gameId, shipNo);
-        console.log(data);
         const slideImages = document.querySelectorAll('.puzzle-block img');
-        const { fileName } = data.puzzleData;
+        const { fileName } = data;
 
         slideImages.forEach((img, index) => {
             const slideNumber = index + 1;
@@ -22,7 +21,7 @@ window.onload = async function () {
         });
 
         window.gameData = {
-            titleName: data.titleName,
+            title: data.title,
             messages: data.messages
         };
     }
@@ -99,7 +98,7 @@ function onClickOnBlock(blockIdx) {
             emptyElement.style.opacity = '1';
             emptyElement.style.animation = 'bounce-in 0.3s ease-in-out';
 
-            API.makeGameMove(gameId, shipNo, "hi")
+            API.getGameMove(gameId, shipNo)
                 .then(data => {
                     if (data.hasWon) {
                         triggerUnlock(data.redirect);
