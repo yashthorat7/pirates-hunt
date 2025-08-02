@@ -1,6 +1,6 @@
 function triggerUnlock(redirectLink) {
     if (navigator.vibrate) {
-        navigator.vibrate([100, 50, 400]);
+        navigator.vibrate([100, 50, 100]);
     }
     confetti({
         particleCount: 100,
@@ -12,5 +12,5 @@ function triggerUnlock(redirectLink) {
         origin: { y: 0.9 },
         tick: 1500,
     });
-    setTimeout(() => window.location.href = redirectLink, 2000);
+    setTimeout(() => window.location.href = redirectLink, 1500);
 }
