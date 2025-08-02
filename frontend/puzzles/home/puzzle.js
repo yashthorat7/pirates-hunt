@@ -3,13 +3,11 @@ const grids = document.querySelectorAll('.grid');
 const SNAP_THRESHOLD = 80;
 const shipNo = new URLSearchParams(window.location.search).get('ship');
 const gameId = new URLSearchParams(window.location.search).get('id');
-let titleName;
 
 window.onload = async function () {
     if (shipNo) {
         const data = await API.getGame(gameId, shipNo);
         const tileImages = document.querySelectorAll('.tile img');
-        titleName = data.titleName;
         const { fileName } = data;
 
         tileImages.forEach((img, index) => {
@@ -18,7 +16,7 @@ window.onload = async function () {
         });
 
         window.gameData = {
-            titleName: data.titleName,
+            title: data.title,
             messages: data.messages
         };
     }
@@ -73,7 +71,7 @@ function checkCompletion() {
     });
 
     if (allOccupied && allCorrect) {
-        API.makeGameMove(gameId, shipNo)
+        API.getGameMove(gameId, shipNo)
             .then(data => {
                 if (data.hasWon) {
                     triggerUnlock(data.redirect);
