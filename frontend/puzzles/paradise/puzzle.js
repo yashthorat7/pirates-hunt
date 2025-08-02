@@ -1,11 +1,11 @@
 const shipNo = new URLSearchParams(window.location.search).get('ship');
 const gameId = new URLSearchParams(window.location.search).get('id');
-let titleName;
+let title;
 
 window.onload = async function () {
     if (shipNo) {
         const data = await API.getGame(gameId, shipNo);
-        titleName = data.titleName;
+        title = data.title;
 
         fetch(`../../assets/paradise/${data.fileName}.json`)
             .then(response => response.json())
@@ -14,7 +14,7 @@ window.onload = async function () {
             });
 
         window.gameData = {
-            titleName: data.titleName,
+            title: data.title,
             messages: data.messages
         };
     }
@@ -131,7 +131,7 @@ function checkWin() {
     const lastCol = mazeWidth - 1;
 
     if (playerRow === lastRow && playerCol === lastCol) {
-        API.makeGameMove(gameId, shipNo)
+        API.getGameMove(gameId, shipNo)
             .then(data => {
                 if (data.hasWon) {
                     triggerUnlock(data.redirect);
