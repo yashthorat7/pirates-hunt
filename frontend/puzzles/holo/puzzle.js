@@ -6,13 +6,13 @@ let maxLives;
 const gameId = new URLSearchParams(window.location.search).get('id');
 const shipNo = new URLSearchParams(window.location.search).get('ship');
 
-window.onload = async function() {
+window.onload = async function () {
     const data = await API.getGame(gameId, shipNo);
     maxLives = data.lives;
     remainingCount = maxLives;
 
     window.gameData = {
-        titleName: data.titleName,
+        title: data.title,
         messages: data.messages
     };
 
@@ -28,7 +28,7 @@ async function updateProgressBar() {
     progressMessage.textContent = `${Math.round(percentage)}%`;
 
     if (clickCounter >= maxLives) {
-        const data = await API.makeGameMove(gameId, shipNo, remainingCount);
+        const data = await API.getGameMove(gameId, shipNo, remainingCount);
         if (data.hasWon) {
             document.querySelector('.game-part').style.pointerEvents = 'none';
             if (data.redirect) {
@@ -67,8 +67,8 @@ function handleMoving() {
         setTimeout(() => location.reload(), 300);
         isLost = true;
         return;
-    } 
-    
+    }
+
     if (!isLost) {
         clickCounter++;
         remainingCount--;
