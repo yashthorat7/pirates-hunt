@@ -1,13 +1,11 @@
 const shipNo = new URLSearchParams(window.location.search).get('ship');
 const gameId = new URLSearchParams(window.location.search).get('id');
-let titleName;
 
-window.onload = async function() {    
+window.onload = async function () {
     if (shipNo) {
         const data = await API.getGame(gameId, shipNo);
-        titleName = data.titleName;
         const { image } = data;
-        
+
         pannellum.viewer('panorama', {
             type: "equirectangular",
             panorama: `../../assets/hattori/${image}.png`,
@@ -20,7 +18,7 @@ window.onload = async function() {
         });
 
         window.gameData = {
-            titleName: data.titleName,
+            title: data.title,
             messages: data.messages
         };
     }
@@ -55,7 +53,7 @@ function handleVerificationClick() {
         parseInt(document.querySelector('.counter-box:nth-child(4) .number-box span').textContent)
     ];
 
-    API.makeGameMove(gameId, shipNo, userInputs)
+    API.getGameMove(gameId, shipNo, userInputs)
         .then(data => {
             if (data.hasWon) {
                 triggerUnlock(data.redirect);
