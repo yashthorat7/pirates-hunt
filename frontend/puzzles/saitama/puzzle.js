@@ -1,6 +1,6 @@
 const shipNo = new URLSearchParams(window.location.search).get('ship');
 const gameId = new URLSearchParams(window.location.search).get('id');
-let titleName;
+let title;
 
 let currentGuess = '';
 let currentRow = 0;
@@ -11,9 +11,9 @@ const columns = 5;
 window.onload = async () => {
     if (shipNo) {
         const data = await API.getGame(gameId, shipNo);
-        titleName = data.titleName;
+        title = data.title;
         window.gameData = {
-            titleName: data.titleName,
+            title: data.title,
             messages: data.messages
         };
     }
@@ -69,10 +69,11 @@ function submitGuess() {
 }
 
 async function checkWordWin(chosenAnswer) {
-    const data = await API.makeGameMove(gameId, shipNo, chosenAnswer);
-    const { verdictArray } = data;
+    const data = await API.getGameMove(gameId, shipNo, chosenAnswer);
+    const { result } = data;
 
-    verdictArray.forEach((value, index) => {
+
+    result.forEach((value, index) => {
         const cell = document.querySelectorAll('.cell')[currentRow * columns + index];
         cell.style.animation = 'reveal 0.6s ease-in-out';
 
