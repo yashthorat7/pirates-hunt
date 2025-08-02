@@ -22,7 +22,6 @@ router.get('/getHint', async (req, res) => {
     const startTime = StartTimeCache[shipIndex];
     const currentTime = db.getTime();
     const timeDiffMinutes = (currentTime - startTime) / 60;
-
     if (timeDiffMinutes >= HINTTIME && startTime !== 0) {
         await db.writeShipData('endtime', gameNo, shipNo);
         await db.writeShipData('unlocked', gameNo, shipNo, 2);

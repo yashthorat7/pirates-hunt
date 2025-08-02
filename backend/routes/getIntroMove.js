@@ -8,7 +8,6 @@ router.get('/', async (req, res) => {
     const introIndex = gameData.introId.findIndex(id => id === introId);
     const gameId = gameData.gameId[introIndex];
     const gameNo = introIndex + 1;
-    console.log(gameNo);
     const outroId = gameData.outroId[introIndex];
 
     let isUnlocked;

@@ -30,7 +30,7 @@ router.get('/', async (req, res) => {
     }
 
     const { getGameWin } = require(winModules[gameNo]);
-    let result = parsedInputs.length !== 0 ? await getGameWin(shipIndex, parsedInputs) : await getGameWin(shipIndex);
+    let result = parsedInputs.length !== 0 ? await getGameWin(shipIndex, parsedInputs) : await getGameWin();
 
     if (result.hasWon) {
         await db.writeShipData('endtime', gameNo, shipNo);
