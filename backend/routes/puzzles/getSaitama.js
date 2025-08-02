@@ -1,6 +1,3 @@
-const express = require('express');
-const router = express.Router();
-
 const pirateWords = [
     "SHARK", "SWORD", "STORY", "COUNT",
     "CHEST", "SKULL", "BLACK", "WHITE",
@@ -10,41 +7,20 @@ const pirateWords = [
 
 const assignedWord = new Array(40).fill(null);
 
-
-async function getPuzzleData(shipNo) {
-    const shipIndex = parseInt(shipNo) - 11;
+async function getGame(shipIndex) {
     const randomIndex = Math.floor(Math.random() * pirateWords.length);
     const word = pirateWords[randomIndex];
     assignedWord[shipIndex] = word;
     return null;
 }
 
-async function checkWinCondition(shipNo, userInputs) {
-    let inputs = [];
-    if (typeof userInputs === 'string') {
-        try {
-            const parsed = JSON.parse(userInputs);
-            if (Array.isArray(parsed)) {
-                inputs = parsed;
-            } else if (typeof parsed === 'string') {
-                inputs = [parsed];
-            } else {
-                inputs = [];
-            }
-        } catch {
-            inputs = [userInputs];
-        }
-    } else if (Array.isArray(userInputs)) {
-        inputs = userInputs;
-    }
-
-    const rawGuess = (inputs[0] || '').toUpperCase();
-    if (!rawGuess) {
+async function getGameWin(shipIndex, userInputs) {
+    let inputs = userInputs.split('');
+    if (!inputs) {
         return { hasWon: false };
     }
 
-    const cArr = rawGuess.split('');
-    const shipIndex = parseInt(shipNo, 10) - 11;
+    const cArr = inputs;
     const word = (assignedWord[shipIndex] || '').toUpperCase();
     const wArr = word.split('');
 
@@ -70,24 +46,9 @@ async function checkWinCondition(shipNo, userInputs) {
     }
 
     return {
-        hasWon: word === rawGuess,
-        verdictArray: result
+        hasWon: word === userInputs,
+        result
     };
 }
 
-router.get('/getSaitama', async (req, res) => {
-    const { shipNo } = req.query;
-    const result = await getPuzzleData(shipNo);
-    res.json(result);
-});
-
-router.get('/getSaitamaWin', async (req, res) => {
-    const { shipNo, userInputs } = req.query;
-    let parsedInputs = JSON.parse(userInputs || '[]');
-    const result = await checkWinCondition(shipNo, parsedInputs);
-    res.json(result);
-});
-
-module.exports = router;
-module.exports.getPuzzleData = getPuzzleData;
-module.exports.checkWinCondition = checkWinCondition;
+module.exports = { getGame, getGameWin };
