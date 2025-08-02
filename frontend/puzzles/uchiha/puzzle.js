@@ -8,7 +8,7 @@ window.onload = async () => {
     if (shipNo) {
         const data = await API.getGame(gameId, shipNo);
         window.gameData = {
-            titleName: data.titleName
+            title: data.title
         };
 
         const shipMark = document.querySelector('.ship-mark');
@@ -56,7 +56,7 @@ function checkWin() {
         return false;
     }
 
-    API.makeGameMove(gameId, shipNo, guessedArray)
+    API.getGameMove(gameId, shipNo, guessedArray)
         .then(data => {
             if (data.hasWon) {
                 if (data.fileName) {
