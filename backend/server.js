@@ -1,6 +1,10 @@
 const express = require('express');
 const cors = require('cors');
+const dotenv = require('dotenv');
+dotenv.config();
 const app = express();
+
+const allowedOrigin = process.env.ALLOWED_ORIGIN || '*';
 
 const getIntro = require('./routes/getIntro');
 const getIntroMove = require('./routes/getIntroMove')
@@ -15,7 +19,13 @@ const getWin = require('./routes/getWin');
 
 
 const corsOptions = {
-    origin: '*',
+    origin: (origin, callback) => {
+        if (!origin || origin === allowedOrigin) {
+            callback(null, true);
+        } else {
+            callback(new Error('CORS policy: Not allowed'));
+        }
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 };

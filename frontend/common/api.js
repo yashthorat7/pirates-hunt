@@ -1,5 +1,5 @@
 // const BACKEND = 'http://localhost:3000';
-const BACKEND = 'https://pirateshuntapi.vercel.app';
+const BACKEND = 'https://pirateshuntapi.onrender.com';
 
 
 const debounce = (func, wait) => {
