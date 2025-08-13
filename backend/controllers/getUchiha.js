@@ -1,5 +1,5 @@
 const express = require('express');
-const gameData = require('../../data/gameData');
+const gameData = require('../data/gameData');
 
 async function getGame(shipIndex) {
     return null;

@@ -1,4 +1,4 @@
-const db = require('../db');
+const db = require('./db');
 
 const questionSet = [
     { riddleNo: 1, options: ['45', '24', '40'], correctAns: '40' },

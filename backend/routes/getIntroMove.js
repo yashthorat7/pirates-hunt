@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const gameData = require('../data/gameData');
-const db = require('./db');
+const db = require('../controllers/db');
 
 router.get('/', async (req, res) => {
     const { introId, shipNo } = req.query;

@@ -1,18 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const gameData = require('../data/gameData');
-const db = require('./db');
+const db = require('../controllers/db');
 
 const winModules = {
-    1: './puzzles/getHome',
-    2: './puzzles/getHattori',
-    3: './puzzles/getParadise',
-    4: './puzzles/getGoku',
-    5: './puzzles/getSaitama',
-    6: './puzzles/getYagami',
-    7: './puzzles/getHolo',
-    8: './puzzles/getTanjiro',
-    9: './puzzles/getUchiha',
+    1: '../controllers/getHome',
+    2: '../controllers/getHattori',
+    3: '../controllers/getParadise',
+    4: '../controllers/getGoku',
+    5: '../controllers/getSaitama',
+    6: '../controllers/getYagami',
+    7: '../controllers/getHolo',
+    8: '../controllers/getTanjiro',
+    9: '../controllers/getUchiha',
 };
 
 router.get('/', async (req, res) => {
