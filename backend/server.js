@@ -3,6 +3,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 dotenv.config();
 const app = express();
+const db = require('./config/db');
 
 const allowedOrigin = process.env.ALLOWED_ORIGIN || '*';
 
@@ -30,6 +31,9 @@ const corsOptions = {
     allowedHeaders: ['Content-Type', 'Authorization']
 };
 
+// db.deleteTable();  //use ti carefully
+db.addTable();
+
 app.options('*', cors(corsOptions));
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -43,6 +47,7 @@ app.use('/game/move', getGameMove);
 
 app.use('/outro', getOutro);
 app.use('/win', getWin);
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

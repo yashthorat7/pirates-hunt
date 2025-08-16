@@ -64,8 +64,79 @@ async function writeShipData(table, gameNo, shipNo, value) {
     }
 }
 
+async function addTable() {
+    try {
+        await pool.query(`
+            DO $$
+            BEGIN
+                -- begintime
+                CREATE TABLE IF NOT EXISTS begintime (
+                    shipno INTEGER PRIMARY KEY,
+                    game1 INTEGER, game2 INTEGER, game3 INTEGER, game4 INTEGER, game5 INTEGER,
+                    game6 INTEGER, game7 INTEGER, game8 INTEGER, game9 INTEGER, game10 INTEGER DEFAULT 0
+                );
+                IF NOT EXISTS (SELECT 1 FROM begintime) THEN
+                    INSERT INTO begintime (shipno)
+                    SELECT generate_series(11, 50);
+                END IF;
+
+                -- endtime
+                CREATE TABLE IF NOT EXISTS endtime (
+                    shipno INTEGER PRIMARY KEY,
+                    game1 INTEGER, game2 INTEGER, game3 INTEGER, game4 INTEGER, game5 INTEGER,
+                    game6 INTEGER, game7 INTEGER, game8 INTEGER, game9 INTEGER
+                );
+                IF NOT EXISTS (SELECT 1 FROM endtime) THEN
+                    INSERT INTO endtime (shipno)
+                    SELECT generate_series(11, 50);
+                END IF;
+
+                -- starttime
+                CREATE TABLE IF NOT EXISTS starttime (
+                    shipno INTEGER PRIMARY KEY,
+                    game1 INTEGER, game2 INTEGER, game3 INTEGER, game4 INTEGER, game5 INTEGER,
+                    game6 INTEGER, game7 INTEGER, game8 INTEGER, game9 INTEGER
+                );
+                IF NOT EXISTS (SELECT 1 FROM starttime) THEN
+                    INSERT INTO starttime (shipno)
+                    SELECT generate_series(11, 50);
+                END IF;
+
+                -- unlocked
+                CREATE TABLE IF NOT EXISTS unlocked (
+                    shipno INTEGER PRIMARY KEY,
+                    game1 SMALLINT, game2 SMALLINT, game3 SMALLINT, game4 SMALLINT, game5 SMALLINT,
+                    game6 SMALLINT, game7 SMALLINT, game8 SMALLINT, game9 SMALLINT, game10 SMALLINT
+                );
+                IF NOT EXISTS (SELECT 1 FROM unlocked) THEN
+                    INSERT INTO unlocked (shipno)
+                    SELECT generate_series(11, 50);
+                END IF;
+            END
+            $$;
+        `);
+    } catch (error) {
+        console.error('Error making the table: ', error);
+    }
+}
+
+async function deleteTable() {
+    try {
+        await pool.query(`
+            DROP TABLE IF EXISTS begintime CASCADE;
+            DROP TABLE IF EXISTS endtime CASCADE;
+            DROP TABLE IF EXISTS starttime CASCADE;
+            DROP TABLE IF EXISTS unlocked CASCADE;
+        `);
+    } catch (error) {
+        console.error("Error deleting the tables: ", error);
+    }
+}
+
 module.exports = {
     readShipData,
     writeShipData,
+    addTable,
+    deleteTable,
     getTime
 };
