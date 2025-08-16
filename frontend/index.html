@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>PIRATES HUNT</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { margin:0; padding:32px; background:#fff; color:#000; font-family:monospace; }
+    .caution { font-size:20px; font-weight:700; color:#000; text-align:center; margin-bottom:32px; border:2px solid #000; padding:16px; text-transform:uppercase; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:14px; }
+    button { width:100%; padding:16px 12px; border:2px solid #000; background:#fff; color:#000; cursor:pointer; border-radius:0; text-align:left; font-family:monospace; transition:background .15s ease, color .15s ease; }
+    button:hover { background:#000; color:#fff; }
+    .title { font-weight:700; font-size:16px; margin-bottom:6px; }
+    .meta { font-size:13px; text-transform:uppercase; }
+  </style>
+</head>
+<body>
+  <div class="caution">⚠️ Delete This File Before Production (Dev Purpose Only)</div>
+  <div class="grid" id="buttons"></div>
+  <script>
+    const bases = [
+      { island: "home",    game: "jigsaw",     id: "vujkqpxyt", path: "/frontend/intro/intro.html" },
+      { island: "hattori", game: "count360",   id: "zgwnlthdf", path: "/frontend/intro/intro.html" },
+      { island: "paradise",game: "maze",       id: "odrbfajke", path: "/frontend/intro/intro.html" },
+      { island: "goku",    game: "stoneJumps", id: "xipmyelza", path: "/frontend/intro/intro.html" },
+      { island: "saitama", game: "wordGame",   id: "ndojrmxyp", path: "/frontend/intro/intro.html" },
+      { island: "yagami",  game: "slides",     id: "kuzpfidhc", path: "/frontend/intro/intro.html" },
+      { island: "holo",    game: "ghost",      id: "ylxqtwoba", path: "/frontend/intro/intro.html" },
+      { island: "tanjiro", game: "bullsncows", id: "cmhajrvnz", path: "/frontend/intro/intro.html" },
+      { island: "uchiha",  game: "treasure",   id: "veqlknstu", path: "/frontend/intro/intro.html" },
+      { island: "winner",  game: "winners",    id: "winnerq",   path: "/frontend/winner/winner.html" }
+    ];
+    const container = document.getElementById("buttons");
+    bases.forEach(({ island, game, id, path }) => {
+      const btn = document.createElement("button");
+      btn.innerHTML = `
+        <div class="title">${island}</div>
+        <div class="meta">Game: ${game}</div>
+      `;
+      btn.addEventListener("click", () => {
+        const url = `${location.origin}${path}?id=${encodeURIComponent(id)}`;
+        location.href = url;
+      });
+      container.appendChild(btn);
+    });
+  </script>
+</body>
+</html>
