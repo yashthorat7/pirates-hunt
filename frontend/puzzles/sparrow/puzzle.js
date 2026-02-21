@@ -12,7 +12,7 @@ window.onload = async function () {
 
         tileImages.forEach((img, index) => {
             const tileNumber = index + 1;
-            img.src = `../../assets/home/${fileName}/tile (${tileNumber}).png`;
+            img.src = `../../assets/sparrow/${fileName}/tile (${tileNumber}).png`;
         });
 
         window.gameData = {

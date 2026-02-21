@@ -14,7 +14,7 @@ const messages = {
             "I’d do it myself, but… the ocean? Its depths? The things that lurk down there."
         ],
         "3": [
-            "Well, look who’s wandered into paradise! Lucky you,I’d love to hand over the key right away",
+            "Well, look who’s wandered into sunreef! Lucky you, I’d love to hand over the key right away",
             "Small problem though… my monkey had the key tied ‘round his neck.",
             "And the little rascal ran off into the Enchanted Woods",
             "Find my monkey, and I’ll give you the key — seems fair to me!",

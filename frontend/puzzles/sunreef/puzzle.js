@@ -7,7 +7,7 @@ window.onload = async function () {
         const data = await API.getGame(gameId, shipNo);
         title = data.title;
 
-        fetch(`../../assets/paradise/${data.fileName}.json`)
+        fetch(`../../assets/sunreef/${data.fileName}.json`)
             .then(response => response.json())
             .then(mazeData => {
                 createMaze(mazeData.maze);
@@ -53,14 +53,14 @@ function createMaze(mazeData) {
                     const touchCell = document.createElement('div');
                     touchCell.classList.add('touch-cell');
                     const touchImage = document.createElement('img');
-                    touchImage.src = '../../assets/paradise/touch.png';
+                    touchImage.src = '../../assets/sunreef/touch.png';
                     touchCell.appendChild(touchImage);
                     cellElement.appendChild(touchCell);
 
                     const startCell = document.createElement('div');
                     startCell.classList.add('start-cell');
                     const startImage = document.createElement('img');
-                    startImage.src = '../../assets/paradise/ship-icon.png';
+                    startImage.src = '../../assets/sunreef/ship-icon.png';
                     startImage.alt = 'Start Icon';
                     startCell.appendChild(startImage);
                     cellElement.appendChild(startCell);
@@ -79,7 +79,7 @@ function createMaze(mazeData) {
                     const endCell = document.createElement('div');
                     endCell.classList.add('end-cell');
                     const endImage = document.createElement('img');
-                    endImage.src = '../../assets/paradise/pet-icon.png';
+                    endImage.src = '../../assets/sunreef/pet-icon.png';
                     endImage.alt = 'End Icon';
                     endCell.appendChild(endImage);
                     cellElement.appendChild(endCell);

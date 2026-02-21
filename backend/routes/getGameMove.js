@@ -4,15 +4,15 @@ const gameData = require("../data/gameData");
 const db = require("../config/db");
 
 const winModules = {
-  1: "../controllers/getHome",
-  2: "../controllers/getHattori",
-  3: "../controllers/getParadise",
-  4: "../controllers/getGoku",
-  5: "../controllers/getSaitama",
-  6: "../controllers/getYagami",
-  7: "../controllers/getHolo",
-  8: "../controllers/getTanjiro",
-  9: "../controllers/getUchiha",
+  1: "../controllers/getSparrow",
+  2: "../controllers/getRedbay",
+  3: "../controllers/getSunreef",
+  4: "../controllers/getIronbay",
+  5: "../controllers/getBlackto",
+  6: "../controllers/getStormy",
+  7: "../controllers/getGoldbay",
+  8: "../controllers/getDarkbay",
+  9: "../controllers/getSkullis",
 };
 
 router.get("/", async (req, res) => {

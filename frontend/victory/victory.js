@@ -3,7 +3,7 @@ const GOOGLE_FORM_URL = "https://github.com/yashthorat7"; // Replace with your a
 const victoryMessages = [
     "congratulations!",
     "you have found the treasure!",
-    "now return back to home island"
+    "now return back to sparrow island"
 ];
 let typingTimeout;
 let currentMessageIndex = 0;

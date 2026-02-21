@@ -8,7 +8,7 @@ window.onload = async function () {
 
         pannellum.viewer('panorama', {
             type: "equirectangular",
-            panorama: `../../assets/hattori/${image}.png`,
+            panorama: `../../assets/redbay/${image}.png`,
             autoLoad: true,
             showZoomCtrl: false,
             showFullscreenCtrl: false,

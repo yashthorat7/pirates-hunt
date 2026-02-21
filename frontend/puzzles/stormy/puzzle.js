@@ -17,7 +17,7 @@ window.onload = async function () {
 
         slideImages.forEach((img, index) => {
             const slideNumber = index + 1;
-            img.src = `../../assets/yagami/${fileName}/slide (${slideNumber}).png`;
+            img.src = `../../assets/stormy/${fileName}/slide (${slideNumber}).png`;
         });
 
         window.gameData = {

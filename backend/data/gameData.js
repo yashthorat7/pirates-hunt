@@ -15,8 +15,8 @@ const gameData = {
         "fmxpljokn", "qbrnkswxy", "jwlefoatz", "czkvutgrs"
     ],
     title: [
-        "home", "hattori", "paradise", "goku", "saitama",
-        "yagami", "holo", "tanjiro", "uchiha"
+        "sparrow", "redbay", "sunreef", "ironbay", "blackto",
+        "stormy", "goldbay", "darkbay", "skullis"
     ],
     clueLetters: [
         ["D", "H", "A", "B", "F", "C", "G", "E"],

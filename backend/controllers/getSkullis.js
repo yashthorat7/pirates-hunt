@@ -19,7 +19,7 @@ async function getGameWin(shipIndex, userInputs) {
     }
 
     return isWin
-        ? { hasWon: true, fileName: "../../assets/uchiha/cvhasui.png" }
+        ? { hasWon: true, fileName: "../../assets/skullis/cvhasui.png" }
         : { hasWon: false };
 }
 

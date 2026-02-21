@@ -35,7 +35,7 @@ function makeOptions() {
     const currentQuestion = questions[currentQuestionIndex];
     if (!currentQuestion) return;
 
-    questionElement.src = `../../assets/goku/${fileName}/riddle (${currentQuestion.riddleNo}).png`;
+    questionElement.src = `../../assets/ironbay/${fileName}/riddle (${currentQuestion.riddleNo}).png`;
     optionsPart.innerHTML = '';
 
     const questionNumber = document.querySelector('.question-title');
@@ -44,7 +44,7 @@ function makeOptions() {
     const nextQuestion = questions[currentQuestionIndex + 1];
     if (nextQuestion) {
         const preloadedImage = new Image();
-        preloadedImage.src = `../../assets/goku/${fileName}/riddle (${nextQuestion.riddleNo}).png`;
+        preloadedImage.src = `../../assets/ironbay/${fileName}/riddle (${nextQuestion.riddleNo}).png`;
     }
 
     currentQuestion.options.forEach((option, index) => {

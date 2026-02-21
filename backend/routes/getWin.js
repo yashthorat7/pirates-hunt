@@ -4,7 +4,7 @@ const db = require("../config/db");
 
 router.get("/", async (req, res) => {
   const { shipNo, winId } = req.query;
-  if (winId === "winnerq") {
+  if (winId === "victoryq") {
     try {
       await db.writeShipData("begintime", 10, shipNo);
       await db.writeShipData("unlocked", 10, shipNo, 1);
