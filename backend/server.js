@@ -5,30 +5,44 @@ dotenv.config();
 const app = express();
 const db = require('./config/db');
 
-const allowedOrigin = process.env.ALLOWED_ORIGIN || '*';
+const envOrigins = process.env.ALLOWED_ORIGINS || '*';
+let allowedOrigins = [];
+
+if (envOrigins === '*' || envOrigins.trim() === '*' || envOrigins.trim() === '"*"' || envOrigins.trim() === "'*'") {
+    allowedOrigins = ['*'];
+} else {
+    allowedOrigins = envOrigins
+        .split(/[,\s;]+/)
+        .map(url => url.trim().replace(/^['"]|['"]$/g, '').replace(/\/$/, ''))
+        .filter(Boolean);
+}
 
 const getIntro = require('./routes/getIntro');
-const getIntroMove = require('./routes/getIntroMove')
-
+const getIntroMove = require('./routes/getIntroMove');
 const getGame = require('./routes/getGame');
 const getHint = require('./routes/getHint');
 const getGameMove = require('./routes/getGameMove');
-
 const getOutro = require('./routes/getOutro');
-
 const getWin = require('./routes/getWin');
-
 
 const corsOptions = {
     origin: (origin, callback) => {
-        if (!origin || origin === allowedOrigin) {
+        if (!origin || allowedOrigins.includes('*')) {
+            return callback(null, true);
+        }
+
+        const cleanOrigin = origin.trim().replace(/\/$/, '');
+        
+        if (allowedOrigins.includes(cleanOrigin)) {
             callback(null, true);
         } else {
+            console.error(`CORS blocked. Origin: "${origin}", Allowed: [${allowedOrigins.join(', ')}]`);
             callback(new Error('CORS policy: Not allowed'));
         }
     },
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
 };
 
 // db.deleteTable();  //use ti carefully
