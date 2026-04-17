@@ -14,11 +14,11 @@ async function getGame(shipIndex) {
 }
 
 async function getGameWin(shipIndex, userInputs) {
-    const guessedNo = userInputs;
+    const guessedNo = userInputs?.toString();
     const secretCode = secretCodes[shipIndex];
 
     if (!guessedNo || !secretCode) {
-        return { verdictArray: [guessedNo, 0, 0], hasWon: false };
+        return { verdictArray: [guessedNo || '', 0, 0], hasWon: false };
     }
 
     const guessedArray = guessedNo.split('');

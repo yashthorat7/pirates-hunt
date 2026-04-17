@@ -24,6 +24,7 @@ const getHint = require('./routes/getHint');
 const getGameMove = require('./routes/getGameMove');
 const getOutro = require('./routes/getOutro');
 const getWin = require('./routes/getWin');
+const errorHandler = require('./middleware/errorHandler');
 
 const corsOptions = {
     origin: (origin, callback) => {
@@ -45,22 +46,25 @@ const corsOptions = {
     credentials: true
 };
 
-// db.deleteTable();  //use ti carefully
 db.addTable();
 
+app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+    next();
+});
 app.options('*', cors(corsOptions));
 app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use('/intro', getIntro);
 app.use('/intro/move', getIntroMove);
-
 app.use('/game', getGame);
 app.use('/game/hint', getHint);
 app.use('/game/move', getGameMove);
-
 app.use('/outro', getOutro);
 app.use('/win', getWin);
+
+app.use(errorHandler);
 
 
 const PORT = process.env.PORT || 3000;

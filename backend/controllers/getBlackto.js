@@ -5,24 +5,25 @@ const pirateWords = [
     "SOUND", "RUMOR", "SLEEP", "SCORE"
 ];
 
-const assignedWord = new Array(40).fill(null);
+const assignedWords = new Array(40).fill(null);
 
 async function getGame(shipIndex) {
     const randomIndex = Math.floor(Math.random() * pirateWords.length);
     const word = pirateWords[randomIndex];
-    assignedWord[shipIndex] = word;
+    assignedWords[shipIndex] = word;
     return null;
 }
 
 async function getGameWin(shipIndex, userInputs) {
-    let inputs = userInputs.split('');
-    if (!inputs) {
+    if (!Array.isArray(userInputs) || userInputs.length === 0) {
         return { hasWon: false };
     }
 
-    const cArr = inputs;
-    const word = (assignedWord[shipIndex] || '').toUpperCase();
+    const word = (assignedWords[shipIndex] || '').toUpperCase();
+    if (!word) return { hasWon: false };
+
     const wArr = word.split('');
+    const cArr = userInputs.map(c => c.toString().toUpperCase());
 
     const letterCount = {};
     wArr.forEach(c => {
@@ -46,7 +47,7 @@ async function getGameWin(shipIndex, userInputs) {
     }
 
     return {
-        hasWon: word === userInputs,
+        hasWon: word === cArr.join(''),
         result
     };
 }

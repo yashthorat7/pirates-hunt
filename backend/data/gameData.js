@@ -1,6 +1,3 @@
-const fs = require('fs');
-const path = require('path');
-
 const gameData = {
     introId: [
         "vujkqpxyt", "zgwnlthdf", "odrbfajke", "xipmyelza", "ndojrmxyp",
@@ -106,6 +103,17 @@ const gameData = {
         "(1)lpaey", "(2)ontih", "(3)aelrt", "(4)uoynr", "(5)ewrto",
         "(6)amnoh", "(7)sihte", "(8)btair"
     ],
+    puzzleModules: {
+        1: "../controllers/getSparrow",
+        2: "../controllers/getRedbay",
+        3: "../controllers/getSunreef",
+        4: "../controllers/getIronbay",
+        5: "../controllers/getBlackto",
+        6: "../controllers/getStormy",
+        7: "../controllers/getGoldbay",
+        8: "../controllers/getDarkbay",
+        9: "../controllers/getSkullis",
+    },
 };
 
 module.exports = gameData;

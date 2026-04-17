@@ -1,19 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const gameData = require('../data/gameData');
-const introMessages = require('../data/messages');
+const introController = require('../controllers/introController');
+const { validateIntroId } = require('../middleware/validator');
+const asyncHandler = require('../utils/asyncHandler');
 
-router.get('/', async (req, res) => {
-    const { introId } = req.query;
-    const index = gameData.introId.findIndex(id => id === introId);
-    const gameNo = (index + 1);
-    const title = gameData.title[index];
-    const messages = introMessages.introMessages[gameNo];
-
-    res.json({
-        title,
-        messages
-    });
-});
+router.get('/', 
+    validateIntroId(gameData), 
+    asyncHandler(introController.getIntro)
+);
 
 module.exports = router;

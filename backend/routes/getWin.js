@@ -1,18 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../config/db");
+const gameController = require("../controllers/gameController");
+const { validateShipNo } = require("../middleware/validator");
+const asyncHandler = require("../utils/asyncHandler");
 
-router.get("/", async (req, res) => {
-  const { shipNo, winId } = req.query;
-  if (winId === "victoryq") {
-    try {
-      await db.writeShipData("begintime", 10, shipNo);
-      await db.writeShipData("unlocked", 10, shipNo, 1);
-      res.status(200).json({ message: "Ship data written successfully" });
-    } catch (error) {
-      res.status(500).json({ error: "Error writing ship data" });
-    }
-  }
-});
+router.get("/", 
+    validateShipNo, 
+    asyncHandler(gameController.getWin)
+);
 
 module.exports = router;

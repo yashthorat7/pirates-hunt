@@ -1,5 +1,3 @@
-const express = require('express');
-
 const setName = ["(1)fdjks", "(2)zpxqy", "(3)nbvtu", "(4)hclwo"];
 
 async function getGame(shipIndex) {

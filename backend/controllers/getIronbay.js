@@ -1,4 +1,5 @@
-const db = require('../config/db');
+const { getISTTime } = require('../utils/timeUtils');
+const { WAIT_TIME_SECONDS } = require('../constants/gameConstants');
 
 const questionSet = [
     { riddleNo: 1, options: ['45', '24', '40'], correctAns: '40' },
@@ -27,18 +28,16 @@ const questionSet = [
     { riddleNo: 24, options: ['IT', 'YU', 'EW'], correctAns: 'IT' }
 ];
 
-let startTimes = new Array(40).fill(0);
+const startTimes = new Array(40).fill(0);
 
 async function getGame(shipIndex) {
     let offset = shipIndex % 4;
-    if (offset < 0) offset += 4;
-
-    const currentTime = db.getTime();
+    const currentTime = getISTTime();
     const prevStartTime = startTimes[shipIndex];
 
     let timeWaited = prevStartTime !== 0 ? currentTime - prevStartTime : null;
 
-    if (prevStartTime === 0 || timeWaited >= 25) {
+    if (prevStartTime === 0 || timeWaited >= WAIT_TIME_SECONDS) {
         startTimes[shipIndex] = currentTime;
 
         let questions = [];
@@ -62,9 +61,15 @@ async function getGame(shipIndex) {
 }
 
 async function getGameWin(shipIndex, userInputs) {
-    const [riddleNo, answerRaw] = JSON.parse(userInputs);
+    if (!Array.isArray(userInputs) || userInputs.length < 2) {
+        return { isCorrect: false, hasWon: false };
+    }
+    const [riddleNo, answerRaw] = userInputs;
 
     const questionIndex = riddleNo - 1;
+    if (!questionSet[questionIndex]) {
+        return { isCorrect: false, hasWon: false };
+    }
     const correctAnsRaw = questionSet[questionIndex].correctAns;
 
     const normalize = str => str?.toString().trim().toLowerCase();

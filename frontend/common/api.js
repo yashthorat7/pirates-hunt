@@ -1,5 +1,5 @@
-const BACKEND = "http://localhost:3000";
-// const BACKEND = "https://pirateshunt.onrender.com";
+// const BACKEND = "http://localhost:3000";
+const BACKEND = "https://pirateshunt.onrender.com";
 
 const debounce = (func, wait) => {
   let timeout;
