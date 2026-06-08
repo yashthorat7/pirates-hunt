@@ -1,7 +1,7 @@
 # 🏴‍☠️ Pirates Hunt
 
 <p align="center">
-  <img src="frontend/assets/logo.png" alt="Pirates Hunt Screenshot" width="100%">
+  <img src="README-img.png" alt="Pirates Hunt" width="100%">
 </p>
 
 A neat and clean, **mobile-only** lightweight game that takes you on a high-seas adventure!  
